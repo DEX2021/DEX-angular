@@ -1,7 +1,14 @@
 // migrations is changing the blockchains state to another state. simular to database migrations by adding colums or rows
+const Token = artifacts.require("Token");
+const Exchange = artifacts.require("Exchange");
 
-const Token = artifacts.require("Token"); //looks for the artifacts in the abis
+module.exports = async function (deployer) {
+  const accounts = await web3.eth.getAccounts();
 
-module.exports = function (deployer) {
-  deployer.deploy(Token);
+  await deployer.deploy(Token);
+
+  const feeAccount = accounts[0];
+  const feePercent = 10;
+
+  await deployer.deploy(Exchange, feeAccount, feePercent);
 };

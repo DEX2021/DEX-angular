@@ -27,3 +27,17 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+## DEX2021 Commands
+
+truffle compile // compiles the smart contracts
+
+truffle migrate // migrations is changing the blockchains state to another state. simular to database migrations by adding colums or rows
+
+truffle migrate --reset // if you have an existing copy of the smart contracts the blockchain, this will deploy a new copy of the smart contract onto the blockchain since it cannot be updated(immutable) hence copy and replace.
+
+truffle console // opens truffle console in order to connect to web3 and so forth.
+
+truffle test // runs all tests for the DEX projects.
+
+truffle exec Scripts/seed-exchange.js // runs seed exchange script that seeds the exchange with data and dummy trades.
