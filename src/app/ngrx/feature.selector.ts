@@ -9,9 +9,9 @@ export interface AppState {
 }
 
 export const selectFeature = (state: AppState) => state.feature;
-export const getCountValue = (counter: number) => counter
+export const getCountValue = (counter2: number) => counter2
 
 export const getCount = createSelector(
     getCountValue,
-    (counter, props) => counter * props.multiply
+    (counter2, props) => counter2 * props.multiply
 );
