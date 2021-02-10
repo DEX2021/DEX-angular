@@ -19,7 +19,7 @@ export class NgrxComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.count2$ = this.store.select(selectors.getCount);
+    //this.count2$ = this.store.select(selectors.getCount);
     console.log(this.count$);
   }
 
