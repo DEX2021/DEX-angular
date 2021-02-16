@@ -1,7 +1,7 @@
 import { createReducer, on, combineReducers } from "@ngrx/store";
 // import { web3Loaded } from './action'
 import * as PostActions from './action'
-import { IWeb3 } from '../models/web3'
+import { IWeb3, IToken, IExchange } from '../models/models'
 //import { Action } from '@ngrx/store'
 
 const initial = { connection: "hello" };
@@ -9,23 +9,55 @@ const initial = { connection: "hello" };
 
 export type Action = PostActions.All
 
-const defaultState: IWeb3 = {
-  web3: 'hello'
+const defaultWeb3State: IWeb3 = {
+  web3: 'hello',
+  account: "null",
+}
+
+const defaultTokenState: IToken = {
+  token: "nothing"
+}
+const defaultExchangeState: IExchange = {
+  exchange: "nothing"
 }
 
 const newState = (state, newData) => {
   return Object.assign({}, state, newData)
 }
 
-export function postReducer(state: IWeb3 = defaultState, action: Action) {
+export function web3Reducer(state: IWeb3 = defaultWeb3State, action: Action) {
   console.log(action.type, state)
   switch (action.type) {
     case PostActions.WEB3_LOADED:
       return { ...state, web3: action.payload }
+    case PostActions.ACCOUNT_LOADED:
+      return { ...state, account: action.payload }
     default:
       return state;
   }
 }
+
+export function tokenReducer(state: IToken = defaultTokenState, action: Action) {
+  console.log(action.type, state)
+  switch (action.type) {
+    case PostActions.TOKEN_LOADED:
+      return { ...state, token: action.payload }
+    default:
+      return state;
+  }
+}
+
+export function exchangeReducer(state: IExchange = defaultExchangeState, action: Action) {
+  console.log(action.type, state)
+  switch (action.type) {
+    case PostActions.EXCHANGE_LAODED:
+      return { ...state, exchange: action.payload }
+    default:
+      return state;
+  }
+}
+
+
 
 // const web3 = createReducer(initial,
 //   on(web3Loaded, (state, { connection }) => ({ ...state, web3: connection }))
@@ -45,9 +77,11 @@ export function postReducer(state: IWeb3 = defaultState, action: Action) {
 //   }
 // }
 
-// const rootReducer = combineReducers({
-//   web3,
-// });
+const rootReducer = combineReducers({
+  web3Reducer,
+  tokenReducer,
+  exchangeReducer
+});
 
 
 // export function rootReducer(state: any, action: Action){
@@ -58,4 +92,4 @@ export function postReducer(state: IWeb3 = defaultState, action: Action) {
 // }
 
 
-// export default rootReducer
+export default rootReducer
