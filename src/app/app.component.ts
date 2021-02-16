@@ -12,16 +12,16 @@ import { accountSelector } from '../Store/selectors'
 
 export class AppComponent implements OnInit {
   post: Observable<IWeb3>
-  $selector: Observable<IWeb3>
+  $selector: Observable<AppState>
   public object = {
     test: [3, 4, 5, 53, 22],
     another: "motherfucker"
   }
 
-  ngOnInit() {
+  async ngOnInit() {
 
-    this.loadBlockchainData();
-    console.log("this is the selector!!!!!", this.$selector)
+    await this.loadBlockchainData();
+    this.$selector.subscribe(result => console.log("this is the selector:", result))
   }
 
   constructor(private store: Store<AppState>) {

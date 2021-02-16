@@ -10,15 +10,15 @@ const initial = { connection: "hello" };
 export type Action = PostActions.All
 
 const defaultWeb3State: IWeb3 = {
-  web3: 'hello',
+  web3Reducer: 'hello',
   account: "null",
 }
 
 const defaultTokenState: IToken = {
-  token: "nothing"
+  tokenReducer: "nothing"
 }
 const defaultExchangeState: IExchange = {
-  exchange: "nothing"
+  exchangeReducer: "nothing"
 }
 
 const newState = (state, newData) => {

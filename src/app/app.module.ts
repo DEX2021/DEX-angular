@@ -13,13 +13,15 @@ import rootReducer from '../Store/reducers'; // TODO: Remove the test reducer
 import { environment } from 'src/environments/environment';
 import { storeFreeze } from 'ngrx-store-freeze'
 import { IWeb3 } from 'src/models/models';
+import { NavbarComponent } from './Components/navbar/navbar.component';
 
 export const metaReducers: MetaReducer<IWeb3>[] = !environment.production ? [storeFreeze] : [];
 @NgModule({
   declarations: [
     AppComponent,
     NgrxComponent,
-    HomeComponent
+    HomeComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
