@@ -15,10 +15,10 @@ const Exchange = require('../abis/Exchange.json')
 //     }
 // }
 
-export const loadWeb3 = async (store) => {
-    console.log("this is the store", store)
-    const web3 = new Web3(Web3.givenProvider || 'http:/localhost:7545')
-    //store.dispatch(new Postactions.web3Loaded(web3));
+export const loadWeb3 = async (store, web3) => {
+    console.log("this is the web3", web3)
+    // const web3 = new Web3(Web3.givenProvider || 'http:/localhost:7545')
+    // store.dispatch(new Postactions.web3Loaded(web3));
     return web3;
 }
 

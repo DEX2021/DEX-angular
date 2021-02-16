@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgrxComponent } from './pages/ngrx/ngrx.component';
 import { HomeComponent } from './pages/home/home.component';
+import Web3 from 'web3';
 
 import { ActionReducerMap, MetaReducer, StoreModule } from '@ngrx/store'; // NgRx Store
 import { StoreDevtoolsModule } from '@ngrx/store-devtools'; // NgRx Store Developer Tools
@@ -32,7 +33,14 @@ export const metaReducers: MetaReducer<IWeb3>[] = !environment.production ? [sto
       maxAge: 100, // Retains the last states (25 in this case for example)
     })
   ],
-  providers: [],
+  providers: [
+    {
+      provide: Web3,
+      useFactory: () => {
+        return new Web3(Web3.givenProvider || "http://localhost:7545");
+      }
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

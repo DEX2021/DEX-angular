@@ -1,9 +1,9 @@
 
 
 export interface AppState {
-    web3: IWeb3
-    token: IToken,
-    exchange: IExchange
+    web3Reducer: IWeb3
+    tokenReducer: IToken,
+    exchangeReducer: IExchange,
 }
 
 export interface IWeb3 {
