@@ -17,3 +17,13 @@ export interface IToken {
 export interface IExchange {
     exchange: any
 }
+
+export interface IOrder {
+    address: any;
+}
+
+export interface IOrders {
+    cancelled: IOrder[];
+    filled: IOrder[];
+    orders: IOrder[];
+}

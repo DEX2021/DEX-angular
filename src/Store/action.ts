@@ -5,6 +5,7 @@ export const WEB3_LOADED = '[Post] web3'
 export const ACCOUNT_LOADED = '[Post] accountloaded'
 export const TOKEN_LOADED = '[Post] tokenloaded'
 export const EXCHANGE_LAODED = '[Post] exchangeloaded'
+export const ORDERS_LOADED = '[Post] ordersloaded'
 // export function web3Loaded(connection) {
 //     return {
 //         type: "WEB3_LOADED",
@@ -36,6 +37,11 @@ export class exchangeLoaded implements Action {
     constructor(public payload: any) { }
 }
 
+export class ordersLoaded implements Action {
+    readonly type = ORDERS_LOADED
+
+    constructor(public payload: any) { }
+}
 
 // export const web3Loaded = createAction(
 //     'WEB3_LOADED',
@@ -43,4 +49,4 @@ export class exchangeLoaded implements Action {
 // );
 
 //export const web3Loaded2 = createAction('[web3] web3');
-export type All = web3Loaded | web3AccountLoaded | web3TokenLoaded | exchangeLoaded
+export type All = web3Loaded | web3AccountLoaded | web3TokenLoaded | exchangeLoaded | ordersLoaded

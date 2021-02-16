@@ -1,26 +1,12 @@
 // this file handles all the blockchain interactions
-import Web3 from "web3"
+import { Store, select } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { IExchange } from 'src/models/models';
+import Web3, {Modules} from "web3"
 import * as Postactions from './action'
+import { exchangeSelector } from './selectors';
 const Token = require('../abis/Token.json')
 const Exchange = require('../abis/Exchange.json')
-
-// export const loadWeb3Better = async (store) => {
-//     if (typeof window.ethereum !== 'undefined') {
-//         const web3 = new Web3(window.ethereum)
-//         //store.dispatch(new Postactions.web3Loaded(web3))
-//         return web3
-//     } else {
-//         window.alert('Please install MetaMask')
-//         window.location.assign("https://metamask.io/")
-//     }
-// }
-
-export const loadWeb3 = async (store, web3) => {
-    console.log("this is the web3", web3)
-    // const web3 = new Web3(Web3.givenProvider || 'http:/localhost:7545')
-    // store.dispatch(new Postactions.web3Loaded(web3));
-    return web3;
-}
 
 export const loadAccount = async (web3, store) => {
     const accounts = await web3.eth.getAccounts()
@@ -47,12 +33,48 @@ export const loadToken = async (web3, networkId, store) => {
 }
 
 export const loadExchange = async (web3, networkId, store) => {
+    console.log("loadExchange")
     try {
+        console.log("loadExchange:start")
         const exchange = new web3.eth.Contract(Exchange.abi, Exchange.networks[networkId].address)
+        console.log("TEST")
         store.dispatch(new Postactions.exchangeLoaded(exchange))
         return exchange
     } catch (error) {
         console.log('Contract not deployed to the current network. Please select another network with Metamask.')
         return null
     }
+}
+
+export const loadAllOrders = async (store: Store, exchange) => {
+    let $exchange: Observable<IExchange> = store.pipe(select(exchangeSelector));
+    // Fetch cancelled orders with the Cancel event stream
+    console.log("Loading cancelled orders")
+    const cancelStream = await exchange.getPastEvents('Cancel', {
+        fromBlock: 0,
+        toBlock: 'latest'
+    });
+    console.log("cancelledOrders", cancelStream)
+
+    // Fetch filled orders with the Trade event stream
+    console.log("Loading filled orders")
+    const filled = await exchange.getPastEvents('Trade', {
+        fromBlock: 0,
+        toBlock: 'latest'
+    });
+    console.log("filledOrders", filled)
+    // Fetch all orders with the Order event stream
+    console.log("Loading all orders")
+    const orderStream = await exchange.getPastEvents('Order', {
+        fromBlock: 0,
+        toBlock: 'latest'
+    });
+    console.log("allOrders", orderStream)
+
+    store.dispatch(new Postactions.ordersLoaded({
+        filled,
+        orders: orderStream
+    }));
+    // store.dispatch(new Postactions.ordersLoaded(cancelStream));
+    //console.log("Cancel Stream", cancelStream);
 }
