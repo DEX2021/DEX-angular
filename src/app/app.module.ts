@@ -12,6 +12,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools'; // NgRx Store Develo
 import RootReducer from '../Store/reducers'; // TODO: Remove the test reducer
 import { getCount, getCountValue } from './ngrx/feature.selector'; // TODO: Remove the test selector
 
+import Web3, { Modules } from 'web3';
+
 @NgModule({
   declarations: [
     AppComponent,

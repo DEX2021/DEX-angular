@@ -4,7 +4,7 @@ import { web3Loaded } from './action'
 const initial = { connection: "hello" };
 
 const web3 = createReducer(initial,
-  on(web3Loaded, (state, { connection }) => ({ ...state, web3: { connection } }))
+  on(web3Loaded, (state, { connection }) => ({ ...state, connection }))
 );
 
 // const web3s = (state, action) => {

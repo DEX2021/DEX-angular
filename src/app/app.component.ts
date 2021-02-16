@@ -25,14 +25,14 @@ export class AppComponent implements OnInit {
   async loadBlockchainData() {
     const web3 = await loadWeb3(this.store)
     console.log("this is the web3 shiet: ", web3)
-    const network = await web3.eth.net.getNetworkType()
-    const networkId = await web3.eth.net.getId();
-    const accounts = await web3.eth.getAccounts();
+    // const network = await web3.eth.net.getNetworkType()
+    // const networkId = await web3.eth.net.getId();
+    // const accounts = await web3.eth.getAccounts();
 
-    const token = new web3.eth.Contract(Token.abi, Token.networks[networkId].address)
-    const totalsupply = await token.methods.totalSupply().call();
+    //const token = new web3.eth.Contract(Token.abi, Token.networks[networkId].address)
+    // const totalsupply = await token.methods.totalSupply().call();
 
-    console.log("this is the token:", token)
+    //console.log("this is the token:", token)
 
   }
 
