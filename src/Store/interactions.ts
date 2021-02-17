@@ -49,32 +49,30 @@ export const loadExchange = async (web3, networkId, store) => {
 export const loadAllOrders = async (store: Store, exchange) => {
     let $exchange: Observable<IExchange> = store.pipe(select(exchangeSelector));
     // Fetch cancelled orders with the Cancel event stream
-    console.log("Loading cancelled orders")
     const cancelStream = await exchange.getPastEvents('Cancel', {
-        fromBlock: 0,
+        fromBlock: 'pending',
         toBlock: 'latest'
     });
-    console.log("cancelledOrders", cancelStream)
+    const cancelled = cancelStream.map(e => e.returnValues)
+    console.log("cancelledOrders", cancelled)
+    store.dispatch(new Postactions.cancelledOrdersLoaded(cancelled));
 
     // Fetch filled orders with the Trade event stream
-    console.log("Loading filled orders")
-    const filled = await exchange.getPastEvents('Trade', {
-        fromBlock: 0,
+    const tradeStream = await exchange.getPastEvents('Trade', {
+        fromBlock: 'pending',
         toBlock: 'latest'
     });
+    const filled = tradeStream.map(e => e.returnValues)
     console.log("filledOrders", filled)
+    store.dispatch(new Postactions.filledOrdersLoaded(filled));
     // Fetch all orders with the Order event stream
-    console.log("Loading all orders")
     const orderStream = await exchange.getPastEvents('Order', {
-        fromBlock: 0,
+        fromBlock: 'pending',
         toBlock: 'latest'
     });
-    console.log("allOrders", orderStream)
-
-    store.dispatch(new Postactions.ordersLoaded({
-        filled,
-        orders: orderStream
-    }));
+    const orders = orderStream.map(e => e.returnValues)
+    console.log("allOrders", orders)
+    store.dispatch(new Postactions.ordersLoaded(orders));
     // store.dispatch(new Postactions.ordersLoaded(cancelStream));
     //console.log("Cancel Stream", cancelStream);
 }

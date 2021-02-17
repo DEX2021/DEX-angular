@@ -65,12 +65,11 @@ export function exchangeReducer(state: IExchange = defaultExchangeState, action:
 export function ordersReducer(state: IOrders = defaultOrdersState, action: Action) {
   switch(action.type) {
     case PostActions.ORDERS_LOADED:
-      return {
-        ...state,
-        cancelled: action.payload.cancelled,
-        filled: action.payload.filled,
-        orders: action.payload.orders,
-      }
+      return { ...state, orders: action.payload }
+    case PostActions.CANCELLED_ORDERS_LOADED:
+      return { ...state, cancelled: action.payload }
+    case PostActions.FILLED_ORDERS_LOADED:
+      return { ...state, filled: action.payload }
     default:
       return state;
   }
