@@ -7,11 +7,11 @@ export interface AppState {
 }
 
 export interface IWeb3 {
-    web3: any
+    web3Reducer: any
     account: any
 }
 export interface IToken {
-    token: any
+    tokenReducer: any
 }
 
 export interface IExchange {
