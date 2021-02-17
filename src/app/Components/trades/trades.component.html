@@ -1,0 +1,23 @@
+<div class="card bg-dark text-white">
+    <div class="card-header">
+        Trades
+    </div>
+    <div class="card-body">
+        <table class="table table-dark table-sm small">
+            <thead>
+              <tr>
+                <th scope="col">Time</th>
+                <th scope="col">DEX</th>
+                <th scope="col">DEX/ETH</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="order of ($filledOrders | async).data; let i = index">
+                <td class="text-muted">{{ ($filledOrders | async).data[i].formattedTimestamp }}</td>
+                <td>{{ ($filledOrders | async).data[i].tokenAmount }}</td>
+                <td class="text-{{($filledOrders | async).data[i].tokenPriceClass}}">{{ ($filledOrders | async).data[i].tokenPrice }}</td>
+              </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

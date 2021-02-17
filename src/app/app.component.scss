@@ -11,7 +11,8 @@
     align-items: stretch;
     justify-content: space-evenly;
     padding: 8px;
-    z-index: 1
+    z-index: 1;
+    max-height: 100%;
   }
   
   .content > div {

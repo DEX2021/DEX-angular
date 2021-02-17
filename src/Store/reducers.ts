@@ -21,9 +21,18 @@ const defaultExchangeState: IExchange = {
   exchange: "nothing"
 }
 const defaultOrdersState: IOrders = {
-  cancelled: null,
-  filled: null,
-  orders: null
+  cancelled: {
+    loaded: false,
+    data: []
+  },
+  filled: {
+    loaded: false,
+    data: []
+  },
+  orders: {
+    loaded: false,
+    data: []
+  }
 }
 
 const newState = (state, newData) => {
@@ -65,11 +74,11 @@ export function exchangeReducer(state: IExchange = defaultExchangeState, action:
 export function ordersReducer(state: IOrders = defaultOrdersState, action: Action) {
   switch(action.type) {
     case PostActions.ORDERS_LOADED:
-      return { ...state, orders: action.payload }
+      return { ...state, orders: { loaded: true, data: action.payload} }
     case PostActions.CANCELLED_ORDERS_LOADED:
-      return { ...state, cancelled: action.payload }
+      return { ...state, cancelled: { loaded: true, data: action.payload} }
     case PostActions.FILLED_ORDERS_LOADED:
-      return { ...state, filled: action.payload }
+      return { ...state, filled: { loaded: true, data: action.payload} }
     default:
       return state;
   }

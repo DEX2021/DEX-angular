@@ -4,6 +4,7 @@ export interface AppState {
     web3Reducer: IWeb3
     tokenReducer: IToken,
     exchangeReducer: IExchange,
+    ordersReducer: IOrders,
 }
 
 export interface IWeb3 {
@@ -19,11 +20,12 @@ export interface IExchange {
 }
 
 export interface IOrder {
-    address: any;
+    loaded: boolean
+    data: any[]
 }
 
 export interface IOrders {
-    cancelled: IOrder[];
-    filled: IOrder[];
-    orders: IOrder[];
+    cancelled: IOrder;
+    filled: IOrder;
+    orders: IOrder;
 }

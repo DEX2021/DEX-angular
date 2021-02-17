@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { loadAccount, loadToken, loadExchange, loadAllOrders, loadWeb3 } from 'src/Store/interactions';
+import { loadAccount, loadToken, loadExchange, loadAllOrders } from 'src/Store/interactions';
 import { Observable } from 'rxjs'
 import { IToken, IWeb3, IExchange, AppState } from '../models/models'
 import { accountSelector, exchangeSelector } from '../Store/selectors'
