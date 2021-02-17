@@ -32,12 +32,7 @@
               "./node_modules/bootstrap/dist/css/bootstrap.min.css"
 
             ],
-            "scripts": [],
-            "allowedCommonJsDependencies": [
-              "bn.js",
-              "hash.js",
-              "web3"
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {

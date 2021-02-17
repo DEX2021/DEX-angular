@@ -44,7 +44,6 @@ export const loadExchange = async (web3, networkId, store) => {
 }
 
 export const loadAllOrders = async (store: Store, exchange) => {
-    let $exchange: Observable<IExchange> = store.pipe(select(exchangeSelector));
     // Fetch cancelled orders with the Cancel event stream
     const cancelStream = await exchange.getPastEvents('Cancel', {
         fromBlock: 0,

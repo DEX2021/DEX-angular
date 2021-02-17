@@ -18,7 +18,7 @@ const defaultTokenState: IToken = {
   tokenReducer: "nothing"
 }
 const defaultExchangeState: IExchange = {
-  exchangeReducer: "nothing"
+  exchange: "nothing"
 }
 const defaultOrdersState: IOrders = {
   cancelled: null,

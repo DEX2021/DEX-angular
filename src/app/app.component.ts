@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { loadAccount, loadToken, loadExchange, loadAllOrders } from 'src/Store/interactions';
+import { loadAccount, loadToken, loadExchange, loadAllOrders, loadWeb3 } from 'src/Store/interactions';
 import { Observable } from 'rxjs'
 import { IToken, IWeb3, IExchange, AppState } from '../models/models'
 import { accountSelector, exchangeSelector } from '../Store/selectors'
@@ -33,20 +33,20 @@ export class AppComponent implements OnInit {
   }
 
   async loadBlockchainData() {
-    const network = await this.web3.eth.net.getNetworkType()
-    const networkId = await this.web3.eth.net.getId();
-    const token = await loadToken(this.web3, networkId, this.store)
-    const exchange = await loadExchange(this.web3, networkId, this.store)
+    let network = await this.web3.eth.net.getNetworkType()
+    let networkId = await this.web3.eth.net.getId();
+    let token = await loadToken(this.web3, networkId, this.store)
+    let exchange = await loadExchange(this.web3, networkId, this.store)
     var account = await loadAccount(this.web3, this.store)
+    // console.log(`Network Type`, network);
+    // console.log(`Network ID`, networkId);
+    // console.log(`Token`, token)
+    // console.log(`Exchange`, exchange)
+    // console.log(`Account`, account)
 
-    console.log(`Network Type`, network);
-    console.log(`Network ID`, networkId);
-    console.log(`Token`, token)
-    console.log(`Exchange`, exchange)
-    console.log(`Account`, account)
+    await loadAllOrders(this.store, exchange);
 
     //this.store.dispatch(new Postactions.web3Loaded(this.object))
-    await loadAllOrders(this.store, exchange);
   }
 
 }
