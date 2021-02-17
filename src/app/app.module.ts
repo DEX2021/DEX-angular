@@ -14,6 +14,8 @@ import { environment } from 'src/environments/environment';
 import { storeFreeze } from 'ngrx-store-freeze'
 import { IWeb3 } from 'src/models/models';
 import { NavbarComponent } from './Components/navbar/navbar.component';
+import { ContentComponent } from './Components/content/content.component';
+import { DepositsComponent } from './Components/deposits/deposits.component';
 
 export const metaReducers: MetaReducer<IWeb3>[] = !environment.production ? [storeFreeze] : [];
 @NgModule({
@@ -21,14 +23,21 @@ export const metaReducers: MetaReducer<IWeb3>[] = !environment.production ? [sto
     AppComponent,
     NgrxComponent,
     HomeComponent,
-    NavbarComponent
+    NavbarComponent,
+    ContentComponent,
+    DepositsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule,
     AppRoutingModule,
-    StoreModule.forRoot({ root: rootReducer }),
+    StoreModule.forRoot({ root: rootReducer }, {
+      runtimeChecks: {
+        strictStateImmutability: false,
+        strictActionImmutability: false
+      }
+    }),
     // StoreModule.forFeature('counter', counterReducer), // TODO: Remove the test selector
     StoreDevtoolsModule.instrument({
       maxAge: 100, // Retains the last states (25 in this case for example)

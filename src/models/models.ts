@@ -9,11 +9,18 @@ export interface AppState {
 export interface IWeb3 {
     web3Reducer: any
     account: any
+    balance: any
 }
 export interface IToken {
-    tokenReducer: any
+    token: any
+    balance: any
+    loaded: boolean
 }
 
 export interface IExchange {
-    exchangeReducer: any
+    exchange: any
+    etherBalance: any
+    tokenBalance: any
+    loaded: boolean
+    balancesLoading: boolean
 }

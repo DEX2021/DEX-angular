@@ -12,13 +12,21 @@ export type Action = PostActions.All
 const defaultWeb3State: IWeb3 = {
   web3Reducer: 'hello',
   account: "null",
+  balance: 0
 }
 
 const defaultTokenState: IToken = {
-  tokenReducer: "nothing"
+  token: "nothing",
+  balance: 0,
+  loaded: false
 }
 const defaultExchangeState: IExchange = {
-  exchangeReducer: "nothing"
+  exchange: "nothing",
+  etherBalance: 0,
+  tokenBalance: 0,
+  loaded: false,
+  balancesLoading: false
+
 }
 
 const newState = (state, newData) => {
@@ -29,9 +37,15 @@ export function web3Reducer(state: IWeb3 = defaultWeb3State, action: Action) {
   console.log(action.type, state)
   switch (action.type) {
     case PostActions.WEB3_LOADED:
-      return { ...state, web3: action.payload }
+      //return { ...state, web3: action.payload }
+      return newState(state, { web3: action.payload })
+
     case PostActions.ACCOUNT_LOADED:
       return { ...state, account: action.payload }
+
+    case PostActions.ETHER_BALANCE_LOADED:
+      return { ...state, balance: action.payload }
+
     default:
       return state;
   }
@@ -41,7 +55,10 @@ export function tokenReducer(state: IToken = defaultTokenState, action: Action) 
   console.log(action.type, state)
   switch (action.type) {
     case PostActions.TOKEN_LOADED:
-      return { ...state, token: action.payload }
+      return { ...state, loaded: true, token: action.payload }
+
+    case PostActions.TOKEN_BALANCE_LOADED:
+      return { ...state, balance: action.payload }
     default:
       return state;
   }
@@ -51,7 +68,22 @@ export function exchangeReducer(state: IExchange = defaultExchangeState, action:
   console.log(action.type, state)
   switch (action.type) {
     case PostActions.EXCHANGE_LAODED:
-      return { ...state, exchange: action.payload }
+      return { ...state, loaded: true, exchange: action.payload }
+
+    case PostActions.EXCHANGE_ETHER_BALANCE_LOADED:
+      return { ...state, exchangeBalance: action.payload }
+
+    case PostActions.EXCHANGE_TOKEN_BALANCE_LOADED:
+      return { ...state, tokenBalance: action.payload }
+
+    case PostActions.BALANCES_LOADING:
+      return { ...state, balancesloading: true }
+
+    case PostActions.BALANCES_LOADED:
+      return { ...state, balancesloading: false }
+
+
+
     default:
       return state;
   }

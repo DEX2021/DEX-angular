@@ -4,6 +4,11 @@ import * as Postactions from './action'
 const Token = require('../abis/Token.json')
 const Exchange = require('../abis/Exchange.json')
 
+export const ETHER_ADDRESS = "0x0000000000000000000000000000000000000000";
+
+
+
+
 // export const loadWeb3Better = async (store) => {
 //     if (typeof window.ethereum !== 'undefined') {
 //         const web3 = new Web3(window.ethereum)
@@ -37,7 +42,7 @@ export const loadAccount = async (web3, store) => {
 export const loadToken = async (web3, networkId, store) => {
     try {
         const token = new web3.eth.Contract(Token.abi, Token.networks[networkId].address)
-        store.dispatch(new Postactions.web3TokenLoaded(JSON.parse(JSON.stringify(token))))
+        store.dispatch(new Postactions.web3TokenLoaded(token))
         return token
     } catch (error) {
         console.log('Contract not deployed to the current network. Please select another network with Metamask.')
@@ -53,5 +58,35 @@ export const loadExchange = async (web3, networkId, store) => {
     } catch (error) {
         console.log('Contract not deployed to the current network. Please select another network with Metamask.')
         return null
+    }
+}
+
+export const loadAllOrders = async (exchange, dispatch) => {
+    const cancelStream = await exchange.getPastEvents("Cancel", { fromBlock: 0, toBlock: "latest" })
+    console.log(cancelStream)
+}
+
+export const loadBalances = async (web3, exchange, token, account, store) => {
+    if (typeof account !== 'undefined') {
+        // Ether balance in wallet
+        const etherBalance = await web3.eth.getBalance(account)
+        store.dispatch(new Postactions.etherBalanceLoaded(etherBalance))
+
+        // Token balance in wallet
+        const tokenBalance = await token.methods.balanceOf(account).call()
+        store.dispatch(new Postactions.tokenBalanceLoaded(tokenBalance))
+
+        // Ether balance in exchange
+        const exchangeEtherBalance = await exchange.methods.balanceOf(ETHER_ADDRESS, account).call()
+        store.dispatch(new Postactions.exchangeEtherBalanceLoaded(exchangeEtherBalance))
+
+        // Token balance in exchange
+        const exchangeTokenBalance = await exchange.methods.balanceOf(token.options.address, account).call()
+        store.dispatch(new Postactions.exchangeTokenBalanceLoaded(exchangeTokenBalance))
+
+        // Trigger all balances loaded
+        store.dispatch(new Postactions.balancesLoaded())
+    } else {
+        window.alert('Please login with MetaMask')
     }
 }
