@@ -167,3 +167,82 @@ const decorateOrderBookOrder = (order) => {
         orderFillClass: (orderType === 'buy' ? 'sell' : 'buy')
     })
 }
+
+export const myFilledOrderSelector = createSelector(
+    accountSelector,
+    filledOrdersSelector,
+    (account, filledOrders) => {
+        let orders = filledOrders.data;
+        // Find out orders
+        orders = orders.filter((o) => o.user === account || o.userFill == account);
+        // Sort by date ascending
+        orders = orders.sort((a, b) => a.timestamp - b.timestamp);
+        // Decorate orders - add display attributes
+        orders = decorateMyFilledOrders(orders, account);
+        
+        return orders;
+    }
+)
+
+export const myOpenOrderSelector = createSelector(
+    accountSelector,
+    ordersSelector,
+    (account, openOrders) => {
+        let orders = openOrders.data;
+        // Find out orders
+        orders = orders.filter((o) => o.user === account || o.userFill == account);
+        // Decorate orders - add display attributes
+        orders = decorateMyOpenOrders(orders);
+        // Sort by date ascending
+        orders = orders.sort((a, b) => a.timestamp - b.timestamp);
+
+        return orders;
+    }
+)
+
+const decorateMyFilledOrders = (orders, account) => {
+    return(
+        orders.map((order) => {
+            order = decorateOrder(order);
+            order = decorateMyFilledOrder(order, account)
+            return order
+        })
+    )
+}
+
+const decorateMyFilledOrder = (order, account) => {
+    const myOrder = order.user === account
+
+    let orderType;
+    if (myOrder) {
+        orderType = order.tokenGive === ETHER_ADDRESS ? 'buy' : 'sell'
+    } else {
+        orderType = order.tokenGive === ETHER_ADDRESS ? 'sell' : 'buy'
+    }
+
+    return({
+        ...order,
+        orderTypeClass: (orderType === 'buy' ? GREEN : RED),
+        orderSign: (orderType === 'buy' ? '+' : '-')
+    })
+}
+
+const decorateMyOpenOrders = (orders) => {
+    return(
+        orders.map((order) => {
+            order = decorateOrder(order);
+            order = decorateMyOpenOrder(order)
+            return order
+        })
+    )
+}
+
+const decorateMyOpenOrder = (order) => {
+    let orderType = order.tokenGive === ETHER_ADDRESS ? 'buy' : 'sell';
+
+    return({
+        ...order,
+        orderType,
+        orderTypeClass: (orderType === 'buy' ? GREEN : RED)
+    })
+}

@@ -14,8 +14,6 @@ export class OrderBookComponent implements OnInit {
 
   constructor(private store: Store<AppState>) {
     this.$orders = this.store.pipe(select(orderBookSelector));
-
-    this.$orders.subscribe(d => console.log("YAYorders", d));
   }
 
   ngOnInit(): void {
