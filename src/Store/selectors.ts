@@ -1,8 +1,9 @@
 import { get } from 'lodash'
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { AppState, IWeb3 } from '../models/models'
+import { AppState, IOrders, IWeb3 } from '../models/models'
 import { ETHER_ADDRESS, ether, tokens, RED, GREEN } from '../app/utils/helpers';
 import moment from 'moment';
+import lodash from 'lodash';
 
 
 export const root = createFeatureSelector<AppState>('root')
@@ -17,7 +18,7 @@ export const exchangeSelector = createSelector(
     (state: AppState) => state.exchangeReducer.exchange
 )
 
-// Cancelled, Trade, Orders
+// Cancelled, Trade, Open Orders
 
 export const cancelledOrdersSelector = createSelector(
     root,
@@ -45,6 +46,49 @@ export const ordersSelector = createSelector(
     (state: AppState) => state.ordersReducer.orders
 )
 
+const openOrders = state => {
+    const all = ordersSelector(state);
+    const cancelled = cancelledOrdersSelector(state);
+    const filled = filledOrdersSelector(state);
+    const loaded = cancelled.loaded && filled.loaded && all.loaded;
+
+    const openOrders = lodash.reject(all.data, (order) => {
+        const orderFilled = filled.data.some((o) => o.id === order.id);
+        const orderCancelled = cancelled.data.some((o) => o.id === order.id)
+
+        return(orderFilled || orderCancelled)
+    })
+
+    return {
+        loaded: loaded,
+        data: openOrders
+    }
+}
+
+export const orderBookSelector = createSelector(
+    openOrders,
+    (orders) => {
+        // Decorate orders
+        orders.data = decorateOrderBookOrders(orders.data);
+        // Group orders by order type
+        orders.data = lodash.groupBy(orders.data, 'orderType');
+        // Sort buy orders by token price
+        const buyOrders = lodash.get(orders.data, 'buy', [])
+        orders.data = {
+            ...orders.data,
+            buyOrders: buyOrders.sort((a,b) => b.tokenPrice - a.tokenPrice),
+        }
+        // Sort sell orders by token price
+        const sellOrders = lodash.get(orders.data, 'sell', [])
+        orders.data = {
+            ...orders.data,
+            sellOrders: sellOrders.sort((a,b) => b.tokenPrice - a.tokenPrice),
+        }
+
+        return orders;
+    }
+)
+
 const decorateFilledOrders = (orders) => {
     // Track previous order (to compare history)
     let previousOrder = orders[0];
@@ -63,7 +107,7 @@ const decorateOrder = (order) => {
     let tokenAmount;
 
     // Determine Ether and Token amount
-    if (order.tokenGive = ETHER_ADDRESS) {
+    if (order.tokenGive === ETHER_ADDRESS) {
         etherAmount = order.amountGive;
         tokenAmount = order.amountGet;        
     } else {
@@ -100,8 +144,26 @@ const tokenPriceClass = (tokenPrice, orderId, previousOrder) => {
     }
 
     if (previousOrder.tokenPrice <= tokenPrice) {
-        return GREEN
+        return GREEN;
     } else {
-        return RED
+        return RED;
     }
+}
+
+const decorateOrderBookOrders = (order) => {
+    return order.map((order) => {
+        order = decorateOrder(order);
+        order = decorateOrderBookOrder(order);
+        return order
+    })
+}
+
+const decorateOrderBookOrder = (order) => {
+    const orderType = order.tokenGive === ETHER_ADDRESS ? 'buy' : 'sell';
+    return({
+        ...order,
+        orderType: orderType,
+        orderTypeClass: (orderType === 'buy' ? GREEN : RED),
+        orderFillClass: (orderType === 'buy' ? 'sell' : 'buy')
+    })
 }

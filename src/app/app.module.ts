@@ -16,6 +16,7 @@ import { storeFreeze } from 'ngrx-store-freeze'
 import { IWeb3 } from 'src/models/models';
 import { NavbarComponent } from './Components/navbar/navbar.component';
 import { TradesComponent } from './Components/trades/trades.component';
+import { OrderBookComponent } from './Components/order-book/order-book.component';
 
 export const metaReducers: MetaReducer<IWeb3>[] = !environment.production ? [storeFreeze] : [];
 @NgModule({
@@ -24,7 +25,8 @@ export const metaReducers: MetaReducer<IWeb3>[] = !environment.production ? [sto
     NgrxComponent,
     HomeComponent,
     NavbarComponent,
-    TradesComponent
+    TradesComponent,
+    OrderBookComponent
   ],
   imports: [
     BrowserModule,
