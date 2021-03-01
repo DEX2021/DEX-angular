@@ -90,3 +90,58 @@ export const loadBalances = async (web3, exchange, token, account, store) => {
         window.alert('Please login with MetaMask')
     }
 }
+
+// fill out see deposits 40min
+export const subscribeToEvents = async () => {
+
+}
+
+
+export const depositEther = async (store, exchange, web3, amount, account) => {
+    exchange.methods.depositEther().send({ from: account, value: web3.utils.toWei(amount, 'ether') })
+        .on('transactionHash', (hash) => {
+            store.dispatch(new Postactions.balancesLoading())
+        })
+        .on('error', (error) => {
+            console.error(error)
+            window.alert(`There was an error!`)
+        })
+}
+
+export const withdrawEther = async (store, exchange, web3, amount, account) => {
+    exchange.methods.withdrawEther(web3.utils.toWei(amount, 'ether')).send({ from: account })
+        .on('transactionHash', (hash) => {
+            store.dispatch(new Postactions.balancesLoading())
+        })
+        .on('error', (error) => {
+            console.error(error)
+            window.alert(`There was an error!`)
+        })
+}
+
+export const depositToken = (store, exchange, web3, token, amount, account) => {
+    amount = web3.utils.toWei(amount, 'ether')
+
+    token.methods.approve(exchange.options.address, amount).send({ from: account })
+        .on('transactionHash', (hash) => {
+            exchange.methods.depositToken(token.options.address, amount).send({ from: account })
+                .on('transactionHash', (hash) => {
+                    store.dispatch(new Postactions.balancesLoading())
+                })
+                .on('error', (error) => {
+                    console.error(error)
+                    window.alert(`There was an error!`)
+                })
+        })
+}
+
+export const withdrawToken = (store, exchange, web3, token, amount, account) => {
+    exchange.methods.withdrawToken(token.options.address, web3.utils.toWei(amount, 'ether')).send({ from: account })
+        .on('transactionHash', (hash) => {
+            store.dispatch(new Postactions.balancesLoading())
+        })
+        .on('error', (error) => {
+            console.error(error)
+            window.alert(`There was an error!`)
+        })
+}

@@ -22,5 +22,9 @@ export interface IExchange {
     etherBalance: any
     tokenBalance: any
     loaded: boolean
-    balancesLoading: boolean
+    balancesLoading: boolean,
+    etherDepositAmountChanged: number,
+    etherWithdrawAmountChanged: number,
+    tokenDepositAmount: number,
+    tokenWithdrawAmount: number
 }

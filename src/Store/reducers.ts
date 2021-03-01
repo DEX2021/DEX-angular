@@ -25,7 +25,11 @@ const defaultExchangeState: IExchange = {
   etherBalance: 0,
   tokenBalance: 0,
   loaded: false,
-  balancesLoading: false
+  balancesLoading: true,
+  etherDepositAmountChanged: 0,
+  etherWithdrawAmountChanged: 0,
+  tokenDepositAmount: 0,
+  tokenWithdrawAmount: 0
 
 }
 
@@ -71,7 +75,7 @@ export function exchangeReducer(state: IExchange = defaultExchangeState, action:
       return { ...state, loaded: true, exchange: action.payload }
 
     case PostActions.EXCHANGE_ETHER_BALANCE_LOADED:
-      return { ...state, exchangeBalance: action.payload }
+      return { ...state, etherBalance: action.payload }
 
     case PostActions.EXCHANGE_TOKEN_BALANCE_LOADED:
       return { ...state, tokenBalance: action.payload }
@@ -82,7 +86,17 @@ export function exchangeReducer(state: IExchange = defaultExchangeState, action:
     case PostActions.BALANCES_LOADED:
       return { ...state, balancesloading: false }
 
+    case PostActions.ETHER_DEPOSIT_AMOUNT_CHANGED:
+      return { ...state, etherDepositAmountChanged: action.payload }
 
+    case PostActions.ETHER_WITHDRAW_AMOUNT_CHANGED:
+      return { ...state, etherWithdrawAmountChanged: action.payload }
+
+    case PostActions.TOKEN_DEPOSIT_AMOUNT_CHANGED:
+      return { ...state, tokenDepositAmount: action.payload }
+
+    case PostActions.TOKEN_WITHDRAW_AMOUNT_CHANGED:
+      return { ...state, tokenWithdrawAmount: action.payload }
 
     default:
       return state;

@@ -1,7 +1,7 @@
 import { get } from 'lodash'
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { AppState, IWeb3 } from '../models/models'
-import { formatBalance } from './helpers'
+import { formatBalance, formatBalanceToEther } from './helpers'
 
 
 // const account = createFeatureSelector<AppState>('root')
@@ -58,35 +58,52 @@ export const balancesLoadingSelector = createSelector(
 const etherBalance = state => get(state, 'root', 0)
 export const etherBalanceSelector = createSelector(
     etherBalance,
-    (state: AppState) => state.web3Reducer.balance,
-    (balance) => {
-        return formatBalance(balance)
-    }
+    (state: AppState) => formatBalance(state.web3Reducer.balance),
 )
 
 const tokenBalance = state => get(state, 'root', 0)
 export const tokenBalanceSelector = createSelector(
     tokenBalance,
     (state: AppState) => formatBalance(state.tokenReducer.balance)
-    // (balance) => {
-    //     return balance
-    // }
+
 )
 
 const exchangeEtherBalance = state => get(state, 'root', 0)
 export const exchangeEtherBalanceSelector = createSelector(
     exchangeEtherBalance,
-    (state: AppState) => state.exchangeReducer.etherBalance,
-    // (balance) => {
-    //     return formatBalance(balance)
-    // }
+    (state: AppState) => formatBalance(state.exchangeReducer.etherBalance),
 )
 
 const exchangeTokenBalance = state => get(state, 'root', 0)
 export const exchangeTokenBalanceSelector = createSelector(
     exchangeTokenBalance,
-    (state: AppState) => state.exchangeReducer.tokenBalance,
-    // (balance) => {
-    //     return formatBalance(balance)
-    // }
+    (state: AppState) => formatBalance(state.exchangeReducer.tokenBalance),
+
 )
+
+const etherDepositAmount = state => get(state, "root", null)
+export const etherDepositAmountSelector = createSelector(
+    etherDepositAmount,
+    (state: AppState) => state.exchangeReducer.etherDepositAmountChanged
+)
+
+const etherWithdrawAmount = state => get(state, "root", null)
+export const etherWithdrawAmountSelector = createSelector(
+    etherWithdrawAmount,
+    (state: AppState) => state.exchangeReducer.etherWithdrawAmountChanged
+)
+
+
+const tokenDepositAmount = state => get(state, "root", null)
+export const tokenDepositAmountSelector = createSelector(
+    tokenDepositAmount,
+    (state: AppState) => state.exchangeReducer.tokenDepositAmount
+)
+
+
+const tokenWithdrawAmount = state => get(state, "root", null)
+export const tokenWithdrawAmountSelector = createSelector(
+    tokenWithdrawAmount,
+    (state: AppState) => state.exchangeReducer.tokenWithdrawAmount
+)
+

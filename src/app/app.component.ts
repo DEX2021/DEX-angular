@@ -15,6 +15,7 @@ export class AppComponent implements OnInit {
   $selector: Observable<AppState>
   $tests: Observable<AppState>
   $exchange: Observable<AppState>
+  appLoaded: Boolean = false;
 
   async ngOnInit() {
 
@@ -52,8 +53,9 @@ export class AppComponent implements OnInit {
     var account = await loadAccount(web3, this.store)
     //console.log("this is the web3 shiet: ", account)
 
-    console.log("this is the exchange: ", this.$exchange)
+    //console.log("this is the exchange: ", this.$exchange)
     //await loadAllOrders(exchange, this.store);
+    this.appLoaded = true;
 
   }
 
