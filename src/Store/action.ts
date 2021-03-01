@@ -51,6 +51,10 @@ export class exchangeLoaded implements Action {
 
 export class ordersLoaded implements Action {
     readonly type = ORDERS_LOADED
+
+    constructor(public payload: any) { }
+}
+
 export class etherBalanceLoaded implements Action {
     readonly type = ETHER_BALANCE_LOADED
 
@@ -65,9 +69,6 @@ export class filledOrdersLoaded implements Action {
 
 export class cancelledOrdersLoaded implements Action {
     readonly type = CANCELLED_ORDERS_LOADED
-
-    constructor(public payload: any) { }
-}
 
     constructor(public payload: any) { }
 }

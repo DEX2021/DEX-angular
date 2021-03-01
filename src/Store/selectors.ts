@@ -14,21 +14,16 @@ export const root = createFeatureSelector<AppState>('root')
 //     (state: AppState) => state.web3Reducer.account
 // );
 
-const account = state => get(state, 'root')
+const rootReducer = state => get(state, 'root')
 export const accountSelector = createSelector(
     root,
     (state: AppState) => state.web3Reducer.account
 );
 
-export const exchangeSelector = createSelector(
-    root,
-    (state: AppState) => state.exchangeReducer.exchange
-)
-
 // Cancelled, Trade, Open Orders
 
 export const cancelledOrdersSelector = createSelector(
-    root,
+    rootReducer,
     (state: AppState) => state.ordersReducer.cancelled
 )
 
@@ -49,7 +44,7 @@ export const filledOrdersSelector = createSelector(
 )
 
 export const ordersSelector = createSelector(
-    root,
+    rootReducer,
     (state: AppState) => state.ordersReducer.orders
 )
 

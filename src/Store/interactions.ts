@@ -64,7 +64,7 @@ export const loadExchange = async (web3, networkId, store) => {
     }
 }
 
-/*export const loadAllOrders = async (store: Store, exchange) => {
+export const loadAllOrders = async (store: Store, exchange) => {
     let orderData = {
         'Cancel': Postactions.cancelledOrdersLoaded,
         'Trade': Postactions.filledOrdersLoaded,
@@ -85,11 +85,10 @@ export const loadExchange = async (web3, networkId, store) => {
     }
 }
 
-*/
-export const loadAllOrders = async (exchange, dispatch) => {
-    const cancelStream = await exchange.getPastEvents("Cancel", { fromBlock: 0, toBlock: "latest" })
-    console.log(cancelStream)
-}
+// export const loadAllOrders = async (exchange, dispatch) => {
+//     const cancelStream = await exchange.getPastEvents("Cancel", { fromBlock: 0, toBlock: "latest" })
+//     console.log(cancelStream)
+// }
 
 export const loadBalances = async (web3, exchange, token, account, store) => {
     if (typeof account !== 'undefined') {

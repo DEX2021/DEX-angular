@@ -15,7 +15,6 @@ import Web3 from 'web3';
 export class AppComponent implements OnInit {
   post: Observable<IWeb3>
   $selector: Observable<AppState>
-  $tests: Observable<AppState>
   $exchange: Observable<AppState>
   appLoaded: Boolean = false;
 
