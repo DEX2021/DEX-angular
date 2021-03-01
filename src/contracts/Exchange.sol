@@ -4,7 +4,8 @@
 pragma solidity ^0.7.4;
 
 import "./Token.sol";
-import "node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol";
+// import "node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol";
+import "../../node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol";
 
 contract Exchange {
     using SafeMath for uint256;
