@@ -33,3 +33,17 @@ export const formatBalanceToEther = (balance) => {
 
   return balance;
 };
+
+
+export const DECIMALS = (10 ** 18);
+
+export const RED = 'danger';
+export const GREEN = 'success';
+
+export const ether = (wei) => {
+  if (wei) {
+    return (wei / DECIMALS);
+  }
+}
+
+export const tokens2 = ether;

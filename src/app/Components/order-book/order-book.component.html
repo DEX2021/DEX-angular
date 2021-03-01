@@ -1,0 +1,26 @@
+<div class="card-header">
+    Order Book
+</div>
+<div class="card-body order-book">
+    <table *ngIf="($orders | async).loaded === true" class="table table-dark table-sm small">
+        <tbody>
+            <tr *ngFor="order of ($orders | async).data.sell; let i = index">
+                <td>{{ ($orders | async).data.sell[i].tokenAmount }}</td>
+                <td class="text-{{($orders | async).data.sell[i].orderTypeClass}}">
+                    {{ ($orders | async).data.sell[i].tokenPrice }}</td>
+                <td>{{ ($orders | async).data.sell[i].etherAmount }}</td>
+            </tr>
+            <tr>
+                <th scope="col">DEX</th>
+                <th scope="col">DEX/ETH</th>
+                <th scope="col">ETH</th>
+            </tr>
+            <tr *ngFor="order of ($orders | async).data.buy; let i = index">
+                <td>{{ ($orders | async).data.buy[i].tokenAmount }}</td>
+                <td class="text-{{($orders | async).data.buy[i].orderTypeClass}}">
+                    {{ ($orders | async).data.buy[i].tokenPrice }}</td>
+                <td>{{ ($orders | async).data.buy[i].etherAmount }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

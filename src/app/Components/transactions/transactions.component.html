@@ -1,0 +1,53 @@
+<div class="card-header">My Transactions</div>
+<ul ngbNav #nav="ngbNav" class="nav-tabs">
+    <li ngbNavItem>
+        <a ngbNavLink>Trades</a>
+        <ng-template ngbNavContent>
+            <table class="table table-dark table-sm small">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>DEX</th>
+                        <th>DEX/ETH</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="order of ($myFilledOrders | async); let i = index">
+                        <td class="text-muted">{{ ($myFilledOrders | async)[i].formattedTimestamp }}</td>
+                        <td class="text-{{($myFilledOrders | async)[i].orderTypeClass}}">
+                            {{ ($myFilledOrders | async)[i].orderSign }}{{ ($myFilledOrders | async)[i].tokenAmount }}
+                        </td>
+                        <td class="text-{{($myFilledOrders | async)[i].orderTypeClass}}">
+                            {{ ($myFilledOrders | async)[i].tokenPrice }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </ng-template>
+    </li>
+    <li ngbNavItem>
+        <a ngbNavLink>Orders</a>
+        <ng-template ngbNavContent>
+            <table class="table table-dark table-sm small">
+                <thead>
+                    <tr>
+                        <th>Amount</th>
+                        <th>DEX/ETH</th>
+                        <th>Cancel</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="order of ($myOpenOrders | async); let i = index">
+                        <td class="text-{{($myOpenOrders | async)[i].orderTypeClass}}">
+                            {{ ($myOpenOrders | async)[i].tokenAmount }}</td>
+                        <td class="text-{{($myOpenOrders | async)[i].orderTypeClass}}">
+                            {{ ($myOpenOrders | async)[i].tokenPrice }}</td>
+                        <td class="text-muted">X</td>
+                    </tr>
+                </tbody>
+            </table>
+        </ng-template>
+    </li>
+</ul>
+<div class="card-body">
+    <div class="booyakacha" [ngbNavOutlet]="nav"></div>
+</div>

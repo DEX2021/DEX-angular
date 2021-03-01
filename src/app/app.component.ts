@@ -57,6 +57,8 @@ export class AppComponent implements OnInit {
     //await loadAllOrders(exchange, this.store);
     this.appLoaded = true;
 
+    await loadAllOrders(this.store, exchange);
+
   }
 
 }

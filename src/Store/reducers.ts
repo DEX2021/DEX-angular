@@ -1,7 +1,7 @@
 import { createReducer, on, combineReducers } from "@ngrx/store";
 // import { web3Loaded } from './action'
 import * as PostActions from './action'
-import { IWeb3, IToken, IExchange } from '../models/models'
+import { IWeb3, IToken, IExchange, IOrder, IOrders } from '../models/models'
 //import { Action } from '@ngrx/store'
 
 const initial = { connection: "hello" };
@@ -31,6 +31,21 @@ const defaultExchangeState: IExchange = {
   tokenDepositAmount: 0,
   tokenWithdrawAmount: 0
 
+}
+
+const defaultOrdersState: IOrders = {
+  cancelled: {
+    loaded: false,
+    data: []
+  },
+  filled: {
+    loaded: false,
+    data: []
+  },
+  orders: {
+    loaded: false,
+    data: []
+  }
 }
 
 const newState = (state, newData) => {
@@ -103,6 +118,19 @@ export function exchangeReducer(state: IExchange = defaultExchangeState, action:
   }
 }
 
+export function ordersReducer(state: IOrders = defaultOrdersState, action: Action) {
+  switch (action.type) {
+    case PostActions.ORDERS_LOADED:
+      return { ...state, orders: { loaded: true, data: action.payload } }
+    case PostActions.CANCELLED_ORDERS_LOADED:
+      return { ...state, cancelled: { loaded: true, data: action.payload } }
+    case PostActions.FILLED_ORDERS_LOADED:
+      return { ...state, filled: { loaded: true, data: action.payload } }
+    default:
+      return state;
+  }
+}
+
 
 
 // const web3 = createReducer(initial,
@@ -126,7 +154,8 @@ export function exchangeReducer(state: IExchange = defaultExchangeState, action:
 const rootReducer = combineReducers({
   web3Reducer,
   tokenReducer,
-  exchangeReducer
+  exchangeReducer,
+  ordersReducer
 });
 
 

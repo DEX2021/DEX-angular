@@ -15,6 +15,9 @@ export const ETHER_DEPOSIT_AMOUNT_CHANGED = '[Post] etherdepositamountchanged'
 export const ETHER_WITHDRAW_AMOUNT_CHANGED = '[Post] etherwithdrawamountchanged'
 export const TOKEN_DEPOSIT_AMOUNT_CHANGED = '[Post] tokendepositamountchanged'
 export const TOKEN_WITHDRAW_AMOUNT_CHANGED = '[Post] tokenwithdrawamountchanged'
+export const CANCELLED_ORDERS_LOADED = '[Post] cancelledOrdersloaded'
+export const FILLED_ORDERS_LOADED = '[Post] filledOrdersloaded'
+export const ORDERS_LOADED = '[Post] ordersloaded'
 // export function web3Loaded(connection) {
 //     return {
 //         type: "WEB3_LOADED",
@@ -105,6 +108,25 @@ export class tokenWithdrawAmountChanged implements Action {
 }
 
 
+export class filledOrdersLoaded implements Action {
+    readonly type = FILLED_ORDERS_LOADED
+
+    constructor(public payload: any) { }
+}
+
+export class cancelledOrdersLoaded implements Action {
+    readonly type = CANCELLED_ORDERS_LOADED
+
+    constructor(public payload: any) { }
+}
+
+export class ordersLoaded implements Action {
+    readonly type = ORDERS_LOADED
+
+    constructor(public payload: any) { }
+}
+
+
 // export const web3Loaded = createAction(
 //     'WEB3_LOADED',
 //     props<{ connection: any }>()
@@ -114,4 +136,4 @@ export class tokenWithdrawAmountChanged implements Action {
 export type All = web3Loaded | web3AccountLoaded |
     web3TokenLoaded | exchangeLoaded | etherBalanceLoaded | tokenBalanceLoaded | exchangeEtherBalanceLoaded |
     exchangeTokenBalanceLoaded | balancesLoaded | balancesLoading | etherDepositAmountChanged |
-    etherWithdrawAmountChanged | tokenDepositAmountChanged | tokenWithdrawAmountChanged
+    etherWithdrawAmountChanged | tokenDepositAmountChanged | tokenWithdrawAmountChanged | cancelledOrdersLoaded | filledOrdersLoaded | ordersLoaded

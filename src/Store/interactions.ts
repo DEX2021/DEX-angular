@@ -1,4 +1,5 @@
 // this file handles all the blockchain interactions
+import { Store } from "@ngrx/store";
 import Web3 from "web3"
 import * as Postactions from './action'
 const Token = require('../abis/Token.json')
@@ -61,10 +62,10 @@ export const loadExchange = async (web3, networkId, store) => {
     }
 }
 
-export const loadAllOrders = async (exchange, dispatch) => {
-    const cancelStream = await exchange.getPastEvents("Cancel", { fromBlock: 0, toBlock: "latest" })
-    console.log(cancelStream)
-}
+// export const loadAllOrders = async (exchange, dispatch) => {
+//     const cancelStream = await exchange.getPastEvents("Cancel", { fromBlock: 0, toBlock: "latest" })
+//     console.log(cancelStream)
+// }
 
 export const loadBalances = async (web3, exchange, token, account, store) => {
     if (typeof account !== 'undefined') {
@@ -94,6 +95,27 @@ export const loadBalances = async (web3, exchange, token, account, store) => {
 // fill out see deposits 40min
 export const subscribeToEvents = async () => {
 
+}
+
+export const loadAllOrders = async (store: Store, exchange) => {
+    let orderData = {
+        'Cancel': Postactions.cancelledOrdersLoaded,
+        'Trade': Postactions.filledOrdersLoaded,
+        'Order': Postactions.ordersLoaded
+    }
+
+    for (const [event, action] of Object.entries(orderData)) {
+        const stream = await exchange.getPastEvents(
+            event,
+            {
+                fromBlock: 0,
+                toBlock: 'latest'
+            }
+        );
+
+        const data = stream.map(e => e.returnValues);
+        store.dispatch(new action(data));
+    }
 }
 
 

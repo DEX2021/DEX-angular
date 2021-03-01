@@ -16,6 +16,9 @@ import { NavbarComponent } from './Components/navbar/navbar.component';
 import { ContentComponent } from './Components/content/content.component';
 import { DepositsComponent } from './Components/deposits/deposits.component';
 import { PriceChartComponent } from './Components/price-chart/price-chart.component';
+import { TradesComponent } from './Components/trades/trades.component';
+import { OrderBookComponent } from './Components/order-book/order-book.component';
+import { TransactionsComponent } from './Components/transactions/transactions.component';
 
 export const metaReducers: MetaReducer<IWeb3>[] = !environment.production ? [storeFreeze] : [];
 @NgModule({
@@ -25,6 +28,9 @@ export const metaReducers: MetaReducer<IWeb3>[] = !environment.production ? [sto
     ContentComponent,
     DepositsComponent,
     PriceChartComponent,
+    TradesComponent,
+    OrderBookComponent,
+    TransactionsComponent,
   ],
   imports: [
     BrowserModule,
