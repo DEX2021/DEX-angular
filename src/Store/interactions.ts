@@ -10,26 +10,6 @@ const Exchange = require('../abis/Exchange.json')
 
 export const ETHER_ADDRESS = "0x0000000000000000000000000000000000000000";
 
-
-
-
-// export const loadWeb3Better = async (store) => {
-//     if (typeof window.ethereum !== 'undefined') {
-//         const web3 = new Web3(window.ethereum)
-//         //store.dispatch(new Postactions.web3Loaded(web3))
-//         return web3
-//     } else {
-//         window.alert('Please install MetaMask')
-//         window.location.assign("https://metamask.io/")
-//     }
-// }
-
-export const loadWeb3 = async (store) => {
-    const web3 = new Web3(Web3.givenProvider || 'http:/localhost:7545')
-    //store.dispatch(new Postactions.web3Loaded(web3));
-    return web3;
-}
-
 export const loadAccount = async (web3, store) => {
     const accounts = await web3.eth.getAccounts()
     const account = await accounts[0]
@@ -84,11 +64,6 @@ export const loadAllOrders = async (store: Store, exchange) => {
         store.dispatch(new action(data));
     }
 }
-
-// export const loadAllOrders = async (exchange, dispatch) => {
-//     const cancelStream = await exchange.getPastEvents("Cancel", { fromBlock: 0, toBlock: "latest" })
-//     console.log(cancelStream)
-// }
 
 export const loadBalances = async (web3, exchange, token, account, store) => {
     if (typeof account !== 'undefined') {

@@ -52,7 +52,6 @@ const newState = (state, newData) => {
 }
 
 export function web3Reducer(state: IWeb3 = defaultWeb3State, action: Action) {
-  // console.log(action.type, state)
   switch (action.type) {
     case PostActions.WEB3_LOADED:
       //return { ...state, web3: action.payload }
@@ -70,7 +69,6 @@ export function web3Reducer(state: IWeb3 = defaultWeb3State, action: Action) {
 }
 
 export function tokenReducer(state: IToken = defaultTokenState, action: Action) {
-  // console.log(action.type, state)
   switch (action.type) {
     case PostActions.TOKEN_LOADED:
       return { ...state, loaded: true, token: action.payload }
@@ -83,7 +81,6 @@ export function tokenReducer(state: IToken = defaultTokenState, action: Action) 
 }
 
 export function exchangeReducer(state: IExchange = defaultExchangeState, action: Action) {
-  // console.log(action.type, state)
   switch (action.type) {
     case PostActions.EXCHANGE_LAODED:
       return { ...state, loaded: true, exchange: action.payload }
@@ -130,38 +127,11 @@ export function ordersReducer(state: IOrders = defaultOrdersState, action: Actio
   }
 }
 
-// const web3 = createReducer(initial,
-//   on(web3Loaded, (state, { connection }) => ({ ...state, web3: connection }))
-// );
-
-// const web3 = createReducer(initial,
-//   on(web3Loaded, (state, action) => {
-//     return { ...state, connection: action.connection }
-//   })
-
-// )
-
-// const web3 = (state, action) => {
-//   switch (action.type) {
-//     case "WEB3_LOADED":
-//       return { ...state, connection: action.connection }
-//   }
-// }
-
 const rootReducer = combineReducers({
   web3Reducer,
   tokenReducer,
   exchangeReducer,
   ordersReducer
 });
-
-
-// export function rootReducer(state: any, action: Action){
-//   switch(action.type){
-//     case 'WEB3_LOADED':
-//       return {...state, connection: state.connection}
-//   }
-// }
-
 
 export default rootReducer
