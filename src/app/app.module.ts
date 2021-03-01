@@ -20,6 +20,7 @@ import { PriceChartComponent } from './Components/price-chart/price-chart.compon
 import { TradesComponent } from './Components/trades/trades.component';
 import { OrderBookComponent } from './Components/order-book/order-book.component';
 import { TransactionsComponent } from './Components/transactions/transactions.component';
+import { NewOrderComponent } from './Components/new-order/new-order.component';
 
 export const metaReducers: MetaReducer<IWeb3>[] = !environment.production ? [storeFreeze] : [];
 @NgModule({
@@ -31,7 +32,8 @@ export const metaReducers: MetaReducer<IWeb3>[] = !environment.production ? [sto
     PriceChartComponent,
     TradesComponent,
     OrderBookComponent,
-    TransactionsComponent
+    TransactionsComponent,
+    NewOrderComponent
   ],
   imports: [
     BrowserModule,
