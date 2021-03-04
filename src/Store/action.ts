@@ -21,6 +21,10 @@ export const ORDERS_LOADED = '[Post] ordersloaded'
 export const BUY_ORDER_AMOUNT_CHANGED = '[Post] buyOrderAmountChanged'
 export const BUY_ORDER_PRICE_CHANGED = '[Post] buyOrderPriceChanged'
 export const BUY_ORDER_MAKING = '[Post] buyOrderMaking'
+export const ORDER_MADE = '[Post] orderMade'
+export const SELL_ORDER_AMOUNT_CHANGED = '[Post] sellOrderAmountChanged'
+export const SELL_ORDER_PRICE_CHANGED = '[Post] sellOrderPriceChanged'
+export const SELL_ORDER_MAKING = '[Post] sellOrderMaking'
 
 // export function web3Loaded(connection) {
 //     return {
@@ -147,6 +151,30 @@ export class buyOrderMaking implements Action {
     constructor(public payload: any) { }
 }
 
+export class orderMade implements Action {
+    readonly type = ORDER_MADE
+
+    constructor(public payload: any) { }
+}
+
+export class sellOrderAmountChanged implements Action {
+    readonly type = SELL_ORDER_AMOUNT_CHANGED
+
+    constructor(public payload: any) { }
+}
+
+export class sellOrderPriceChanged implements Action {
+    readonly type = SELL_ORDER_PRICE_CHANGED
+
+    constructor(public payload: any) { }
+}
+
+export class sellOrderMaking implements Action {
+    readonly type = SELL_ORDER_MAKING
+
+    constructor(public payload: any) { }
+}
+
 // export const web3Loaded = createAction(
 //     'WEB3_LOADED',
 //     props<{ connection: any }>()
@@ -157,4 +185,5 @@ export type All = web3Loaded | web3AccountLoaded |
     web3TokenLoaded | exchangeLoaded | etherBalanceLoaded | tokenBalanceLoaded | exchangeEtherBalanceLoaded |
     exchangeTokenBalanceLoaded | balancesLoaded | balancesLoading | etherDepositAmountChanged |
     etherWithdrawAmountChanged | tokenDepositAmountChanged | tokenWithdrawAmountChanged | cancelledOrdersLoaded |
-    filledOrdersLoaded | ordersLoaded | buyOrderAmountChanged | buyOrderPriceChanged | buyOrderMaking
+    filledOrdersLoaded | ordersLoaded | buyOrderAmountChanged | buyOrderPriceChanged | buyOrderMaking | orderMade |
+    sellOrderAmountChanged | sellOrderPriceChanged | sellOrderMaking
