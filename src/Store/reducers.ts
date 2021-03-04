@@ -1,5 +1,4 @@
 import { createReducer, on, combineReducers } from "@ngrx/store";
-// import { web3Loaded } from './action'
 import * as PostActions from './action'
 import { IWeb3, IToken, IExchange, IOrder, IOrders } from '../models/models'
 import { filledOrdersSelector } from "./selectors";
@@ -21,6 +20,7 @@ const defaultTokenState: IToken = {
   balance: 0,
   loaded: false
 }
+
 const defaultExchangeState: IExchange = {
   exchange: "nothing",
   etherBalance: 0,
@@ -35,29 +35,17 @@ const defaultExchangeState: IExchange = {
   orderFilling: false,
   orders: {
     cancelled: {
-      loaded: false, data: []
+      loaded: false,
+      data: []
     },
     filled: {
-      loaded: false, data: []
+      loaded: false,
+      data: []
     },
     orders: {
-      loaded: false, data: []
+      loaded: false,
+      data: []
     }
-  }
-}
-
-const defaultOrdersState: IOrders = {
-  cancelled: {
-    loaded: false,
-    data: []
-  },
-  filled: {
-    loaded: false,
-    data: []
-  },
-  orders: {
-    loaded: false,
-    data: []
   }
 }
 
@@ -66,7 +54,6 @@ const newState = (state, newData) => {
 }
 
 export function web3Reducer(state: IWeb3 = defaultWeb3State, action: Action) {
-  console.log(action.type, state)
   switch (action.type) {
     case PostActions.WEB3_LOADED:
       //return { ...state, web3: action.payload }
@@ -84,7 +71,6 @@ export function web3Reducer(state: IWeb3 = defaultWeb3State, action: Action) {
 }
 
 export function tokenReducer(state: IToken = defaultTokenState, action: Action) {
-  console.log(action.type, state)
   switch (action.type) {
     case PostActions.TOKEN_LOADED:
       return { ...state, loaded: true, token: action.payload }
@@ -125,6 +111,54 @@ export function exchangeReducer(state: IExchange = defaultExchangeState, action:
 
     case PostActions.TOKEN_WITHDRAW_AMOUNT_CHANGED:
       return { ...state, tokenWithdrawAmount: action.payload }
+    
+    case PostActions.ORDERS_LOADED:
+      return {
+        ...state,
+        orders: {
+          ...state.orders,
+          orders: {
+            ...state.orders.orders,
+            loaded: true,
+            data: [
+              ...state.orders.orders.data,
+              ...action.payload
+            ]
+          }
+        }
+      }
+    
+    case PostActions.FILLED_ORDERS_LOADED:
+      return {
+        ...state,
+        orders: {
+          ...state.orders,
+          filled: {
+            ...state.orders.filled,
+            loaded: true,
+            data: [
+              ...state.orders.filled.data,
+              ...action.payload
+            ]
+          }
+        }
+      }
+    
+    case PostActions.CANCELLED_ORDERS_LOADED:
+      return {
+        ...state,
+        orders: {
+          ...state.orders,
+          cancelled: {
+            ...state.orders.cancelled,
+            loaded: true,
+            data: [
+              ...state.orders.cancelled.data,
+              ...action.payload
+            ]
+          }
+        }
+      }
 
     case PostActions.ORDER_CANCELLING:
       return { ...state, orderCancelling: true }
@@ -166,53 +200,10 @@ export function exchangeReducer(state: IExchange = defaultExchangeState, action:
   }
 }
 
-export function ordersReducer(state: IOrders = defaultOrdersState, action: Action) {
-  switch (action.type) {
-    case PostActions.ORDERS_LOADED:
-      return { ...state, orders: { loaded: true, data: action.payload } }
-    case PostActions.CANCELLED_ORDERS_LOADED:
-      return { ...state, cancelled: { loaded: true, data: action.payload } }
-    case PostActions.FILLED_ORDERS_LOADED:
-      return { ...state, filled: { loaded: true, data: action.payload } }
-    default:
-      return state;
-  }
-}
-
-
-
-// const web3 = createReducer(initial,
-//   on(web3Loaded, (state, { connection }) => ({ ...state, web3: connection }))
-// );
-
-// const web3 = createReducer(initial,
-//   on(web3Loaded, (state, action) => {
-//     return { ...state, connection: action.connection }
-//   })
-
-// )
-
-// const web3 = (state, action) => {
-//   switch (action.type) {
-//     case "WEB3_LOADED":
-//       return { ...state, connection: action.connection }
-//   }
-// }
-
 const rootReducer = combineReducers({
   web3Reducer,
   tokenReducer,
-  exchangeReducer,
-  ordersReducer
+  exchangeReducer
 });
-
-
-// export function rootReducer(state: any, action: Action){
-//   switch(action.type){
-//     case 'WEB3_LOADED':
-//       return {...state, connection: state.connection}
-//   }
-// }
-
 
 export default rootReducer

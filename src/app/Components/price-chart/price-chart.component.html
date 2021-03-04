@@ -1,8 +1,8 @@
-<div class="card-header">
-    Card Title nr 2
-</div>
+<div class="card-header">Price Chart</div>
 <div class="card-body">
-    <div id="chart">
-
+    <div class="price">
+        <h4>DEX/ETH &nbsp;<span [innerHTML]="priceSymbol(lastPriceChange)"></span> {{ lastPrice }}</h4>
     </div>
+
+    <div id="chart"></div>
 </div>

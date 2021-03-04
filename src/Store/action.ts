@@ -22,6 +22,13 @@ export const ORDER_CANCELLING = '[Post] ordercanceling'
 export const ORDER_CANCELLED = '[Post] ordercancelled'
 export const ORDER_FILLING = '[Post] orderfilling'
 export const ORDER_FILLED = '[Post] orderfilled'
+export const BUY_ORDER_AMOUNT_CHANGED = '[Post] buyOrderAmountChanged'
+export const BUY_ORDER_PRICE_CHANGED = '[Post] buyOrderPriceChanged'
+export const BUY_ORDER_MAKING = '[Post] buyOrderMaking'
+export const ORDER_MADE = '[Post] orderMade'
+export const SELL_ORDER_AMOUNT_CHANGED = '[Post] sellOrderAmountChanged'
+export const SELL_ORDER_PRICE_CHANGED = '[Post] sellOrderPriceChanged'
+export const SELL_ORDER_MAKING = '[Post] sellOrderMaking'
 
 // export function web3Loaded(connection) {
 //     return {
@@ -54,8 +61,26 @@ export class exchangeLoaded implements Action {
     constructor(public payload: any) { }
 }
 
+export class ordersLoaded implements Action {
+    readonly type = ORDERS_LOADED
+
+    constructor(public payload: any) { }
+}
+
 export class etherBalanceLoaded implements Action {
     readonly type = ETHER_BALANCE_LOADED
+
+    constructor(public payload: any) { }
+}
+
+export class filledOrdersLoaded implements Action {
+    readonly type = FILLED_ORDERS_LOADED
+
+    constructor(public payload: any) { }
+}
+
+export class cancelledOrdersLoaded implements Action {
+    readonly type = CANCELLED_ORDERS_LOADED
 
     constructor(public payload: any) { }
 }
@@ -112,21 +137,44 @@ export class tokenWithdrawAmountChanged implements Action {
     constructor(public payload: any) { }
 }
 
-
-export class filledOrdersLoaded implements Action {
-    readonly type = FILLED_ORDERS_LOADED
-
-    constructor(public payload: any) { }
-}
-
-export class cancelledOrdersLoaded implements Action {
-    readonly type = CANCELLED_ORDERS_LOADED
+export class buyOrderAmountChanged implements Action {
+    readonly type = BUY_ORDER_AMOUNT_CHANGED
 
     constructor(public payload: any) { }
 }
 
-export class ordersLoaded implements Action {
-    readonly type = ORDERS_LOADED
+export class buyOrderPriceChanged implements Action {
+    readonly type = BUY_ORDER_PRICE_CHANGED
+
+    constructor(public payload: any) { }
+}
+
+export class buyOrderMaking implements Action {
+    readonly type = BUY_ORDER_MAKING
+
+    constructor(public payload: any) { }
+}
+
+export class orderMade implements Action {
+    readonly type = ORDER_MADE
+
+    constructor(public payload: any) { }
+}
+
+export class sellOrderAmountChanged implements Action {
+    readonly type = SELL_ORDER_AMOUNT_CHANGED
+
+    constructor(public payload: any) { }
+}
+
+export class sellOrderPriceChanged implements Action {
+    readonly type = SELL_ORDER_PRICE_CHANGED
+
+    constructor(public payload: any) { }
+}
+
+export class sellOrderMaking implements Action {
+    readonly type = SELL_ORDER_MAKING
 
     constructor(public payload: any) { }
 }
@@ -168,4 +216,5 @@ export type All = web3Loaded | web3AccountLoaded |
     web3TokenLoaded | exchangeLoaded | etherBalanceLoaded | tokenBalanceLoaded | exchangeEtherBalanceLoaded |
     exchangeTokenBalanceLoaded | balancesLoaded | balancesLoading | etherDepositAmountChanged |
     etherWithdrawAmountChanged | tokenDepositAmountChanged | tokenWithdrawAmountChanged | cancelledOrdersLoaded | filledOrdersLoaded | ordersLoaded |
-    orderCancelling | orderCancelled | orderFilling | orderFilled
+    orderCancelling | orderCancelled | orderFilling | orderFilled | buyOrderAmountChanged | buyOrderPriceChanged | buyOrderMaking | orderMade |
+    sellOrderAmountChanged | sellOrderPriceChanged | sellOrderMaking
