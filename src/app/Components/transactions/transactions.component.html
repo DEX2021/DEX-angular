@@ -12,7 +12,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let order of ($myFilledOrders | async); let i = index">
+                    <tr *ngFor="let order of ($myFilledOrders | async)">
                         <td class="text-muted">{{ order.formattedTimestamp }}</td>
                         <td class="text-{{order.orderTypeClass}}">{{ order.orderSign }}{{ order.tokenAmount }}</td>
                         <td class="text-{{order.orderTypeClass}}">{{ order.tokenPrice }}</td>
@@ -33,7 +33,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="order of ($myOpenOrders | async); let i = index">
+                    <tr *ngFor="let order of ($myOpenOrders | async)">
                         <td class="text-{{order.orderTypeClass}}">{{ order.tokenAmount }}</td>
                         <td class="text-{{order.orderTypeClass}}">{{ order.tokenPrice }}</td>
                         <td class="text-muted">X</td>
@@ -44,5 +44,5 @@
     </li>
 </ul>
 <div class="card-body">
-    <div [ngbNavOutlet]="nav"></div>
+    <div class="booyakacha" [ngbNavOutlet]="nav"></div>
 </div>

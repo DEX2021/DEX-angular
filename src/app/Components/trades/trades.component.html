@@ -9,7 +9,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let order of ($filledOrders | async).data; let i = index">
+        <tr *ngFor="let order of ($filledOrders | async).data">
           <td class="text-muted">{{ order.formattedTimestamp }}</td>
           <td>{{ order.tokenAmount }}</td>
           <td class="text-{{order.tokenPriceClass}}">{{ order.tokenPrice }}</td>
