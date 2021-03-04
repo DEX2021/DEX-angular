@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterContentInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { fetchReduxData } from 'src/Helpers/redux.helpers';
 import { AppState } from 'src/models/models';
 import { loadBalances, loadWeb3, depositEther, withdrawEther, depositToken, withdrawToken } from 'src/Store/interactions';
 import { accountSelector, balancesLoadingSelector, etherBalanceSelector, exchangeEtherBalanceSelector, exchangeSelector, exchangeTokenBalanceSelector, tokenBalanceSelector, tokenSelector } from 'src/Store/selectors';
@@ -20,10 +21,6 @@ export class DepositsComponent implements OnInit {
   $exchangeEtherBalance: Observable<AppState>
   $exchangeTokenBalance: Observable<AppState>
   $balancesLoading: Observable<Boolean>
-
-  withdrawAmount: number = 0;
-
-
 
   constructor(private store: Store<AppState>) {
     this.$exchange = this.store.pipe(select(exchangeSelector))
@@ -45,42 +42,23 @@ export class DepositsComponent implements OnInit {
   }
 
   async loadBlockchainData() {
-    var exchange, token, account, etherBalance;
-    await this.$exchange.subscribe(result => exchange = result)
-    await this.$token.subscribe(result => token = result)
-    await this.$account.subscribe(result => account = result)
-
-    // this.$etherBalance.subscribe(result => etherBalance = result)
-    // this.$tokenBalance.subscribe(result => console.log("this is the deposits tokenBalance:", result))
-    // this.$exchangeEtherBalance.subscribe(result => console.log("this is the deposits exchangeEtherBalance:", result))
-    // this.$exchangeTokenBalance.subscribe(result => console.log("this is the deposits accexchangeTokenBalanceunt:", result))
-
-    console.log("this is deposit exchange:", exchange)
-    console.log("this is deposit token:", token)
-
-    console.log("this is deposit account:", account)
-    //console.log("this is deposit etherBalance:", etherBalance)
-
-    console.log("this is the deposits web3:", this.$web3)
-
+    var exchange = fetchReduxData(this.store, exchangeSelector)
+    var token = fetchReduxData(this.store, tokenSelector)
+    var account = fetchReduxData(this.store, accountSelector)
 
     await loadBalances(this.$web3, exchange, token, account, this.store)
-
-
   }
 
   async etherDepositAmountChanged(etherAmount) {
-    var exchange, account
-    this.$exchange.subscribe(result => exchange = result)
-    this.$account.subscribe(result => account = result)
+    var exchange = fetchReduxData(this.store, exchangeSelector)
+    var account = fetchReduxData(this.store, accountSelector)
 
     await depositEther(this.store, exchange, this.$web3, etherAmount, account)
   }
 
   async etherWithdrawAmountChanged(etherAmount) {
-    var exchange, account
-    this.$exchange.subscribe(result => exchange = result)
-    this.$account.subscribe(result => account = result)
+    var exchange = fetchReduxData(this.store, exchangeSelector)
+    var account = fetchReduxData(this.store, accountSelector)
 
 
     await withdrawEther(this.store, exchange, this.$web3, etherAmount, account)
@@ -88,40 +66,18 @@ export class DepositsComponent implements OnInit {
   }
 
   async TokenDepositAmountChanged(tokenAmount) {
-    var exchange, account, token
-    this.$exchange.subscribe(result => exchange = result)
-    this.$account.subscribe(result => account = result)
-    this.$token.subscribe(result => token = result)
-
+    var exchange = fetchReduxData(this.store, exchangeSelector)
+    var token = fetchReduxData(this.store, tokenSelector)
+    var account = fetchReduxData(this.store, accountSelector)
 
     await depositToken(this.store, exchange, this.$web3, token, tokenAmount, account)
   }
 
   async TokenWithdrawAmountChanged(tokenAmount) {
-    var exchange, account, token
-    this.$exchange.subscribe(result => exchange = result)
-    this.$account.subscribe(result => account = result)
-    this.$token.subscribe(result => token = result)
-
+    var exchange = fetchReduxData(this.store, exchangeSelector)
+    var token = fetchReduxData(this.store, tokenSelector)
+    var account = fetchReduxData(this.store, accountSelector)
 
     await withdrawToken(this.store, exchange, this.$web3, token, tokenAmount, account)
   }
-
-
-
-  async loadotherData() {
-
-
-    var etherBalance, tokenBalance, exchangeEtherBalance, exchangeTokenBalance;
-    this.$tokenBalance.subscribe(result => tokenBalance = result)
-    this.$exchangeEtherBalance.subscribe(result => exchangeEtherBalance = result)
-    this.$exchangeTokenBalance.subscribe(result => exchangeTokenBalance = result)
-    this.$etherBalance.subscribe(result => etherBalance = result)
-
-    console.log("this is deposit tokenBalance:", tokenBalance)
-    console.log("this is deposit exchangeEtherBalance:", exchangeEtherBalance)
-    console.log("this is deposit account:", exchangeTokenBalance)
-    console.log("this is the ether balance: ", etherBalance)
-  }
-
 }

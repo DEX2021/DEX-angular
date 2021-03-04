@@ -1,3 +1,5 @@
+import { IWeb3, IToken, IExchange, IOrders } from "src/models/models";
+
 var web3 = require('web3')
 
 export const ETHER_ADDRESS = "0x0000000000000000000000000000000000000000";
@@ -47,3 +49,57 @@ export const ether = (wei) => {
 }
 
 export const tokens2 = ether;
+
+
+
+// initial state for reducers
+export const defaultWeb3State: IWeb3 = {
+  web3Reducer: 'hello',
+  account: "null",
+  balance: 0
+}
+
+export const defaultTokenState: IToken = {
+  token: "nothing",
+  balance: 0,
+  loaded: false
+}
+export const defaultExchangeState: IExchange = {
+  exchange: "nothing",
+  etherBalance: 0,
+  tokenBalance: 0,
+  loaded: false,
+  balancesLoading: true,
+  etherDepositAmountChanged: 0,
+  etherWithdrawAmountChanged: 0,
+  tokenDepositAmount: 0,
+  tokenWithdrawAmount: 0,
+  orderCancelling: false,
+  orderFilling: false,
+  orders: {
+    cancelled: {
+      loaded: false, data: []
+    },
+    filled: {
+      loaded: false, data: []
+    },
+    orders: {
+      loaded: false, data: []
+    }
+  }
+}
+
+export const defaultOrdersState: IOrders = {
+  cancelled: {
+    loaded: false,
+    data: []
+  },
+  filled: {
+    loaded: false,
+    data: []
+  },
+  orders: {
+    loaded: false,
+    data: []
+  }
+}

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { fetchReduxData } from 'src/Helpers/redux.helpers';
 import { cancelOrder } from 'src/Store/interactions';
-import { convertToObject } from 'typescript';
-import { AppState, IOrder } from '../../../models/models';
+import { AppState } from '../../../models/models';
 import { accountSelector, exchangeSelector, myFilledOrderSelector, myOpenOrderSelector } from '../../../Store/selectors';
 
 @Component({
@@ -14,28 +14,19 @@ import { accountSelector, exchangeSelector, myFilledOrderSelector, myOpenOrderSe
 export class TransactionsComponent implements OnInit {
   $myFilledOrders: Observable<any>;
   $myOpenOrders: Observable<any>;
-  $exchange: Observable<AppState>
-  $account: Observable<AppState>
 
   constructor(private store: Store<AppState>) {
     this.$myFilledOrders = store.pipe(select(myFilledOrderSelector));
     this.$myOpenOrders = store.pipe(select(myOpenOrderSelector));
-
-    this.$myFilledOrders.subscribe(d => console.log("My Filled Orders", d))
-    this.$myOpenOrders.subscribe(d => console.log("My Open Orders", d))
   }
 
   ngOnInit(): void {
   }
 
   async CancelOrder(order) {
-    console.log("this is working", order)
-    this.$exchange = this.store.pipe(select(exchangeSelector))
-    this.$account = this.store.pipe(select(accountSelector))
+    var exchange = fetchReduxData(this.store, exchangeSelector)
+    var account = fetchReduxData(this.store, accountSelector)
 
-    var exchange, account
-    await this.$exchange.subscribe(result => exchange = result)
-    await this.$account.subscribe(result => account = result)
     cancelOrder(this.store, exchange, order, account)
   }
 

@@ -1,4 +1,4 @@
-import { createAction, props, Action } from '@ngrx/store';
+import { Action } from '@ngrx/store';
 
 
 export const WEB3_LOADED = '[Post] web3'
@@ -22,13 +22,6 @@ export const ORDER_CANCELLING = '[Post] ordercanceling'
 export const ORDER_CANCELLED = '[Post] ordercancelled'
 export const ORDER_FILLING = '[Post] orderfilling'
 export const ORDER_FILLED = '[Post] orderfilled'
-
-// export function web3Loaded(connection) {
-//     return {
-//         type: "WEB3_LOADED",
-//         connection
-//     }
-// }
 
 export class web3Loaded implements Action {
     readonly type = WEB3_LOADED
@@ -156,14 +149,6 @@ export class orderFilled implements Action {
     constructor(public payload: any) { }
 }
 
-
-
-// export const web3Loaded = createAction(
-//     'WEB3_LOADED',
-//     props<{ connection: any }>()
-// );
-
-//export const web3Loaded2 = createAction('[web3] web3');
 export type All = web3Loaded | web3AccountLoaded |
     web3TokenLoaded | exchangeLoaded | etherBalanceLoaded | tokenBalanceLoaded | exchangeEtherBalanceLoaded |
     exchangeTokenBalanceLoaded | balancesLoaded | balancesLoading | etherDepositAmountChanged |

@@ -1,65 +1,9 @@
-import { createReducer, on, combineReducers } from "@ngrx/store";
-// import { web3Loaded } from './action'
+import { combineReducers } from "@ngrx/store";
 import * as PostActions from './action'
 import { IWeb3, IToken, IExchange, IOrder, IOrders } from '../models/models'
-import { filledOrdersSelector } from "./selectors";
-//import { Action } from '@ngrx/store'
-
-const initial = { connection: "hello" };
-
+import { defaultWeb3State, defaultTokenState, defaultExchangeState, defaultOrdersState } from "./helpers";
 
 export type Action = PostActions.All
-
-const defaultWeb3State: IWeb3 = {
-  web3Reducer: 'hello',
-  account: "null",
-  balance: 0
-}
-
-const defaultTokenState: IToken = {
-  token: "nothing",
-  balance: 0,
-  loaded: false
-}
-const defaultExchangeState: IExchange = {
-  exchange: "nothing",
-  etherBalance: 0,
-  tokenBalance: 0,
-  loaded: false,
-  balancesLoading: true,
-  etherDepositAmountChanged: 0,
-  etherWithdrawAmountChanged: 0,
-  tokenDepositAmount: 0,
-  tokenWithdrawAmount: 0,
-  orderCancelling: false,
-  orderFilling: false,
-  orders: {
-    cancelled: {
-      loaded: false, data: []
-    },
-    filled: {
-      loaded: false, data: []
-    },
-    orders: {
-      loaded: false, data: []
-    }
-  }
-}
-
-const defaultOrdersState: IOrders = {
-  cancelled: {
-    loaded: false,
-    data: []
-  },
-  filled: {
-    loaded: false,
-    data: []
-  },
-  orders: {
-    loaded: false,
-    data: []
-  }
-}
 
 const newState = (state, newData) => {
   return Object.assign({}, state, newData)
@@ -179,40 +123,11 @@ export function ordersReducer(state: IOrders = defaultOrdersState, action: Actio
   }
 }
 
-
-
-// const web3 = createReducer(initial,
-//   on(web3Loaded, (state, { connection }) => ({ ...state, web3: connection }))
-// );
-
-// const web3 = createReducer(initial,
-//   on(web3Loaded, (state, action) => {
-//     return { ...state, connection: action.connection }
-//   })
-
-// )
-
-// const web3 = (state, action) => {
-//   switch (action.type) {
-//     case "WEB3_LOADED":
-//       return { ...state, connection: action.connection }
-//   }
-// }
-
 const rootReducer = combineReducers({
   web3Reducer,
   tokenReducer,
   exchangeReducer,
   ordersReducer
 });
-
-
-// export function rootReducer(state: any, action: Action){
-//   switch(action.type){
-//     case 'WEB3_LOADED':
-//       return {...state, connection: state.connection}
-//   }
-// }
-
 
 export default rootReducer

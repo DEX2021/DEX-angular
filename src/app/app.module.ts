@@ -6,12 +6,9 @@ import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
-import { ActionReducerMap, MetaReducer, StoreModule } from '@ngrx/store'; // NgRx Store
+import { StoreModule } from '@ngrx/store'; // NgRx Store
 import { StoreDevtoolsModule } from '@ngrx/store-devtools'; // NgRx Store Developer Tools
 import rootReducer from '../Store/reducers'; // TODO: Remove the test reducer
-import { environment } from 'src/environments/environment';
-import { storeFreeze } from 'ngrx-store-freeze'
-import { IWeb3 } from 'src/models/models';
 import { NavbarComponent } from './Components/navbar/navbar.component';
 import { ContentComponent } from './Components/content/content.component';
 import { DepositsComponent } from './Components/deposits/deposits.component';
@@ -19,8 +16,6 @@ import { PriceChartComponent } from './Components/price-chart/price-chart.compon
 import { TradesComponent } from './Components/trades/trades.component';
 import { OrderBookComponent } from './Components/order-book/order-book.component';
 import { TransactionsComponent } from './Components/transactions/transactions.component';
-
-export const metaReducers: MetaReducer<IWeb3>[] = !environment.production ? [storeFreeze] : [];
 @NgModule({
   declarations: [
     AppComponent,

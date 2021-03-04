@@ -1,11 +1,9 @@
 import { get } from 'lodash'
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { AppState, IWeb3 } from '../models/models'
-import { ether, ETHER_ADDRESS, formatBalance, formatBalanceToEther, GREEN, RED, tokens2 } from './helpers'
+import { AppState } from '../models/models'
+import { ether, ETHER_ADDRESS, formatBalance, GREEN, RED, tokens2 } from './helpers'
 import * as moment from 'moment';
 import lodash from 'lodash';
-
-
 
 // const account = createFeatureSelector<AppState>('root')
 
@@ -52,8 +50,6 @@ export const contractsLoadedSelector = createSelector(
     exchangeLoaded,
     (tl, el) => (tl && el)
 )
-
-
 
 const balancesLoading = state => get(state, 'root', true)
 export const balancesLoadingSelector = createSelector(
@@ -343,9 +339,6 @@ export const myOpenOrderSelector = createSelector(
         return orders;
     }
 )
-
-
-
 
 const orderCancelling = state => get(state, 'root', false)
 export const orderCancellingSelector = createSelector(
