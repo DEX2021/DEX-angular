@@ -1,8 +1,6 @@
 import { createReducer, on, combineReducers } from "@ngrx/store";
-// import { web3Loaded } from './action'
 import * as PostActions from './action'
 import { IWeb3, IToken, IExchange, IOrder, IOrders } from '../models/models'
-//import { Action } from '@ngrx/store'
 
 const initial = { connection: "hello" };
 
@@ -29,21 +27,20 @@ const defaultExchangeState: IExchange = {
   etherDepositAmountChanged: 0,
   etherWithdrawAmountChanged: 0,
   tokenDepositAmount: 0,
-  tokenWithdrawAmount: 0
-
-}
-const defaultOrdersState: IOrders = {
-  cancelled: {
-    loaded: false,
-    data: []
-  },
-  filled: {
-    loaded: false,
-    data: []
-  },
+  tokenWithdrawAmount: 0,
   orders: {
-    loaded: false,
-    data: []
+    cancelled: {
+      loaded: false,
+      data: []
+    },
+    filled: {
+      loaded: false,
+      data: []
+    },
+    orders: {
+      loaded: false,
+      data: []
+    }
   }
 }
 
@@ -108,30 +105,65 @@ export function exchangeReducer(state: IExchange = defaultExchangeState, action:
 
     case PostActions.TOKEN_WITHDRAW_AMOUNT_CHANGED:
       return { ...state, tokenWithdrawAmount: action.payload }
-
-    default:
-      return state;
-  }
-}
-
-export function ordersReducer(state: IOrders = defaultOrdersState, action: Action) {
-  switch(action.type) {
+    
     case PostActions.ORDERS_LOADED:
-      return { ...state, orders: { loaded: true, data: action.payload} }
-    case PostActions.CANCELLED_ORDERS_LOADED:
-      return { ...state, cancelled: { loaded: true, data: action.payload} }
+      return {
+        ...state,
+        orders: {
+          ...state.orders,
+          orders: {
+            ...state.orders.orders,
+            loaded: true,
+            data: [
+              ...state.orders.orders.data,
+              ...action.payload
+            ]
+          }
+        }
+      }
+    
     case PostActions.FILLED_ORDERS_LOADED:
-      return { ...state, filled: { loaded: true, data: action.payload} }
+      return {
+        ...state,
+        orders: {
+          ...state.orders,
+          filled: {
+            ...state.orders.filled,
+            loaded: true,
+            data: [
+              ...state.orders.filled.data,
+              ...action.payload
+            ]
+          }
+        }
+      }
+    
+    case PostActions.CANCELLED_ORDERS_LOADED:
+      return {
+        ...state,
+        orders: {
+          ...state.orders,
+          cancelled: {
+            ...state.orders.cancelled,
+            loaded: true,
+            data: [
+              ...state.orders.cancelled.data,
+              ...action.payload
+            ]
+          }
+        }
+      }
+
     default:
       return state;
   }
 }
+
 
 const rootReducer = combineReducers({
   web3Reducer,
   tokenReducer,
-  exchangeReducer,
-  ordersReducer
+  exchangeReducer
 });
 
 export default rootReducer

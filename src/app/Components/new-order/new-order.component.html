@@ -1,6 +1,20 @@
-<div class="card-header">
-    Card Title
-</div>
+<div class="card-header">New Order</div>
+<ul ngbNav #nav="ngbNav" class="nav-tabs">
+    <li ngbNavItem>
+        <a ngbNavLink>Buy</a>
+        <ng-template ngbNavContent>
+            <form>
+                <input #depositEther type="text" placeholder="Enter ETH Deposit" />
+                <button class="button btnStyle is-rounded"><strong>Buy Order</strong></button>
+            </form>
+        </ng-template>
+    </li>
+    <li ngbNavItem>
+        <a ngbNavLink>Sell</a>
+        <ng-template ngbNavContent>
+        </ng-template>
+    </li>
+</ul>
 <div class="card-body">
-    
+    <div class="neworder" [ngbNavOutlet]="nav"></div>
 </div>

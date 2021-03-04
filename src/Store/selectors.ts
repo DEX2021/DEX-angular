@@ -23,13 +23,13 @@ export const accountSelector = createSelector(
 
 export const cancelledOrdersSelector = createSelector(
     rootReducer,
-    (state: AppState) => state.ordersReducer.cancelled
+    (state: AppState) => state.exchangeReducer.orders.cancelled
 )
 
 export const filledOrdersSelector = createSelector(
     root,
     (state: AppState) => {
-        let orders = state.ordersReducer.filled;
+        let orders = state.exchangeReducer.orders.filled;
 
         // Sort orders ascending by date for price comparison
         orders.data = orders.data.sort((a, b) => a.timestamp - b.timestamp)
@@ -44,7 +44,7 @@ export const filledOrdersSelector = createSelector(
 
 export const ordersSelector = createSelector(
     rootReducer,
-    (state: AppState) => state.ordersReducer.orders
+    (state: AppState) => state.exchangeReducer.orders.orders
 )
 
 const openOrders = state => {

@@ -3,8 +3,7 @@
 export interface AppState {
     web3Reducer: IWeb3
     tokenReducer: IToken,
-    exchangeReducer: IExchange,
-    ordersReducer: IOrders,
+    exchangeReducer: IExchange
 }
 
 export interface IWeb3 {
@@ -27,7 +26,8 @@ export interface IExchange {
     etherDepositAmountChanged: number,
     etherWithdrawAmountChanged: number,
     tokenDepositAmount: number,
-    tokenWithdrawAmount: number
+    tokenWithdrawAmount: number,
+    orders: IOrders
 }
 
 export interface IOrder {
