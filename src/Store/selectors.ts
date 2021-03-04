@@ -209,7 +209,7 @@ const decorateOrderBookOrder = (order) => {
         ...order,
         orderType: orderType,
         orderTypeClass: (orderType === 'buy' ? GREEN : RED),
-        orderFillClass: (orderType === 'buy' ? 'sell' : 'buy')
+        orderFillAction: (orderType === 'buy' ? 'sell' : 'buy')
     })
 }
 const decorateOrderBookOrders = (order) => {
@@ -342,4 +342,19 @@ export const myOpenOrderSelector = createSelector(
 
         return orders;
     }
+)
+
+
+
+
+const orderCancelling = state => get(state, 'root', false)
+export const orderCancellingSelector = createSelector(
+    orderCancelling,
+    (state: AppState) => state.exchangeReducer.orderCancelling
+)
+
+const orderFilling = state => get(state, 'root', false)
+export const orderFillingSelector = createSelector(
+    orderFilling,
+    (state: AppState) => state.exchangeReducer.orderFilling
 )

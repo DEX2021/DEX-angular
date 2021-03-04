@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { cancelOrder } from 'src/Store/interactions';
+import { convertToObject } from 'typescript';
 import { AppState, IOrder } from '../../../models/models';
-import { myFilledOrderSelector, myOpenOrderSelector } from '../../../Store/selectors';
+import { accountSelector, exchangeSelector, myFilledOrderSelector, myOpenOrderSelector } from '../../../Store/selectors';
 
 @Component({
   selector: '[app-transactions]',
@@ -12,6 +14,8 @@ import { myFilledOrderSelector, myOpenOrderSelector } from '../../../Store/selec
 export class TransactionsComponent implements OnInit {
   $myFilledOrders: Observable<any>;
   $myOpenOrders: Observable<any>;
+  $exchange: Observable<AppState>
+  $account: Observable<AppState>
 
   constructor(private store: Store<AppState>) {
     this.$myFilledOrders = store.pipe(select(myFilledOrderSelector));
@@ -22,6 +26,17 @@ export class TransactionsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  async CancelOrder(order) {
+    console.log("this is working", order)
+    this.$exchange = this.store.pipe(select(exchangeSelector))
+    this.$account = this.store.pipe(select(accountSelector))
+
+    var exchange, account
+    await this.$exchange.subscribe(result => exchange = result)
+    await this.$account.subscribe(result => account = result)
+    cancelOrder(this.store, exchange, order, account)
   }
 
 }

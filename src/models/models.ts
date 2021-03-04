@@ -27,7 +27,10 @@ export interface IExchange {
     etherDepositAmountChanged: number,
     etherWithdrawAmountChanged: number,
     tokenDepositAmount: number,
-    tokenWithdrawAmount: number
+    tokenWithdrawAmount: number,
+    orderCancelling: boolean,
+    orderFilling: boolean,
+    orders: IOrders,
 }
 
 export interface IOrder {

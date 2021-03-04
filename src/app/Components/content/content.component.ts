@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/models/models';
+import { loadExchange, loadWeb3, subscribeToEvents } from 'src/Store/interactions';
 
 @Component({
   selector: 'app-content',
@@ -7,9 +10,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ContentComponent implements OnInit {
 
-  constructor() { }
+  constructor(private store: Store<AppState>) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    var web3 = await loadWeb3(this.store)
+    const networkId = await web3.eth.net.getId();
+
+
+    const exchange = await loadExchange(web3, networkId, this.store)
+    if (!exchange) {
+      window.alert("Exchange smart contract not detected on current network. Please select another netowrk with metamask")
+    }
+    await subscribeToEvents(this.store, exchange)
   }
 
 }

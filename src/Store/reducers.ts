@@ -2,6 +2,7 @@ import { createReducer, on, combineReducers } from "@ngrx/store";
 // import { web3Loaded } from './action'
 import * as PostActions from './action'
 import { IWeb3, IToken, IExchange, IOrder, IOrders } from '../models/models'
+import { filledOrdersSelector } from "./selectors";
 //import { Action } from '@ngrx/store'
 
 const initial = { connection: "hello" };
@@ -29,8 +30,20 @@ const defaultExchangeState: IExchange = {
   etherDepositAmountChanged: 0,
   etherWithdrawAmountChanged: 0,
   tokenDepositAmount: 0,
-  tokenWithdrawAmount: 0
-
+  tokenWithdrawAmount: 0,
+  orderCancelling: false,
+  orderFilling: false,
+  orders: {
+    cancelled: {
+      loaded: false, data: []
+    },
+    filled: {
+      loaded: false, data: []
+    },
+    orders: {
+      loaded: false, data: []
+    }
+  }
 }
 
 const defaultOrdersState: IOrders = {
@@ -84,7 +97,7 @@ export function tokenReducer(state: IToken = defaultTokenState, action: Action) 
 }
 
 export function exchangeReducer(state: IExchange = defaultExchangeState, action: Action) {
-  console.log(action.type, state)
+  let index, data
   switch (action.type) {
     case PostActions.EXCHANGE_LAODED:
       return { ...state, loaded: true, exchange: action.payload }
@@ -112,6 +125,41 @@ export function exchangeReducer(state: IExchange = defaultExchangeState, action:
 
     case PostActions.TOKEN_WITHDRAW_AMOUNT_CHANGED:
       return { ...state, tokenWithdrawAmount: action.payload }
+
+    case PostActions.ORDER_CANCELLING:
+      return { ...state, orderCancelling: true }
+
+    case PostActions.ORDER_CANCELLED:
+      return {
+        ...state, orderCancelling: false,
+        orders: {
+          ...state.orders,
+          cancelled: {
+            ...state.orders.cancelled,
+            data: [...state.orders.cancelled.data, action.payload]
+          }
+        }
+      }
+
+    case PostActions.ORDER_FILLING:
+      return { ...state, orderFilling: true }
+
+    case PostActions.ORDER_FILLED:
+
+      index = state.orders.filled.data.findIndex(order => order.id === action.payload.id)
+      if (index === -1) {
+        data = [...state.orders.filled.data, action.payload]
+      } else {
+        data = state.orders.filled.data
+      }
+
+      return {
+        ...state, orderFilling: false, orders: {
+          ...state.orders, filled: {
+            ...state.orders.filled, data
+          }
+        }
+      }
 
     default:
       return state;

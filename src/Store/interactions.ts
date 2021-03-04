@@ -92,11 +92,6 @@ export const loadBalances = async (web3, exchange, token, account, store) => {
     }
 }
 
-// fill out see deposits 40min
-export const subscribeToEvents = async () => {
-
-}
-
 export const loadAllOrders = async (store: Store, exchange) => {
     let orderData = {
         'Cancel': Postactions.cancelledOrdersLoaded,
@@ -166,4 +161,37 @@ export const withdrawToken = (store, exchange, web3, token, amount, account) => 
             console.error(error)
             window.alert(`There was an error!`)
         })
+}
+
+export const cancelOrder = (store, exchange, order, account) => {
+    exchange.methods.cancelOrder(order.id).send({ from: account })
+        .on('transactionHash', (hash) => {
+            store.dispatch(new Postactions.orderCancelling)
+        })
+        .on('error', (error) => {
+            console.log(error)
+            window.alert("There was an error")
+        })
+}
+
+export const fillOrder = (store, exchange, order, account) => {
+    exchange.methods.fillOrder(order.id).send({ from: account })
+        .on('transactionHash', (hash) => {
+            store.dispatch(new Postactions.orderFilling)
+        })
+        .on('error', (error) => {
+            console.log(error)
+            window.alert("There was an error")
+        })
+}
+
+// see deposits 40 min mark to complete
+export const subscribeToEvents = async (store, exchange) => {
+    exchange.events.Cancel({}, (error, event) => {
+        store.dispatch(new Postactions.orderCancelled(event.returnValues))
+    })
+
+    exchange.events.Trade({}, (error, event) => {
+        store.dispatch(new Postactions.orderFilled(event.returnValues))
+    })
 }

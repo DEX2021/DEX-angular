@@ -4,9 +4,10 @@
 <div class="card-body order-book">
     <table *ngIf="($orders | async).loaded === true" class="table table-dark table-sm small">
         <tbody>
-            <tr *ngFor="order of ($orders | async).data.sell; let i = index">
+            <tr *ngFor="let order of ($orders | async).data.sell; let i = index" (click)="fillingOrder(order)">
                 <td>{{ ($orders | async).data.sell[i].tokenAmount }}</td>
-                <td class="text-{{($orders | async).data.sell[i].orderTypeClass}}">
+                <td class="text-{{($orders | async).data.sell[i].orderTypeClass}}"
+                    ngbTooltip="Click here to {{($orders | async).data.sell[i].orderFillAction}}">
                     {{ ($orders | async).data.sell[i].tokenPrice }}</td>
                 <td>{{ ($orders | async).data.sell[i].etherAmount }}</td>
             </tr>
@@ -15,12 +16,15 @@
                 <th scope="col">DEX/ETH</th>
                 <th scope="col">ETH</th>
             </tr>
-            <tr *ngFor="order of ($orders | async).data.buy; let i = index">
+
+            <tr *ngFor="let order of ($orders | async).data.buy; let i = index" (click)="fillingOrder(order)">
                 <td>{{ ($orders | async).data.buy[i].tokenAmount }}</td>
-                <td class="text-{{($orders | async).data.buy[i].orderTypeClass}}">
+                <td class="text-{{($orders | async).data.buy[i].orderTypeClass}}"
+                    ngbTooltip="Click here to {{($orders | async).data.buy[i].orderFillAction}}">
                     {{ ($orders | async).data.buy[i].tokenPrice }}</td>
                 <td>{{ ($orders | async).data.buy[i].etherAmount }}</td>
             </tr>
+            <tr>
         </tbody>
     </table>
 </div>
