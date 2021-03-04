@@ -121,7 +121,7 @@ export function exchangeReducer(state: IExchange = defaultExchangeState, action:
             ...state.orders.orders,
             loaded: true,
             data: [
-              ...state.orders.orders.data,
+              //...state.orders.orders.data,
               ...action.payload
             ]
           }
@@ -137,7 +137,7 @@ export function exchangeReducer(state: IExchange = defaultExchangeState, action:
             ...state.orders.filled,
             loaded: true,
             data: [
-              ...state.orders.filled.data,
+              //...state.orders.filled.data,
               ...action.payload
             ]
           }
@@ -153,7 +153,7 @@ export function exchangeReducer(state: IExchange = defaultExchangeState, action:
             ...state.orders.cancelled,
             loaded: true,
             data: [
-              ...state.orders.cancelled.data,
+              //...state.orders.cancelled.data,
               ...action.payload
             ]
           }

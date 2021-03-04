@@ -1,7 +1,7 @@
 import { get, reject, groupBy, maxBy, minBy } from 'lodash'
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { AppState, IWeb3 } from '../models/models'
-import { ether, ETHER_ADDRESS, formatBalance, formatBalanceToEther, GREEN, RED, tokens } from './helpers'
+import { ether, ETHER_ADDRESS, formatBalance, formatBalanceToEther, GREEN, RED, tokens2 } from './helpers'
 import * as moment from 'moment';
 import lodash from 'lodash';
 
@@ -125,7 +125,7 @@ const decorateOrder = (order) => {
     let decoratedOrder = {
         ...order,
         etherAmount: ether(etherAmount),
-        tokenAmount: tokens(tokenAmount),
+        tokenAmount: tokens2(tokenAmount),
         tokenPrice,
         formattedTimestamp: moment.unix(order.timestamp).format('h:mm:ss a M/D')
     }
