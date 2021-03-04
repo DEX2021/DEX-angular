@@ -12,10 +12,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let order of ($myFilledOrders | async)">
+                    <tr *ngFor="let order of ($myFilledOrders | async).data; let i = index">
                         <td class="text-muted">{{ order.formattedTimestamp }}</td>
-                        <td class="text-{{order.orderTypeClass}}">{{ order.orderSign }}{{ order.tokenAmount }}</td>
-                        <td class="text-{{order.orderTypeClass}}">{{ order.tokenPrice }}</td>
+                        <td class="text-{{order.orderTypeClass}}">
+                            {{ order.orderSign }}{{ order.tokenAmount }}
+                        </td>
+                        <td class="text-{{order.orderTypeClass}}">
+                            {{ order.tokenPrice }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -33,10 +36,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let order of ($myOpenOrders | async)">
-                        <td class="text-{{order.orderTypeClass}}">{{ order.tokenAmount }}</td>
-                        <td class="text-{{order.orderTypeClass}}">{{ order.tokenPrice }}</td>
-                        <td class="text-muted">X</td>
+                    <tr *ngFor="let order of ($myOpenOrders | async).data; let i = index">
+                        <td class="text-{{order.orderTypeClass}}">
+                            {{ order.tokenAmount }}</td>
+                        <td class="text-{{order.orderTypeClass}}">
+                            {{ order.tokenPrice }}</td>
+                        <td class="text-muted cancel-order" (click)="CancelOrder(order)">X
+                        </td>
                     </tr>
                 </tbody>
             </table>
