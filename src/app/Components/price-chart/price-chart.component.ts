@@ -16,7 +16,7 @@ export class PriceChartComponent implements OnInit {
   lastPrice: number = 0.00000
   $priceChartData: Observable<any>
 
-  options2 = {
+  options = {
     chart: {
       type: 'candlestick',
     },
@@ -25,34 +25,22 @@ export class PriceChartComponent implements OnInit {
     ...chartOptions
   }
 
-  options = {
-    chart: {
-      type: 'bar'
-    },
-    series: [{
-      name: 'sales',
-      data: [30, 40, 45, 50, 49, 60, 70, 91, 125]
-    }],
-    xaxis: {
-      categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
-    }
-  }
-
   constructor(private store: Store<AppState>) {
     this.$priceChartData = store.pipe(select(priceChartSelector))
-  }
 
-  async ngOnInit() {
-    await this.$priceChartData.subscribe(data => {
+    this.$priceChartData.subscribe(data => {
       this.lastPrice = data.lastPrice
       this.lastPriceChange = data.lastPriceChange
-      this.options2 = {
-        ...this.options2,
+      this.options = {
+        ...this.options,
         ...data
       }
-      var chart = new ApexCharts(document.querySelector("#chart"), this.options2);
+      var chart = new ApexCharts(document.querySelector("#chart"), this.options);
       chart.render()
     })
+  }
+
+  ngOnInit() : void {
   }
 
   priceSymbol(priceChange) {
