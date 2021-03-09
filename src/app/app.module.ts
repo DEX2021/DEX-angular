@@ -30,7 +30,7 @@ import { NewOrderComponent } from './Components/new-order/new-order.component';
     OrderBookComponent,
     TransactionsComponent,
     NewOrderComponent,
-    NumericDirective
+
   ],
   imports: [
     BrowserModule,

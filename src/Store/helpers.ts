@@ -86,6 +86,14 @@ export const defaultExchangeState: IExchange = {
     orders: {
       loaded: false, data: []
     }
+  },
+  buyOrder: {
+    amount: 0,
+    price: 0
+  },
+  sellOrder: {
+    amount: 0,
+    price: 0
   }
 }
 

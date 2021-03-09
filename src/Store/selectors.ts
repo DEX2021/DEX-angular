@@ -56,7 +56,7 @@ const openOrders = state => {
         const orderFilled = filled.data.some((o) => o.id === order.id);
         const orderCancelled = cancelled.data.some((o) => o.id === order.id)
 
-        return(orderFilled || orderCancelled)
+        return (orderFilled || orderCancelled)
     })
 
     return {
@@ -76,13 +76,13 @@ export const orderBookSelector = createSelector(
         const buyOrders = get(orders.data, 'buy', [])
         orders.data = {
             ...orders.data,
-            buyOrders: buyOrders.sort((a,b) => b.tokenPrice - a.tokenPrice),
+            buyOrders: buyOrders.sort((a, b) => b.tokenPrice - a.tokenPrice),
         }
         // Sort sell orders by token price
         const sellOrders = get(orders.data, 'sell', [])
         orders.data = {
             ...orders.data,
-            sellOrders: sellOrders.sort((a,b) => b.tokenPrice - a.tokenPrice),
+            sellOrders: sellOrders.sort((a, b) => b.tokenPrice - a.tokenPrice),
         }
 
         return orders;
@@ -109,10 +109,10 @@ const decorateOrder = (order) => {
     // Determine Ether and Token amount
     if (order.tokenGive === ETHER_ADDRESS) {
         etherAmount = order.amountGive;
-        tokenAmount = order.amountGet;        
+        tokenAmount = order.amountGet;
     } else {
         etherAmount = order.amountGet;
-        tokenAmount = order.amountGive; 
+        tokenAmount = order.amountGive;
     }
 
     // Calculate token price to 5 decimal places
@@ -132,7 +132,7 @@ const decorateOrder = (order) => {
 }
 
 const decorateFilledOrder = (order, previousOrder) => {
-    return({
+    return ({
         ...order,
         tokenPriceClass: tokenPriceClass(order.tokenPrice, order.id, previousOrder)
     })
@@ -160,7 +160,7 @@ const decorateOrderBookOrders = (orders) => {
 
 const decorateOrderBookOrder = (order) => {
     const orderType = order.tokenGive === ETHER_ADDRESS ? 'buy' : 'sell';
-    return({
+    return ({
         ...order,
         orderType,
         orderTypeClass: (orderType === 'buy' ? GREEN : RED),
@@ -179,7 +179,7 @@ export const myFilledOrderSelector = createSelector(
         orders = orders.sort((a, b) => a.timestamp - b.timestamp);
         // Decorate orders - add display attributes
         orders = decorateMyFilledOrders(orders, account);
-        
+
         return {
             loaded: filledOrders.loaded,
             data: orders
@@ -206,12 +206,13 @@ export const myOpenOrderSelector = createSelector(
     }
 )
 
+
 export const priceChartSelector = createSelector(
     filledOrdersSelector,
     (filledOrders) => {
         let orders = filledOrders.data;
         // Sort orders by date ascending to compare history
-        orders = orders.sort((a,b) => a.timestamp - b.timestamp)
+        orders = orders.sort((a, b) => a.timestamp - b.timestamp)
         // Decorate orders - add display attributes
         orders = orders.map((o) => decorateOrder(o))
         // Get last 2 order for final price & price change
@@ -221,8 +222,8 @@ export const priceChartSelector = createSelector(
         const lastPrice = get(lastOrder, 'tokenPrice', 0)
         // Get second last order price
         const secondLastPrice = get(secondLastOrder, 'tokenPrice', 0)
-        
-        return({
+
+        return ({
             lastPrice,
             lastPriceChange: (lastPrice >= secondLastPrice ? '+' : '-'),
             series: [{
@@ -375,22 +376,6 @@ const decorateMyOpenOrders = (orders) => {
         })
     )
 }
-
-export const myOpenOrderSelector = createSelector(
-    accountSelector,
-    ordersSelector,
-    (account, openOrders) => {
-        let orders = openOrders.data;
-        // Find out orders
-        orders = orders.filter((o) => o.user === account || o.userFill == account);
-        // Decorate orders - add display attributes
-        orders = decorateMyOpenOrders(orders);
-        // Sort by date ascending
-        orders = orders.sort((a, b) => a.timestamp - b.timestamp);
-
-        return orders;
-    }
-)
 
 const orderCancelling = state => get(state, 'root', false)
 export const orderCancellingSelector = createSelector(

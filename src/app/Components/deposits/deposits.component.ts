@@ -1,11 +1,10 @@
 import { Component, OnInit, AfterContentInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { fetchReduxData } from 'src/Helpers/redux.helpers';
+import { fetchReduxData } from '../../../Helpers/redux.helpers'
 import { AppState } from 'src/models/models';
-import { loadBalances, depositEther, withdrawEther, depositToken, withdrawToken } from 'src/Store/interactions';
+import { loadBalances, loadWeb3, depositEther, withdrawEther, depositToken, withdrawToken } from 'src/Store/interactions';
 import { accountSelector, balancesLoadingSelector, etherBalanceSelector, exchangeEtherBalanceSelector, exchangeSelector, exchangeTokenBalanceSelector, tokenBalanceSelector, tokenSelector } from 'src/Store/selectors';
-import Web3 from 'web3'
 
 @Component({
   selector: '[app-deposits]',
@@ -13,6 +12,7 @@ import Web3 from 'web3'
   styleUrls: ['./deposits.component.scss']
 })
 export class DepositsComponent implements OnInit {
+  $web3: any
   $exchange: Observable<AppState>
   $token: Observable<AppState>
   $account: Observable<AppState>
@@ -27,7 +27,6 @@ export class DepositsComponent implements OnInit {
     this.$token = this.store.pipe(select(tokenSelector))
     this.$account = this.store.pipe(select(accountSelector))
     this.$etherBalance = this.store.pipe(select(etherBalanceSelector))
-
     this.$tokenBalance = this.store.pipe(select(tokenBalanceSelector))
     this.$exchangeEtherBalance = this.store.pipe(select(exchangeEtherBalanceSelector))
     this.$exchangeTokenBalance = this.store.pipe(select(exchangeTokenBalanceSelector))
@@ -36,6 +35,8 @@ export class DepositsComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.$web3 = await loadWeb3(this.store);
+
     this.loadBlockchainData();
   }
 
@@ -51,7 +52,7 @@ export class DepositsComponent implements OnInit {
     var exchange = fetchReduxData(this.store, exchangeSelector)
     var account = fetchReduxData(this.store, accountSelector)
 
-    await depositEther(this.store, exchange, this.web3, etherAmount, account)
+    await depositEther(this.store, exchange, this.$web3, etherAmount, account)
   }
 
   async etherWithdrawAmountChanged(etherAmount) {
@@ -59,7 +60,7 @@ export class DepositsComponent implements OnInit {
     var account = fetchReduxData(this.store, accountSelector)
 
 
-    await withdrawEther(this.store, exchange, this.web3, etherAmount, account)
+    await withdrawEther(this.store, exchange, this.$web3, etherAmount, account)
 
   }
 
@@ -78,22 +79,4 @@ export class DepositsComponent implements OnInit {
 
     await withdrawToken(this.store, exchange, this.$web3, token, tokenAmount, account)
   }
-
-
-
-  async loadotherData() {
-
-
-    var etherBalance, tokenBalance, exchangeEtherBalance, exchangeTokenBalance;
-    this.$tokenBalance.subscribe(result => tokenBalance = result)
-    this.$exchangeEtherBalance.subscribe(result => exchangeEtherBalance = result)
-    this.$exchangeTokenBalance.subscribe(result => exchangeTokenBalance = result)
-    this.$etherBalance.subscribe(result => etherBalance = result)
-
-    console.log("this is deposit tokenBalance:", tokenBalance)
-    console.log("this is deposit exchangeEtherBalance:", exchangeEtherBalance)
-    console.log("this is deposit account:", exchangeTokenBalance)
-    console.log("this is the ether balance: ", etherBalance)
-  }
-
 }

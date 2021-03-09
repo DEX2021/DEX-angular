@@ -8,6 +8,12 @@ const Exchange = require('../abis/Exchange.json')
 
 export const ETHER_ADDRESS = "0x0000000000000000000000000000000000000000";
 
+export const loadWeb3 = async (store) => {
+    const web3 = new Web3(Web3.givenProvider || 'http:/localhost:7545')
+    //store.dispatch(new Postactions.web3Loaded(web3));
+    return web3;
+}
+
 export const loadAccount = async (web3, store) => {
     const accounts = await web3.eth.getAccounts()
     const account = await accounts[0]
@@ -47,7 +53,7 @@ export const loadAllOrders = async (store: Store, exchange) => {
         'Cancel': Postactions.cancelledOrdersLoaded,
         'Trade': Postactions.filledOrdersLoaded,
         'Order': Postactions.ordersLoaded
-     }
+    }
 
     for (const [event, action] of Object.entries(orderData)) {
         const stream = await exchange.getPastEvents(
