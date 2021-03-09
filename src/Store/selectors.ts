@@ -389,3 +389,13 @@ export const orderFillingSelector = createSelector(
     orderFilling,
     (state: AppState) => state.exchangeReducer.orderFilling
 )
+
+export const buyOrderSelector = createSelector(
+    root,
+    (state: AppState) => state.exchangeReducer.buyOrder
+)
+
+export const sellOrderSelector = createSelector(
+    root,
+    (state: AppState) => state.exchangeReducer.sellOrder
+)

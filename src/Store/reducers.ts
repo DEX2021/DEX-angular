@@ -2,6 +2,7 @@ import { createReducer, on, combineReducers } from "@ngrx/store";
 import * as PostActions from './action'
 import { IWeb3, IToken, IExchange, IOrder, IOrders } from '../models/models'
 import { filledOrdersSelector } from "./selectors";
+import { stat } from "fs";
 //import { Action } from '@ngrx/store'
 
 const initial = { connection: "hello" };
@@ -46,6 +47,14 @@ const defaultExchangeState: IExchange = {
       loaded: false,
       data: []
     }
+  },
+  buyOrder: {
+    amount: 0,
+    price: 0
+  },
+  sellOrder: {
+    amount: 0,
+    price: 0
   }
 }
 
@@ -191,6 +200,92 @@ export function exchangeReducer(state: IExchange = defaultExchangeState, action:
           }
         }
       }
+
+    case PostActions.BUY_ORDER_AMOUNT_CHANGED:
+      return {
+        ...state,
+        buyOrder: {
+          ...state.buyOrder,
+          amount: action.payload
+        }
+      }
+
+    case PostActions.BUY_ORDER_PRICE_CHANGED:
+      return {
+        ...state,
+        buyOrder: {
+          ...state.buyOrder,
+          price: action.payload
+        }
+      }
+    
+    case PostActions.BUY_ORDER_MAKING:
+      return {
+        ...state,
+        buyOrder: {
+          ...state.buyOrder,
+          amount: null,
+          price: null,
+          making: true
+        }
+      }
+
+    case PostActions.ORDER_MADE:
+      // Prevent duplicate orders
+      index = state.orders.orders.data.findIndex(
+        order => order.id === action.payload.id
+      )
+
+      if (index === -1) {
+        data = [...state.orders.orders.data, action.payload]
+      } else {
+        data = state.orders.orders.data
+      }
+
+      return {
+        ...state,
+        orders: {
+          ...state.orders,
+          data
+        },
+        buyOrder: {
+          ...state.buyOrder,
+          making: false
+        },
+        sellOrder: {
+          ...state.sellOrder,
+          making: false
+        }
+      }
+    
+      case PostActions.SELL_ORDER_AMOUNT_CHANGED:
+        return {
+          ...state,
+          sellOrder: {
+            ...state.sellOrder,
+            amount: action.payload
+          }
+        }
+  
+      case PostActions.SELL_ORDER_PRICE_CHANGED:
+        return {
+          ...state,
+          sellOrder: {
+            ...state.sellOrder,
+            price: action.payload
+          }
+        }
+      
+      case PostActions.SELL_ORDER_MAKING:
+        return {
+          ...state,
+          sellOrder: {
+            ...state.sellOrder,
+            amount: null,
+            price: null,
+            making: true
+          }
+        }
 
     default:
       return state;

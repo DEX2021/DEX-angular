@@ -151,8 +151,6 @@ export class buyOrderPriceChanged implements Action {
 
 export class buyOrderMaking implements Action {
     readonly type = BUY_ORDER_MAKING
-
-    constructor(public payload: any) { }
 }
 
 export class orderMade implements Action {
@@ -175,8 +173,6 @@ export class sellOrderPriceChanged implements Action {
 
 export class sellOrderMaking implements Action {
     readonly type = SELL_ORDER_MAKING
-
-    constructor(public payload: any) { }
 }
 
 // Cancel Order

@@ -3,15 +3,43 @@
     <li ngbNavItem>
         <a ngbNavLink>Buy</a>
         <ng-template ngbNavContent>
-            <form>
-                <input #depositEther type="text" placeholder="Enter ETH Deposit" />
-                <button class="button btnStyle is-rounded"><strong>Buy Order</strong></button>
+            <form (submit)="createBuyOrder()">
+                <div class="form-group small">
+                    <label>Buy Amount (DEX)</label>
+                    <div class="input-group">
+                        <input #buyAmount (input)="buyAmountChanged(buyAmount.value)" type="number" class="form-control form-control-sm bg-dark text-white" placeholder="Buy Amount" required />
+                    </div>
+                </div>
+                <div class="form-group small">
+                    <label>Buy Price</label>
+                    <div class="input-group">
+                        <input #buyPrice (input)="buyPriceChanged(buyPrice.value)" type="number" class="form-control form-control-sm bg-dark text-white" placeholder="Buy Price" required />
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm btn-block">Buy Order</button>
+                <small *ngIf="($buyOrder | async).amount > 0 && ($buyOrder | async).price > 0">Total: {{ ($buyOrder | async).amount * ($buyOrder | async).price }} DEX</small>
             </form>
         </ng-template>
     </li>
     <li ngbNavItem>
         <a ngbNavLink>Sell</a>
         <ng-template ngbNavContent>
+            <form (submit)="createSellOrder()">
+                <div class="form-group small">
+                    <label>Sell Amount (DEX)</label>
+                    <div class="input-group">
+                        <input #sellAmount (input)="sellAmountChanged(sellAmount.value)" type="number" class="form-control form-control-sm bg-dark text-white" placeholder="Sell Amount" required />
+                    </div>
+                </div>
+                <div class="form-group small">
+                    <label>Sell Price</label>
+                    <div class="input-group">
+                        <input #sellPrice (input)="sellPriceChanged(sellPrice.value)" type="number" class="form-control form-control-sm bg-dark text-white" placeholder="Sell Price" required />
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm btn-block">Sell Order</button>
+                <small *ngIf="($sellOrder | async).amount > 0 && ($sellOrder | async).price > 0">Total: {{ ($sellOrder | async).amount * ($sellOrder | async).price }} DEX</small>
+            </form>
         </ng-template>
     </li>
 </ul>

@@ -159,6 +159,40 @@ export const fillOrder = (store, exchange, order, account) => {
         })
 }
 
+export const makeBuyOrder = (store, exchange, web3, token, order, account) => {
+    const tokenGet = token.options.address
+    const amountGet = web3.utils.toWei(order.amount.toString(), 'ether')
+    const tokenGive = ETHER_ADDRESS
+    const amountGive = web3.utils.toWei((order.amount * order.price).toString(), 'ether')
+
+    exchange.methods.makeOrder(tokenGet, amountGet, tokenGive, amountGive)
+        .send({ from: account })
+        .on('transactionHash', (hash) => {
+            store.dispatch(new Postactions.buyOrderMaking())
+        })
+        .on('error', (error) => {
+            console.log(error)
+            window.alert("An error has occurred.")
+        })
+}
+
+export const makeSellOrder = (store, exchange, web3, token, order, account) => {
+    const tokenGet = ETHER_ADDRESS
+    const amountGet = web3.utils.toWei((order.amount * order.price).toString(), 'ether')
+    const tokenGive = token.options.address
+    const amountGive = web3.utils.toWei(order.amount.toString(), 'ether')
+
+    exchange.methods.makeOrder(tokenGet, amountGet, tokenGive, amountGive)
+        .send({ from: account })
+        .on('transactionHash', (hash) => {
+            store.dispatch(new Postactions.sellOrderMaking())
+        })
+        .on('error', (error) => {
+            console.log(error)
+            window.alert("An error has occurred.")
+        })
+}
+
 // see deposits 40 min mark to complete
 export const subscribeToEvents = async (store, exchange) => {
     exchange.events.Cancel({}, (error, event) => {
@@ -167,5 +201,9 @@ export const subscribeToEvents = async (store, exchange) => {
 
     exchange.events.Trade({}, (error, event) => {
         store.dispatch(new Postactions.orderFilled(event.returnValues))
+    })
+
+    exchange.events.Order({}, (error, event) => {
+        store.dispatch(new Postactions.orderMade(event.returnValues))
     })
 }
