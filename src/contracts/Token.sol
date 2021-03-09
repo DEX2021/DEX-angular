@@ -1,12 +1,13 @@
 pragma solidity ^0.7.4;
-import "node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol";
+// import "node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol";
+import "../../node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol";
 
 contract Token {
     using SafeMath for uint256;
 
     // Variables
     string public name = "DEX2021";
-    string public symbol = "DAPP";
+    string public symbol = "DEX";
     uint256 public decimals = 18;
     uint256 public totalSupply;
     mapping(address => uint256) public balanceOf;

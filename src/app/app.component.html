@@ -1,11 +1,11 @@
 <div>
     <app-navbar></app-navbar>
 
-    <div *ngIf="($tests | async) && appLoaded; else elseBlock">
+    <div *ngIf="($selector | async) && appLoaded; else elseBlock">
         <app-content></app-content>
     </div>
     <ng-template #elseBlock>
-        <div class="content"></div>>
+        <div class="content"></div>
     </ng-template>
 
 </div>

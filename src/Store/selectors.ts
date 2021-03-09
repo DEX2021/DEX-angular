@@ -1,119 +1,34 @@
-import { get } from 'lodash'
+import { get, reject, groupBy, maxBy, minBy } from 'lodash'
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { AppState } from '../models/models'
 import { ether, ETHER_ADDRESS, formatBalance, GREEN, RED, tokens2 } from './helpers'
 import * as moment from 'moment';
 import lodash from 'lodash';
 
-// const account = createFeatureSelector<AppState>('root')
+export const root = createFeatureSelector<AppState>('root')
 
 // export const accountSelector = createSelector(
 //     account,
 //     (state: AppState) => state.web3Reducer.account
 // );
 
-
 const rootReducer = state => get(state, 'root')
-
-const account = state => get(state, 'root')
 export const accountSelector = createSelector(
-    account,
+    root,
     (state: AppState) => state.web3Reducer.account
 );
 
-const tokenLoaded = state => get(state, 'root', false)
-export const tokenLoadedSelector = createSelector(
-    tokenLoaded,
-    (state: AppState) => state.tokenReducer.loaded
+// Cancelled, Trade, Open Orders
+
+export const cancelledOrdersSelector = createSelector(
+    rootReducer,
+    (state: AppState) => state.exchangeReducer.orders.cancelled
 )
 
-const token = state => get(state, 'root', false)
-export const tokenSelector = createSelector(
-    token,
-    (state: AppState) => state.tokenReducer.token
-)
-
-const exchangeLoaded = state => get(state, 'root', false)
-export const exchangeLoadedSelector = createSelector(
-    exchangeLoaded,
-    (state: AppState) => state.exchangeReducer.loaded
-)
-
-const exchange = state => get(state, 'root', false)
-export const exchangeSelector = createSelector(
-    exchange,
-    (state: AppState) => state.exchangeReducer.exchange
-)
-
-export const contractsLoadedSelector = createSelector(
-    tokenLoaded,
-    exchangeLoaded,
-    (tl, el) => (tl && el)
-)
-
-const balancesLoading = state => get(state, 'root', true)
-export const balancesLoadingSelector = createSelector(
-    balancesLoading,
-    (state: AppState) => state.exchangeReducer.balancesLoading
-)
-
-const etherBalance = state => get(state, 'root', 0)
-export const etherBalanceSelector = createSelector(
-    etherBalance,
-    (state: AppState) => formatBalance(state.web3Reducer.balance),
-)
-
-const tokenBalance = state => get(state, 'root', 0)
-export const tokenBalanceSelector = createSelector(
-    tokenBalance,
-    (state: AppState) => formatBalance(state.tokenReducer.balance)
-
-)
-
-const exchangeEtherBalance = state => get(state, 'root', 0)
-export const exchangeEtherBalanceSelector = createSelector(
-    exchangeEtherBalance,
-    (state: AppState) => formatBalance(state.exchangeReducer.etherBalance),
-)
-
-const exchangeTokenBalance = state => get(state, 'root', 0)
-export const exchangeTokenBalanceSelector = createSelector(
-    exchangeTokenBalance,
-    (state: AppState) => formatBalance(state.exchangeReducer.tokenBalance),
-
-)
-
-const etherDepositAmount = state => get(state, "root", null)
-export const etherDepositAmountSelector = createSelector(
-    etherDepositAmount,
-    (state: AppState) => state.exchangeReducer.etherDepositAmountChanged
-)
-
-const etherWithdrawAmount = state => get(state, "root", null)
-export const etherWithdrawAmountSelector = createSelector(
-    etherWithdrawAmount,
-    (state: AppState) => state.exchangeReducer.etherWithdrawAmountChanged
-)
-
-
-const tokenDepositAmount = state => get(state, "root", null)
-export const tokenDepositAmountSelector = createSelector(
-    tokenDepositAmount,
-    (state: AppState) => state.exchangeReducer.tokenDepositAmount
-)
-
-
-const tokenWithdrawAmount = state => get(state, "root", null)
-export const tokenWithdrawAmountSelector = createSelector(
-    tokenWithdrawAmount,
-    (state: AppState) => state.exchangeReducer.tokenWithdrawAmount
-)
-
-const filledOrders = state => get(state, 'root')
 export const filledOrdersSelector = createSelector(
-    filledOrders,
+    root,
     (state: AppState) => {
-        let orders = state.ordersReducer.filled;
+        let orders = state.exchangeReducer.orders.filled;
 
         // Sort orders ascending by date for price comparison
         orders.data = orders.data.sort((a, b) => a.timestamp - b.timestamp)
@@ -123,6 +38,54 @@ export const filledOrdersSelector = createSelector(
         // Sort orders decending by date for display
         orders.data = orders.data.sort((a, b) => b.timestamp - a.timestamp)
         return orders
+    }
+)
+
+export const ordersSelector = createSelector(
+    rootReducer,
+    (state: AppState) => state.exchangeReducer.orders.orders
+)
+
+const openOrders = state => {
+    const all = ordersSelector(state);
+    const cancelled = cancelledOrdersSelector(state);
+    const filled = filledOrdersSelector(state);
+    const loaded = cancelled.loaded && filled.loaded && all.loaded;
+
+    const openOrders = reject(all.data, (order) => {
+        const orderFilled = filled.data.some((o) => o.id === order.id);
+        const orderCancelled = cancelled.data.some((o) => o.id === order.id)
+
+        return(orderFilled || orderCancelled)
+    })
+
+    return {
+        loaded: loaded,
+        data: openOrders
+    }
+}
+
+export const orderBookSelector = createSelector(
+    openOrders,
+    (orders) => {
+        // Decorate orders
+        orders.data = decorateOrderBookOrders(orders.data);
+        // Group orders by order type
+        orders.data = groupBy(orders.data, 'orderType');
+        // Sort buy orders by token price
+        const buyOrders = get(orders.data, 'buy', [])
+        orders.data = {
+            ...orders.data,
+            buyOrders: buyOrders.sort((a,b) => b.tokenPrice - a.tokenPrice),
+        }
+        // Sort sell orders by token price
+        const sellOrders = get(orders.data, 'sell', [])
+        orders.data = {
+            ...orders.data,
+            sellOrders: sellOrders.sort((a,b) => b.tokenPrice - a.tokenPrice),
+        }
+
+        return orders;
     }
 )
 
@@ -146,10 +109,10 @@ const decorateOrder = (order) => {
     // Determine Ether and Token amount
     if (order.tokenGive === ETHER_ADDRESS) {
         etherAmount = order.amountGive;
-        tokenAmount = order.amountGet;
+        tokenAmount = order.amountGet;        
     } else {
         etherAmount = order.amountGet;
-        tokenAmount = order.amountGive;
+        tokenAmount = order.amountGive; 
     }
 
     // Calculate token price to 5 decimal places
@@ -169,7 +132,7 @@ const decorateOrder = (order) => {
 }
 
 const decorateFilledOrder = (order, previousOrder) => {
-    return ({
+    return({
         ...order,
         tokenPriceClass: tokenPriceClass(order.tokenPrice, order.id, previousOrder)
     })
@@ -187,79 +150,23 @@ const tokenPriceClass = (tokenPrice, orderId, previousOrder) => {
     }
 }
 
-
-
-export const ordersSelector = createSelector(
-    rootReducer,
-    (state: AppState) => state.ordersReducer.orders
-)
-
-export const cancelledOrdersSelector = createSelector(
-    rootReducer,
-    (state: AppState) => state.ordersReducer.cancelled
-)
-
-const decorateOrderBookOrder = (order) => {
-    const orderType = order.tokenGive === ETHER_ADDRESS ? 'buy' : 'sell';
-    return ({
-        ...order,
-        orderType: orderType,
-        orderTypeClass: (orderType === 'buy' ? GREEN : RED),
-        orderFillAction: (orderType === 'buy' ? 'sell' : 'buy')
-    })
-}
-const decorateOrderBookOrders = (order) => {
-    return order.map((order) => {
+const decorateOrderBookOrders = (orders) => {
+    return orders.map((order) => {
         order = decorateOrder(order);
         order = decorateOrderBookOrder(order);
         return order
     })
 }
 
-const openOrders = state => {
-    const all = ordersSelector(state);
-    const cancelled = cancelledOrdersSelector(state);
-    const filled = filledOrdersSelector(state);
-    const loaded = cancelled.loaded && filled.loaded && all.loaded;
-
-    const openOrders = lodash.reject(all.data, (order) => {
-        const orderFilled = filled.data.some((o) => o.id === order.id);
-        const orderCancelled = cancelled.data.some((o) => o.id === order.id)
-
-        return (orderFilled || orderCancelled)
+const decorateOrderBookOrder = (order) => {
+    const orderType = order.tokenGive === ETHER_ADDRESS ? 'buy' : 'sell';
+    return({
+        ...order,
+        orderType,
+        orderTypeClass: (orderType === 'buy' ? GREEN : RED),
+        orderFillClass: (orderType === 'buy' ? 'sell' : 'buy')
     })
-
-    return {
-        loaded: loaded,
-        data: openOrders
-    }
 }
-
-
-export const orderBookSelector = createSelector(
-    openOrders,
-    (orders) => {
-        // Decorate orders
-        orders.data = decorateOrderBookOrders(orders.data);
-        // Group orders by order type
-        orders.data = lodash.groupBy(orders.data, 'orderType');
-        // Sort buy orders by token price
-        const buyOrders = lodash.get(orders.data, 'buy', [])
-        orders.data = {
-            ...orders.data,
-            buyOrders: buyOrders.sort((a, b) => b.tokenPrice - a.tokenPrice),
-        }
-        // Sort sell orders by token price
-        const sellOrders = lodash.get(orders.data, 'sell', [])
-        orders.data = {
-            ...orders.data,
-            sellOrders: sellOrders.sort((a, b) => b.tokenPrice - a.tokenPrice),
-        }
-
-        return orders;
-    }
-)
-
 
 export const myFilledOrderSelector = createSelector(
     accountSelector,
@@ -272,9 +179,154 @@ export const myFilledOrderSelector = createSelector(
         orders = orders.sort((a, b) => a.timestamp - b.timestamp);
         // Decorate orders - add display attributes
         orders = decorateMyFilledOrders(orders, account);
-
-        return orders;
+        
+        return {
+            loaded: filledOrders.loaded,
+            data: orders
+        }
     }
+)
+
+export const myOpenOrderSelector = createSelector(
+    accountSelector,
+    openOrders,
+    (account, openOrders) => {
+        let orders = openOrders.data;
+        // Find out orders
+        orders = orders.filter((o) => o.user === account);
+        // Decorate orders - add display attributes
+        orders = decorateMyOpenOrders(orders);
+        // Sort by date descending
+        orders = orders.sort((a, b) => b.timestamp - a.timestamp);
+
+        return {
+            loaded: openOrders.loaded,
+            data: orders
+        }
+    }
+)
+
+export const priceChartSelector = createSelector(
+    filledOrdersSelector,
+    (filledOrders) => {
+        let orders = filledOrders.data;
+        // Sort orders by date ascending to compare history
+        orders = orders.sort((a,b) => a.timestamp - b.timestamp)
+        // Decorate orders - add display attributes
+        orders = orders.map((o) => decorateOrder(o))
+        // Get last 2 order for final price & price change
+        let secondLastOrder, lastOrder
+        [secondLastOrder, lastOrder] = orders.slice(orders.length - 2, orders.length)
+        // Get last order price
+        const lastPrice = get(lastOrder, 'tokenPrice', 0)
+        // Get second last order price
+        const secondLastPrice = get(secondLastOrder, 'tokenPrice', 0)
+        
+        return({
+            lastPrice,
+            lastPriceChange: (lastPrice >= secondLastPrice ? '+' : '-'),
+            series: [{
+                data: buildGraphData(orders)
+            }]
+        })
+    }
+)
+
+const buildGraphData = (orders) => {
+    // Group orders by hour (for the graph)
+    orders = groupBy(orders, (o) => moment.unix(o.timestamp).startOf('hour').format())
+    // Get each data where data exists
+    const hours = Object.keys(orders)
+    // Build the graph series
+    const graphData = hours.map((hour) => {
+        // Fetch all orders from current hour
+        const group = orders[hour]
+        // Calculate price values for open, high, low and close
+        const open = group[0] // First order
+        const high = maxBy(group, 'tokenPrice') // High Price
+        const low = minBy(group, 'tokenPrice') // Low Price
+        const close = group[group.length - 1] // Last order
+
+        return {
+            x: new Date(hour),
+            y: [open.tokenPrice, high.tokenPrice, low.tokenPrice, close.tokenPrice]
+        }
+    })
+
+    return graphData;
+}
+
+export const tokenLoadedSelector = createSelector(
+    root,
+    (state: AppState) => state.tokenReducer.loaded
+)
+
+export const tokenSelector = createSelector(
+    root,
+    (state: AppState) => state.tokenReducer.token
+)
+
+export const exchangeLoadedSelector = createSelector(
+    root,
+    (state: AppState) => state.exchangeReducer.loaded
+)
+
+export const exchangeSelector = createSelector(
+    root,
+    (state: AppState) => state.exchangeReducer.exchange
+)
+
+export const contractsLoadedSelector = createSelector(
+    tokenLoadedSelector,
+    exchangeLoadedSelector,
+    (tl, el) => (tl && el)
+)
+
+export const balancesLoadingSelector = createSelector(
+    root,
+    (state: AppState) => state.exchangeReducer.balancesLoading
+)
+
+export const etherBalanceSelector = createSelector(
+    root,
+    (state: AppState) => formatBalance(state.web3Reducer.balance),
+)
+
+export const tokenBalanceSelector = createSelector(
+    root,
+    (state: AppState) => formatBalance(state.tokenReducer.balance)
+
+)
+
+export const exchangeEtherBalanceSelector = createSelector(
+    root,
+    (state: AppState) => formatBalance(state.exchangeReducer.etherBalance),
+)
+
+export const exchangeTokenBalanceSelector = createSelector(
+    root,
+    (state: AppState) => formatBalance(state.exchangeReducer.tokenBalance),
+
+)
+
+export const etherDepositAmountSelector = createSelector(
+    root,
+    (state: AppState) => state.exchangeReducer.etherDepositAmountChanged
+)
+
+export const etherWithdrawAmountSelector = createSelector(
+    root,
+    (state: AppState) => state.exchangeReducer.etherWithdrawAmountChanged
+)
+
+export const tokenDepositAmountSelector = createSelector(
+    root,
+    (state: AppState) => state.exchangeReducer.tokenDepositAmount
+)
+
+export const tokenWithdrawAmountSelector = createSelector(
+    root,
+    (state: AppState) => state.exchangeReducer.tokenWithdrawAmount
 )
 
 const decorateMyFilledOrders = (orders, account) => {
@@ -350,4 +402,14 @@ const orderFilling = state => get(state, 'root', false)
 export const orderFillingSelector = createSelector(
     orderFilling,
     (state: AppState) => state.exchangeReducer.orderFilling
+)
+
+export const buyOrderSelector = createSelector(
+    root,
+    (state: AppState) => state.exchangeReducer.buyOrder
+)
+
+export const sellOrderSelector = createSelector(
+    root,
+    (state: AppState) => state.exchangeReducer.sellOrder
 )

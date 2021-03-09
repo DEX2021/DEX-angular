@@ -2,30 +2,11 @@
 import { Store } from "@ngrx/store";
 import Web3 from "web3"
 import * as Postactions from './action'
+import { exchangeSelector } from './selectors';
 const Token = require('../abis/Token.json')
 const Exchange = require('../abis/Exchange.json')
 
 export const ETHER_ADDRESS = "0x0000000000000000000000000000000000000000";
-
-
-
-
-// export const loadWeb3Better = async (store) => {
-//     if (typeof window.ethereum !== 'undefined') {
-//         const web3 = new Web3(window.ethereum)
-//         //store.dispatch(new Postactions.web3Loaded(web3))
-//         return web3
-//     } else {
-//         window.alert('Please install MetaMask')
-//         window.location.assign("https://metamask.io/")
-//     }
-// }
-
-export const loadWeb3 = async (store) => {
-    const web3 = new Web3(Web3.givenProvider || 'http:/localhost:7545')
-    //store.dispatch(new Postactions.web3Loaded(web3));
-    return web3;
-}
 
 export const loadAccount = async (web3, store) => {
     const accounts = await web3.eth.getAccounts()
@@ -38,7 +19,6 @@ export const loadAccount = async (web3, store) => {
         return null
     }
 }
-
 
 export const loadToken = async (web3, networkId, store) => {
     try {
@@ -62,10 +42,26 @@ export const loadExchange = async (web3, networkId, store) => {
     }
 }
 
-// export const loadAllOrders = async (exchange, dispatch) => {
-//     const cancelStream = await exchange.getPastEvents("Cancel", { fromBlock: 0, toBlock: "latest" })
-//     console.log(cancelStream)
-// }
+export const loadAllOrders = async (store: Store, exchange) => {
+    let orderData = {
+        'Cancel': Postactions.cancelledOrdersLoaded,
+        'Trade': Postactions.filledOrdersLoaded,
+        'Order': Postactions.ordersLoaded
+     }
+
+    for (const [event, action] of Object.entries(orderData)) {
+        const stream = await exchange.getPastEvents(
+            event,
+            {
+                fromBlock: 0,
+                toBlock: 'latest'
+            }
+        );
+
+        const data = stream.map(e => e.returnValues);
+        store.dispatch(new action(data));
+    }
+}
 
 export const loadBalances = async (web3, exchange, token, account, store) => {
     if (typeof account !== 'undefined') {
@@ -91,28 +87,6 @@ export const loadBalances = async (web3, exchange, token, account, store) => {
         window.alert('Please login with MetaMask')
     }
 }
-
-export const loadAllOrders = async (store: Store, exchange) => {
-    let orderData = {
-        'Cancel': Postactions.cancelledOrdersLoaded,
-        'Trade': Postactions.filledOrdersLoaded,
-        'Order': Postactions.ordersLoaded
-    }
-
-    for (const [event, action] of Object.entries(orderData)) {
-        const stream = await exchange.getPastEvents(
-            event,
-            {
-                fromBlock: 0,
-                toBlock: 'latest'
-            }
-        );
-
-        const data = stream.map(e => e.returnValues);
-        store.dispatch(new action(data));
-    }
-}
-
 
 export const depositEther = async (store, exchange, web3, amount, account) => {
     exchange.methods.depositEther().send({ from: account, value: web3.utils.toWei(amount, 'ether') })
@@ -185,6 +159,40 @@ export const fillOrder = (store, exchange, order, account) => {
         })
 }
 
+export const makeBuyOrder = (store, exchange, web3, token, order, account) => {
+    const tokenGet = token.options.address
+    const amountGet = web3.utils.toWei(order.amount.toString(), 'ether')
+    const tokenGive = ETHER_ADDRESS
+    const amountGive = web3.utils.toWei((order.amount * order.price).toString(), 'ether')
+
+    exchange.methods.makeOrder(tokenGet, amountGet, tokenGive, amountGive)
+        .send({ from: account })
+        .on('transactionHash', (hash) => {
+            store.dispatch(new Postactions.buyOrderMaking())
+        })
+        .on('error', (error) => {
+            console.log(error)
+            window.alert("An error has occurred.")
+        })
+}
+
+export const makeSellOrder = (store, exchange, web3, token, order, account) => {
+    const tokenGet = ETHER_ADDRESS
+    const amountGet = web3.utils.toWei((order.amount * order.price).toString(), 'ether')
+    const tokenGive = token.options.address
+    const amountGive = web3.utils.toWei(order.amount.toString(), 'ether')
+
+    exchange.methods.makeOrder(tokenGet, amountGet, tokenGive, amountGive)
+        .send({ from: account })
+        .on('transactionHash', (hash) => {
+            store.dispatch(new Postactions.sellOrderMaking())
+        })
+        .on('error', (error) => {
+            console.log(error)
+            window.alert("An error has occurred.")
+        })
+}
+
 // see deposits 40 min mark to complete
 export const subscribeToEvents = async (store, exchange) => {
     exchange.events.Cancel({}, (error, event) => {
@@ -193,5 +201,9 @@ export const subscribeToEvents = async (store, exchange) => {
 
     exchange.events.Trade({}, (error, event) => {
         store.dispatch(new Postactions.orderFilled(event.returnValues))
+    })
+
+    exchange.events.Order({}, (error, event) => {
+        store.dispatch(new Postactions.orderMade(event.returnValues))
     })
 }
