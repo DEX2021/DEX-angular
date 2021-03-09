@@ -50,11 +50,13 @@ const defaultExchangeState: IExchange = {
   },
   buyOrder: {
     amount: 0,
-    price: 0
+    price: 0,
+    making: false,
   },
   sellOrder: {
     amount: 0,
-    price: 0
+    price: 0,
+    making: false,
   }
 }
 

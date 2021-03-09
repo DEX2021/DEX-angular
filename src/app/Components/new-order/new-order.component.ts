@@ -19,6 +19,11 @@ import Web3 from 'web3';
   styleUrls: ['./new-order.component.scss']
 })
 export class NewOrderComponent implements OnInit {
+  buyAmount: number = 0
+  buyPrice: number = 0
+  sellAmount: number = 0
+  sellPrice: number = 0
+
   $exchange: Observable<IExchange>;
   $token: Observable<IToken>;
   $account: Observable<any>;
@@ -52,25 +57,36 @@ export class NewOrderComponent implements OnInit {
     this.store.dispatch(new Postactions.sellOrderPriceChanged(price))
   }
 
-  createBuyOrder() {
+  createOrder(type: string) {
     let exchange, token, account, order;
 
     this.$exchange.subscribe(e => exchange = e);
     this.$token.subscribe(e => token = e);
     this.$account.subscribe(e => account = e);
-    this.$buyOrder.subscribe(e => order = e);
 
-    makeBuyOrder(this.store, exchange, this.Web3, token, order, account);
-  }
+    if (type === "buy") {
+      this.$buyOrder.subscribe(e => order = e);
 
-  createSellOrder() {
-    let exchange, token, account, order;
+      if (order.amount === 0 || order.price === 0) {
+        alert("Please enter a value greater than zero.")
+        return
+      }
 
-    this.$exchange.subscribe(e => exchange = e);
-    this.$token.subscribe(e => token = e);
-    this.$account.subscribe(e => account = e);
-    this.$buyOrder.subscribe(e => order = e);
+      makeBuyOrder(this.store, exchange, this.Web3, token, order, account);
 
-    makeSellOrder(this.store, exchange, this.Web3, token, order, account);
+      this.buyAmount = 0
+      this.buyPrice = 0
+    } else {
+      this.$sellOrder.subscribe(e => order = e);
+      makeSellOrder(this.store, exchange, this.Web3, token, order, account);
+
+      if (order.amount === 0 || order.price === 0) {
+        alert("Please enter a value greater than zero.")
+        return
+      }
+
+      this.sellAmount = 0
+      this.sellPrice = 0
+    }
   }
 }

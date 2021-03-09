@@ -3,17 +3,17 @@
     <li ngbNavItem>
         <a ngbNavLink>Buy</a>
         <ng-template ngbNavContent>
-            <form (submit)="createBuyOrder()">
+            <form name="buyOrder" (submit)="createOrder('buy')">
                 <div class="form-group small">
                     <label>Buy Amount (DEX)</label>
                     <div class="input-group">
-                        <input #buyAmount (input)="buyAmountChanged(buyAmount.value)" type="number" class="form-control form-control-sm bg-dark text-white" placeholder="Buy Amount" required />
+                        <input name="buyAmount" [(ngModel)]="buyAmount" (input)="buyAmountChanged(buyAmount)" type="number" class="form-control form-control-sm bg-dark text-white" placeholder="Buy Amount" required />
                     </div>
                 </div>
                 <div class="form-group small">
                     <label>Buy Price</label>
                     <div class="input-group">
-                        <input #buyPrice (input)="buyPriceChanged(buyPrice.value)" type="number" class="form-control form-control-sm bg-dark text-white" placeholder="Buy Price" required />
+                        <input name="buyPrice" [(ngModel)]="buyPrice" (input)="buyPriceChanged(buyPrice)" type="number" class="form-control form-control-sm bg-dark text-white" placeholder="Buy Price" required />
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary btn-sm btn-block">Buy Order</button>
@@ -24,17 +24,17 @@
     <li ngbNavItem>
         <a ngbNavLink>Sell</a>
         <ng-template ngbNavContent>
-            <form (submit)="createSellOrder()">
+            <form name="sellOrder" (submit)="createOrder('sell')">
                 <div class="form-group small">
                     <label>Buy Sell (DEX)</label>
                     <div class="input-group">
-                        <input #sellAmount (input)="sellAmountChanged(sellAmount.value)" type="number" class="form-control form-control-sm bg-dark text-white" placeholder="Sell Amount" required />
+                        <input name="sellAmount" [(ngModel)]="sellAmount" (input)="sellAmountChanged(sellAmount)" type="number" class="form-control form-control-sm bg-dark text-white" placeholder="Sell Amount" required />
                     </div>
                 </div>
                 <div class="form-group small">
                     <label>Sell Price</label>
                     <div class="input-group">
-                        <input #sellPrice (input)="sellPriceChanged(sellPrice.value)" type="number" class="form-control form-control-sm bg-dark text-white" placeholder="Sell Price" required />
+                        <input name="sellPrice" [(ngModel)]="sellPrice" (input)="sellPriceChanged(sellPrice)" type="number" class="form-control form-control-sm bg-dark text-white" placeholder="Sell Price" required />
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary btn-sm btn-block">Sell Order</button>

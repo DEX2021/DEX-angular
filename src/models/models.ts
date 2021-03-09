@@ -20,6 +20,7 @@ export interface IToken {
 export interface ExchangeOrder {
     amount: number
     price: number
+    making: boolean
 }
 
 export interface IExchange {
