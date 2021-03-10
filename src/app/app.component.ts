@@ -42,12 +42,9 @@ export class AppComponent implements OnInit {
       window.alert("Exchange smart contract not detected on current network. Please select another netowrk with metamask")
     }
 
-    await loadAllOrders(this.store, exchange);
     await loadAccount(this.web3, this.store)
-    this.appLoaded = true;
-
     await loadAllOrders(this.store, exchange);
-
+    this.appLoaded = true;
   }
 
 }

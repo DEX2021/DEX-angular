@@ -39,7 +39,7 @@ export class DepositsComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.loadBlockchainData();
+    await this.loadBlockchainData();
   }
 
   async loadBlockchainData() {
@@ -47,6 +47,10 @@ export class DepositsComponent implements OnInit {
     await this.$exchange.subscribe(result => exchange = result)
     await this.$token.subscribe(result => token = result)
     await this.$account.subscribe(result => account = result)
+
+    console.log("Xchange", exchange)
+    console.log("Account", account)
+    console.log("Token", token)
 
     await loadBalances(this.web3, exchange, token, account, this.store)
   }
