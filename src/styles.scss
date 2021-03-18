@@ -90,3 +90,20 @@
 #tbd {
   height: calc(50% - 30px);
 }
+
+// Tabs design
+
+.nav-tabs .nav-link {
+  margin-bottom: 0px !important;
+  border: 0px solid transparent !important;
+  border-top-left-radius: 0px !important;
+  border-top-right-radius: 0px !important;
+}
+
+.nav-tabs .nav-item {
+  border-right: 1px solid #dee2e6 !important;
+}
+
+.nav-tabs .nav-item:last-child {
+  border-right: none !important;
+}
