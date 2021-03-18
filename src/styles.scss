@@ -60,17 +60,17 @@
 // Column B
 
 #order_book {
-  height: calc(65% + 10px);
-}
-
-#all_trades {
-  height: calc(35% - 40px);
+  height: calc(100% - 20px);
 }
 
 // Column C
 
 #buy_sell {
-  height: calc(100% - 20px);
+  height: calc(50% - 20px);
+}
+
+#all_trades {
+  height: calc(50% - 10px);
 }
 
 // Wallet Stuff
