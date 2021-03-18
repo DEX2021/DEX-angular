@@ -11,3 +11,55 @@
     // display: none;
     text-align: center;
 }
+
+tr#order:hover {
+    background-color: rgb(0, 0, 0, 0.2) !important;
+}
+
+.btn-group {
+    width: 100%;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.btn-group .btn {
+    // border-top-left-radius: 0px;
+    border-radius: 0px;
+    // background-color: rgba(0, 0, 0, 0.1);
+    background-color: transparent;
+    border-right: 1px solid #dee2e6 !important;
+    border: none;
+}
+
+.btn.active {
+    background-color: #dee2e6 !important;
+}
+
+.btn-group .btn:last-child {
+    border-right: none !important;
+}
+
+#book_all .material-icons {
+    color: black;
+}
+
+#book_down .material-icons, .book_arrow_down.material-icons {
+    color: red;
+}
+
+#book_up.material-icons {
+    color: green;
+}
+
+.book_arrow_up.material-icons {
+    color: green !important;
+}
+
+.btn:focus {
+    outline-color: transparent !important;
+    outline-style: none !important;
+}
+
+.btn.active:focus {
+    outline-color: transparent !important;
+    outline-style: none !important;
+}

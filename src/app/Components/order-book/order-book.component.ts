@@ -23,7 +23,7 @@ export class OrderBookComponent implements OnInit {
   lastPrice: number = 0.00000
   lastPriceChange: string = '+'
   $priceChartData: Observable<any>
-  sortType: OrderBookSorting = OrderBookSorting.Bought
+  sortType: OrderBookSorting = OrderBookSorting.All
 
   public get sortTypes(): typeof OrderBookSorting {
     return OrderBookSorting;
@@ -58,11 +58,31 @@ export class OrderBookComponent implements OnInit {
     let output;
 
     if (priceChange === '+') {
-      output = "<span class=\"text-success\">&#9650;</span>";
+      // output = "<span class=\"text-success\">&#9650;</span>";
+      //output = "<span class=\"book_arrow_down material-icons\">north_east</span>";
+      output = "north_east";
     } else {
-      output = "<span class=\"text-danger\">&#9660;</span>";
+      // output = "<span class=\"text-danger\">&#9660;</span>";
+      //output = "<span class=\"book_arrow_up material-icons\">south_west</span>";
+      output = "south_west";
     }
 
     return output;
+  }
+
+  filterOrderBook(filter) {
+    switch(filter) {
+      case 'book_down':
+        this.sortType = OrderBookSorting.Sold;
+        break;
+      case 'book_up':
+        this.sortType = OrderBookSorting.Bought;
+        break;
+      default:
+        this.sortType = OrderBookSorting.All;
+        break;
+    }
+
+    console.log("Sort type: ", this.sortType)
   }
 }
