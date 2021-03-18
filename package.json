@@ -38,6 +38,7 @@
     "chai-as-promised": "^7.1.1",
     "chai-bignumber": "^3.0.0",
     "dotenv": "^8.2.0",
+    "lightweight-charts": "^3.3.0",
     "lodash": "^4.17.21",
     "material-design-icons": "^3.0.1",
     "material-icons": "^0.5.4",
