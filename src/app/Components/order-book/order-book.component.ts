@@ -3,7 +3,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { fillOrder } from 'src/Store/interactions';
 import { AppState, IOrder } from '../../../models/models';
-import { accountSelector, exchangeSelector, orderBookSelector } from '../../../Store/selectors';
+import { accountSelector, exchangeSelector, orderBookSelector, priceChartSelector } from '../../../Store/selectors';
 
 @Component({
   selector: '[app-order-book]',
@@ -14,12 +14,21 @@ export class OrderBookComponent implements OnInit {
   $orders: Observable<IOrder>
   $exchange: Observable<AppState>
   $account: Observable<AppState>
+  lastPrice: number = 0.00000
+  lastPriceChange: string = '+'
+  $priceChartData: Observable<any>
 
 
   constructor(private store: Store<AppState>) {
     this.$orders = this.store.pipe(select(orderBookSelector));
-    this.$exchange = this.store.pipe(select(exchangeSelector))
-    this.$account = this.store.pipe(select(accountSelector))
+    this.$exchange = this.store.pipe(select(exchangeSelector));
+    this.$account = this.store.pipe(select(accountSelector));
+    this.$priceChartData = this.store.pipe(select(priceChartSelector));
+
+    this.$priceChartData.subscribe(data => {
+      this.lastPrice = data.lastPrice;
+      this.lastPriceChange = data.lastPriceChange;
+    })
   }
 
   ngOnInit(): void {
@@ -35,4 +44,15 @@ export class OrderBookComponent implements OnInit {
     fillOrder(this.store, exchange, order, account)
   }
 
+  priceSymbol(priceChange) {
+    let output;
+
+    if (priceChange === '+') {
+      output = "<span class=\"text-success\">&#9650;</span>";
+    } else {
+      output = "<span class=\"text-danger\">&#9660;</span>";
+    }
+
+    return output;
+  }
 }
