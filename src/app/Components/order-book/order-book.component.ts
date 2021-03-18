@@ -5,6 +5,12 @@ import { fillOrder } from 'src/Store/interactions';
 import { AppState, IOrder } from '../../../models/models';
 import { accountSelector, exchangeSelector, orderBookSelector, priceChartSelector } from '../../../Store/selectors';
 
+enum OrderBookSorting {
+  All,
+  Sold,
+  Bought
+}
+
 @Component({
   selector: '[app-order-book]',
   templateUrl: './order-book.component.html',
@@ -17,7 +23,11 @@ export class OrderBookComponent implements OnInit {
   lastPrice: number = 0.00000
   lastPriceChange: string = '+'
   $priceChartData: Observable<any>
+  sortType: OrderBookSorting = OrderBookSorting.Bought
 
+  public get sortTypes(): typeof OrderBookSorting {
+    return OrderBookSorting;
+  }
 
   constructor(private store: Store<AppState>) {
     this.$orders = this.store.pipe(select(orderBookSelector));
