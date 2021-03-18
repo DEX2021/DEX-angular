@@ -7,6 +7,8 @@
 node_modules
 .env
 
+src/abis/*
+
 # Include when developing application packages.
 pubspec.lock
 .c9
