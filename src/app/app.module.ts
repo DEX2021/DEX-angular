@@ -14,7 +14,6 @@ import { environment } from 'src/environments/environment';
 import { storeFreeze } from 'ngrx-store-freeze'
 import { IWeb3 } from 'src/models/models';
 import { NavbarComponent } from './Components/navbar/navbar.component';
-import { ContentComponent } from './Components/content/content.component';
 import { DepositsComponent } from './Components/deposits/deposits.component';
 import { PriceChartComponent } from './Components/price-chart/price-chart.component';
 import { TradesComponent } from './Components/trades/trades.component';
@@ -31,7 +30,6 @@ export const metaReducers: MetaReducer<IWeb3>[] = !environment.production ? [sto
   declarations: [
     AppComponent,
     NavbarComponent,
-    ContentComponent,
     DepositsComponent,
     PriceChartComponent,
     TradesComponent,
