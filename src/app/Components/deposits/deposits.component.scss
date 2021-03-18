@@ -13,13 +13,71 @@
 }
 
 .depositBox {
-    margin: 40em 1em 1em 10%
+    margin: 20em 4em 1em 4em
+}
+
+.withdrawBox {
+    margin: 32em 4em 1em 4em
 }
 
 .depositbtn {
     border-color: #39527d;
-    font-size: 26px;
-    padding: 20% 20% 20% 20%;
+    font-size: 36px;
+    padding: 10% 20% 10% 20%;
     color: white;
-    border-radius: 10px;
+    border-radius: 20px;
+}
+
+.dIcon {
+    padding: 0% 30% 0% 30%;
+    font-size: 36px;
+}
+
+.walletBox {
+    width: 70%;
+    border: 2px solid #39527d;
+    padding: 20px;
+    color: white;
+    background-color: #1b2d4b;
+    margin: 10em 4em 0em 3em;
+    font-size: 26px;
+    border-radius: 20px;
+}
+
+#deposit.material-icons {
+    color: #1285f3
+}
+
+#withdraw.material-icons {
+    color: #1285f3
+}
+
+input[type="text"], input:active, input:hover, input:focus {
+    background-color: #39527d;
+    color: white;
+    text-align: center; 
+}
+
+
+.dInput {
+    border-radius: 40px;
+    background-color: #39527d;
+    border-color: white;
+    font-size: 22px;
+    height: 20%;
+    padding: 10px;
+    margin-bottom: 20px;
+    text-align: center; 
+
+}
+
+::placeholder {
+    color: white
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
 }

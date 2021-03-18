@@ -1,14 +1,64 @@
 <div class="content">
     <div class="row">
         <div class="col-md-6">
+            <div class="walletBox">
+                <div style="margin-bottom: 20px; text-align:center">
+                    <b>Wallet</b>
+                </div>
+                <div>
+                    <div>
+                        Ether: {{$etherBalance | async}} <b>ETH</b>
+                    </div>
+                    <div>some $ </div>
+
+                    <div style="margin-top: 20px">
+                        Token: {{$tokenBalance |async}} <b>DEX</b>
+                    </div>
+                    <div>some $</div>
+
+                </div>
+            </div>
+
+            <div>
+                <input class="input is-rounded dInput" placeholder="Enter Ethereum Amount">
+            </div>
+
             <div class="depositBox">
-                <button type="button" class="btn depositbtn">Deposit</button>
+
+                <button type="button" class="btn depositbtn"><span id="deposit" class="material-icons dIcon">
+                        get_app
+                    </span>
+                    Deposit</button>
+
             </div>
 
         </div>
         <div class="col-md-6">
+            <div class="walletBox">
+                <div style="margin-bottom: 20px; text-align:center">
+                    <b>Exchange</b>
+                </div>
+
+                <div>
+                    <div>
+                        Ether: {{$exchangeEtherBalance | async}} <b>ETH</b>
+                    </div>
+                    <div>some $ </div>
+
+                    <div style="margin-top: 20px">
+                        Token: {{$exchangeTokenBalance |async}} <b>DEX</b>
+                    </div>
+                    <div>some $</div>
+                </div>
+            </div>
+
+            <div>
+                <input class="input is-rounded dInput" placeholder="Enter Token Amount">
+            </div>
             <div class="depositBox">
-                <button type="button" class="btn depositbtn">Deposit</button>
+                <button type="button" class="btn depositbtn"><span id="withdraw" class="material-icons dIcon">
+                        publish
+                    </span>Withdraw</button>
             </div>
         </div>
     </div>
