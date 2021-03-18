@@ -18,6 +18,12 @@
   height: 100vh;
 }
 
+.card {
+  border-radius: 20px !important;
+  // padding: 5px;
+  overflow: hidden !important;
+}
+
 // .col-md-3 > .card, .col-md-6 > .card {
 //   height: 10%;
 // }
@@ -41,6 +47,7 @@
 .col-md-7 {
   padding: 0px;
   min-height: 100vh;
+  overflow: hidden;
 }
 
 // Column A
@@ -76,11 +83,11 @@
 // Wallet Stuff
 
 #accounts {
-  height: 50%;
+  height: 40%;
 }
 
 #deposit_withdraw {
-  height: calc(50% - 30px);
+  height: calc(60% - 30px);
 }
 
 #account_balances_chart {
