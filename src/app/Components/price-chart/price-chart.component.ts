@@ -5,7 +5,7 @@ import { Store, select } from '@ngrx/store'
 import { AppState, IOrder } from '../../../models/models'
 import { priceChartSelector } from '../../../Store/selectors'
 import { Observable } from 'rxjs';
-import { createChart, IChartApi, ISeriesApi } from 'lightweight-charts';
+import { createChart, IChartApi, isBusinessDay, ISeriesApi, TickMarkType } from 'lightweight-charts';
 
 @Component({
   selector: '[app-price-chart]',
@@ -31,23 +31,6 @@ export class PriceChartComponent implements OnInit, AfterViewInit {
   constructor(private store: Store<AppState>) {
     this.$priceChartData = store.pipe(select(priceChartSelector))
 
-    // let dom_element = document.querySelector("#chart");
-
-    // const chart = createChart("chart", { width: 400, height: 300 });
-    // const lineSeries = chart.addLineSeries();
-    // lineSeries.setData([
-    //   { time: '2019-04-11', value: 80.01 },
-    //   { time: '2019-04-12', value: 96.63 },
-    //   { time: '2019-04-13', value: 76.64 },
-    //   { time: '2019-04-14', value: 81.89 },
-    //   { time: '2019-04-15', value: 74.43 },
-    //   { time: '2019-04-16', value: 80.01 },
-    //   { time: '2019-04-17', value: 96.63 },
-    //   { time: '2019-04-18', value: 76.64 },
-    //   { time: '2019-04-19', value: 81.89 },
-    //   { time: '2019-04-20', value: 74.43 },
-    // ])
-
     // this.$priceChartData.subscribe(data => {
     //   this.lastPrice = data.lastPrice
     //   this.lastPriceChange = data.lastPriceChange
@@ -66,28 +49,30 @@ export class PriceChartComponent implements OnInit, AfterViewInit {
 
   ngOnInit() : void {
     let chart_dom = document.getElementById("chart")
-    this.chart = createChart(chart_dom, { height: 450, handleScale: true, handleScroll: true });
-    this.series = this.chart.addCandlestickSeries();
+    this.chart = createChart(chart_dom, {
+      height: 450,
+      timeScale: {
+        timeVisible: false
+      }
+    });
+    this.series = this.chart.addCandlestickSeries({
+      priceFormat: {
+        type: 'custom',
+        formatter: (price) => {
+          return 'DEX/ETH ' + parseFloat(price).toFixed(5)
+        }
+      }
+    });
 
     this.$priceChartData.subscribe(data => {
       this.lastPrice = data.lastPrice
       this.lastPriceChange = data.lastPriceChange
 
       this.series.setData(data.series)
+      console.log(data.series)
+      // this.chart.timeScale().resetTimeScale()
+      this.chart.timeScale().fitContent()
     })
-    // const lineSeries = chart.addLineSeries();
-    // lineSeries.setData([
-    //   { time: '2019-04-11', value: 80.01 },
-    //   { time: '2019-04-12', value: 96.63 },
-    //   { time: '2019-04-13', value: 76.64 },
-    //   { time: '2019-04-14', value: 81.89 },
-    //   { time: '2019-04-15', value: 74.43 },
-    //   { time: '2019-04-16', value: 80.01 },
-    //   { time: '2019-04-17', value: 96.63 },
-    //   { time: '2019-04-18', value: 76.64 },
-    //   { time: '2019-04-19', value: 81.89 },
-    //   { time: '2019-04-20', value: 74.43 },
-    // ])
   }
 
   priceSymbol(priceChange) {

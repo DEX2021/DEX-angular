@@ -4,6 +4,7 @@ import { AppState, IWeb3 } from '../models/models'
 import { ether, ETHER_ADDRESS, formatBalance, formatBalanceToEther, GREEN, RED, tokens2 } from './helpers'
 import * as moment from 'moment';
 import lodash from 'lodash';
+import { UTCTimestamp } from 'lightweight-charts'
 
 
 
@@ -228,13 +229,16 @@ export const priceChartSelector = createSelector(
             lastPrice,
             lastPriceChange: (lastPrice >= secondLastPrice ? '+' : '-'),
             series: [...buildGraphData(orders)]
+            // series: [{
+            //     data: buildGraphData(orders)
+            // }]
         })
     }
 )
 
 const buildGraphData = (orders) => {
     // Group orders by hour (for the graph)
-    orders = groupBy(orders, (o) => moment.unix(o.timestamp).startOf('minute').format())
+    orders = groupBy(orders, (o) => moment.unix(o.timestamp).startOf('hour').format())
     // Get each data where data exists
     const hours = Object.keys(orders)
     // Build the graph series
@@ -251,8 +255,17 @@ const buildGraphData = (orders) => {
         //     x: new Date(hour),
         //     y: [open.tokenPrice, high.tokenPrice, low.tokenPrice, close.tokenPrice]
         // }
+        const ltime = moment.unix(open.timestamp).toObject()
+
         return {
-            time: hour,
+            time: {
+                year: ltime.years,
+                month: ltime.months,
+                day: ltime.date,
+                hour: ltime.hours,
+                minute: ltime.minutes,
+                second: ltime.seconds
+            },
             open: open.tokenPrice,
             high: high.tokenPrice,
             low: low.tokenPrice,
