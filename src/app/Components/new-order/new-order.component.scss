@@ -1,0 +1,46 @@
+.card-header {
+    background-color: #1b2d4b;
+    color:white;
+    text-align: center;
+}
+
+#ngb-nav-2 {
+    background-color: green;
+    color: white;
+    border: none;
+}
+
+#ngb-nav-3 {
+    background-color: red;
+    color: white;
+    border: none;
+
+}
+
+.card-body {
+    background-color: #39527d ;
+    color: white;
+}
+
+input[type="text"], input:active, input:hover, input:focus {
+    background-color: #39527d;
+    color: white;
+}
+
+.dInput {
+    border-radius: 40px;
+    background-color: transparent;
+
+    border: 1px solid white;
+    font-size: 12px;
+
+
+}
+
+.btnBuy {
+    background-color: #228B22;
+}
+
+.btnSell {
+    background-color: #dc143c;
+}
