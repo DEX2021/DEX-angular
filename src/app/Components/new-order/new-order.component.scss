@@ -1,29 +1,46 @@
 .card-header {
-    background-color: #1b2d4b;
+    background-color: #303030;
     color:white;
     text-align: center;
 }
 
-#ngb-nav-2 {
-    background-color: green;
+
+.nav-item {
+    //background-color: #ff9902;
+    //background-color: #ff8c00;
+    background-color: #e67e00;
     color: white;
-    border: none;
 }
 
-#ngb-nav-3 {
+.nav-item.active {
     background-color: red;
+}
+
+a {
     color: white;
-    border: none;
 
 }
+
+// #ngb-nav-2 {
+//     background-color: green;
+//     color: white;
+//     border: none;
+// }
+
+// #ngb-nav-3 {
+//     background-color: red;
+//     color: white;
+//     border: none;
+
+// }
 
 .card-body {
-    background-color: #39527d ;
+    background-color: #303030 ;
     color: white;
 }
 
 input[type="text"], input:active, input:hover, input:focus {
-    background-color: #39527d;
+    background-color: #303030;
     color: white;
 }
 
@@ -38,9 +55,9 @@ input[type="text"], input:active, input:hover, input:focus {
 }
 
 .btnBuy {
-    background-color: #228B22;
+    background-color: #e67e00;
 }
 
 .btnSell {
-    background-color: #dc143c;
+    background-color: #e67e00;
 }

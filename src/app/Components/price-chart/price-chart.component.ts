@@ -16,11 +16,10 @@ export class PriceChartComponent implements OnInit, AfterViewInit {
   lastPriceChange: number = 0.00000
   lastPrice: number = 0.00000
   $priceChartData: Observable<any>
-  chart: IChartApi
-  series: ISeriesApi<"Candlestick">
 
   options = {
     chart: {
+      height: 450,
       type: 'candlestick',
     },
     series: [...dummyData],
@@ -28,8 +27,59 @@ export class PriceChartComponent implements OnInit, AfterViewInit {
     ...chartOptions
   }
 
+  options2 = {
+    series: [{
+      name: 'candle',
+      data: []
+    }],
+    chart: {
+      height: 450,
+      type: 'candlestick',
+    },
+    title: {
+      text: 'CandleStick Chart - Category X-axis',
+      align: 'left'
+    },
+    annotations: {
+      xaxis: [
+        {
+          x: 'Oct 06 14:00',
+          borderColor: '#00E396',
+          label: {
+            borderColor: '#00E396',
+            style: {
+              fontSize: '12px',
+              color: '#fff',
+              background: '#00E396'
+            },
+            orientation: 'horizontal',
+            offsetY: 7,
+            text: 'Annotation Test'
+          }
+        }
+      ]
+    },
+    tooltip: {
+      enabled: true,
+    },
+    xaxis: {
+      type: 'category',
+      labels: {
+        formatter: (price) => {
+          return 'DEX/ETH ' + parseFloat(price).toFixed(5)
+        }
+      }
+    },
+    yaxis: {
+      tooltip: {
+        enabled: true
+      }
+    }
+  };
+
   constructor(private store: Store<AppState>) {
     this.$priceChartData = store.pipe(select(priceChartSelector))
+
 
     // this.$priceChartData.subscribe(data => {
     //   this.lastPrice = data.lastPrice
@@ -43,37 +93,19 @@ export class PriceChartComponent implements OnInit, AfterViewInit {
     // })
   }
 
-  ngAfterViewInit() : void {
+  ngAfterViewInit(): void {
     console.log("AFTER VIEW INIT")
   }
 
-  ngOnInit() : void {
+  ngOnInit(): void {
     let chart_dom = document.getElementById("chart")
-    this.chart = createChart(chart_dom, {
-      height: 450,
-      timeScale: {
-        timeVisible: false
-      }
-    });
-    this.series = this.chart.addCandlestickSeries({
-      priceFormat: {
-        type: 'custom',
-        formatter: (price) => {
-          return 'DEX/ETH ' + parseFloat(price).toFixed(5)
-        }
-      }
-    });
 
-    this.$priceChartData.subscribe(data => {
-      this.lastPrice = data.lastPrice
-      this.lastPriceChange = data.lastPriceChange
 
-      this.series.setData(data.series)
-      console.log(data.series)
-      // this.chart.timeScale().resetTimeScale()
-      this.chart.timeScale().fitContent()
-    })
+    var chart = new ApexCharts(chart_dom, this.options)
+    chart.render();
   }
+
+
 
   priceSymbol(priceChange) {
     let output

@@ -4,7 +4,7 @@
 }
 
 :host#deposit_withdraw {
-    background-color: #25395f !important;
+    background-color: #303030 !important;
 }
 
 .row {
@@ -46,7 +46,7 @@
 }
 
 .depositbtn {
-  border-color: #39527d;
+  border-color: #e67e00;
   font-size: 26px;
   color: white;
   border-radius: 10px;
@@ -62,7 +62,7 @@
     // border: 2px solid #39527d;
     padding: 20px;
     color: white;
-    background-color: #1b2d4b;
+    background-color: #e67e00;
     font-size: 26px;
     // border-radius: 20px;
 
@@ -77,15 +77,15 @@
 }
 
 #deposit.material-icons {
-    color: #1285f3
+    color: #e67e00
 }
 
 #withdraw.material-icons {
-    color: #1285f3
+    color: #e67e00
 }
 
 input[type="text"], input:active, input:hover, input:focus {
-    background-color: #39527d;
+    background-color: whitesmoke;
     color: white;
     text-align: center; 
 }
@@ -102,7 +102,7 @@ input[type="text"], input:active, input:hover, input:focus {
     border-radius: 40px;
     background-color: transparent;
 
-    border: 2px solid #39527d;
+    border: 2px solid #e67e00;
     font-size: 22px;
     height: 20%;
     padding: 10px;
