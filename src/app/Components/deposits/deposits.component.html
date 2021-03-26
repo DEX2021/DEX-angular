@@ -21,12 +21,14 @@
             </div>
 
             <div class="amount_button">
-                <input class="input is-rounded dInput" placeholder="Enter Ethereum Amount">
+                <input #etherInput (focus)="tokenInput.value = null " class="input is-rounded dInput"
+                    placeholder="Enter Ethereum Amount">
             </div>
 
             <div class="depositBox">
 
-                <button type="button" class="btn depositbtn"><span id="deposit" class="material-icons dIcon">
+                <button type="button" (click)="deposit(tokenInput.value, etherInput.value)" class="btn depositbtn"><span
+                        id="deposit" class="material-icons dIcon">
                         get_app
                     </span>
                     Deposit</button>
@@ -54,10 +56,12 @@
             </div>
 
             <div class="amount_button">
-                <input class="input is-rounded dInput" placeholder="Enter Token Amount">
+                <input #tokenInput (focus)="etherInput.value = null " class="input is-rounded dInput"
+                    placeholder="Enter Token Amount">
             </div>
             <div class="depositBox opposite">
-                <button type="button" class="btn depositbtn"><span id="withdraw" class="material-icons dIcon">
+                <button #withdrawBtn type="button" (click)="withdraw(tokenInput.value, etherInput.value)"
+                    class="btn depositbtn"><span id="withdraw" class="material-icons dIcon">
                         publish
                     </span>Withdraw</button>
             </div>

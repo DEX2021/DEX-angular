@@ -22,6 +22,7 @@ export class DepositsComponent implements OnInit {
   $balancesLoading: Observable<Boolean>
 
   withdrawAmount: number = 0;
+  etherAmount: number;
 
 
 
@@ -40,6 +41,39 @@ export class DepositsComponent implements OnInit {
 
   async ngOnInit() {
     await this.loadBlockchainData();
+  }
+  depositInput(tokenValue) {
+    (<HTMLInputElement>document.getElementById("into")).disabled = true
+
+
+
+  }
+
+  deposit(tokenValue, etherValue) {
+    console.log("tokenValue", tokenValue)
+    console.log("etherValue", etherValue)
+    if (tokenValue) {
+      console.log("token has value");
+      this.TokenDepositAmountChanged(tokenValue)
+    }
+    else {
+      console.log("ether has value");
+      this.etherDepositAmountChanged(etherValue)
+    }
+  }
+
+  withdraw(tokenValue, etherValue) {
+
+    console.log("tokenValue", tokenValue)
+    console.log("etherValue", etherValue)
+    if (tokenValue) {
+      console.log("token has value");
+      this.TokenWithdrawAmountChanged(tokenValue)
+    }
+    else {
+      console.log("ether has value");
+      this.etherWithdrawAmountChanged(etherValue)
+    }
   }
 
   async loadBlockchainData() {
