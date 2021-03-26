@@ -1420,12 +1420,21 @@
     "5777": {
       "events": {},
       "links": {},
+<<<<<<< HEAD
       "address": "0x22CdA22C540A4623aEfE5C690E43c645c9c8eA2a",
       "transactionHash": "0x6a1004b532209583aa93b9c7940ae1fdc727cd6234c5dadf69988e9d818682e4"
     }
   },
   "schemaVersion": "3.3.3",
   "updatedAt": "2021-03-09T22:02:00.779Z",
+=======
+      "address": "0x3F5f32e70F882412c2197E2F684563949B334EF6",
+      "transactionHash": "0x8e81a2c3d250799d779ca6d120e25010f08fb9b8b00f0cfdeaf3bcaed31df170"
+    }
+  },
+  "schemaVersion": "3.3.3",
+  "updatedAt": "2021-03-18T19:20:26.167Z",
+>>>>>>> Wallet
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

@@ -49,16 +49,9 @@ export class AppComponent implements OnInit {
     }
     //console.log("this is the exchange:", exchange)
 
-    //this.store.dispatch(new Postactions.web3Loaded(this.object))
-    var account = await loadAccount(web3, this.store)
-    //console.log("this is the web3 shiet: ", account)
-
-    //console.log("this is the exchange: ", this.$exchange)
-    //await loadAllOrders(exchange, this.store);
-    this.appLoaded = true;
-
+    await loadAccount(this.web3, this.store)
     await loadAllOrders(this.store, exchange);
-
+    this.appLoaded = true;
   }
 
 }

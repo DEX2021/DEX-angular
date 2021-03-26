@@ -4,3 +4,113 @@
 @import '~bootstrap/scss/bootstrap';
 
 
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css");
+
+:host {
+  width: 100vw;
+  height: 100vh;
+}
+
+.container {
+  position: absolute;
+  left: 76px;
+  min-width: calc(100% - 76px);
+  height: 100vh;
+}
+
+.card {
+  border-radius: 20px !important;
+  // padding: 5px;
+  overflow: hidden !important;
+}
+
+// .col-md-3 > .card, .col-md-6 > .card {
+//   height: 10%;
+// }
+
+.card:nth-child(n+1) {
+  margin-bottom: 30px;
+  margin: 10px;
+}
+
+.col-md-3 > .card:last-child,
+.col-md-5 > .card:last-child,
+.col-md-6 > .card:last-child,
+.col-md-7 > .card:last-child {
+  margin-bottom: 0px;
+}
+
+.col-md-2,
+.col-md-3,
+.col-md-5,
+.col-md-6,
+.col-md-7 {
+  padding: 0px;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+// Column A
+
+#price_chart_info {
+  height: 5%;
+}
+
+#price_chart {
+  height: 60%;
+}
+
+#orders {
+  height: calc(35% - 40px);
+}
+
+// Column B
+
+#order_book {
+  height: calc(100% - 20px);
+}
+
+// Column C
+
+#buy_sell {
+  height: calc(50% - 20px);
+}
+
+#all_trades {
+  height: calc(50% - 10px);
+}
+
+// Wallet Stuff
+
+#accounts {
+  height: 40%;
+}
+
+#deposit_withdraw {
+  height: calc(60% - 30px);
+}
+
+#account_balances_chart {
+  height: 50%;
+}
+
+#tbd {
+  height: calc(50% - 30px);
+}
+
+// Tabs design
+
+.nav-tabs .nav-link {
+  margin-bottom: 0px !important;
+  border: 0px solid transparent !important;
+  border-top-left-radius: 0px !important;
+  border-top-right-radius: 0px !important;
+}
+
+.nav-tabs .nav-item {
+  border-right: 1px solid #dee2e6 !important;
+}
+
+.nav-tabs .nav-item:last-child {
+  border-right: none !important;
+}

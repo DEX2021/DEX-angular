@@ -6,6 +6,50 @@ import { defaultWeb3State, defaultTokenState, defaultExchangeState, defaultOrder
 export type Action = PostActions.All
 
 
+const defaultTokenState: IToken = {
+  token: "nothing",
+  balance: 0,
+  loaded: false
+}
+
+const defaultExchangeState: IExchange = {
+  exchange: "nothing",
+  etherBalance: 0,
+  tokenBalance: 0,
+  loaded: false,
+  balancesLoading: true,
+  etherDepositAmountChanged: 0,
+  etherWithdrawAmountChanged: 0,
+  tokenDepositAmount: 0,
+  tokenWithdrawAmount: 0,
+  orderCancelling: false,
+  orderFilling: false,
+  orders: {
+    cancelled: {
+      loaded: false,
+      data: []
+    },
+    filled: {
+      loaded: false,
+      data: []
+    },
+    orders: {
+      loaded: false,
+      data: []
+    }
+  },
+  buyOrder: {
+    amount: 0,
+    price: 0,
+    making: false,
+  },
+  sellOrder: {
+    amount: 0,
+    price: 0,
+    making: false,
+  }
+}
+
 const newState = (state, newData) => {
   return Object.assign({}, state, newData)
 }

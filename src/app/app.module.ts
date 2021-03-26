@@ -11,7 +11,6 @@ import { StoreModule } from '@ngrx/store'; // NgRx Store
 import { StoreDevtoolsModule } from '@ngrx/store-devtools'; // NgRx Store Developer Tools
 import rootReducer from '../Store/reducers'; // TODO: Remove the test reducer
 import { NavbarComponent } from './Components/navbar/navbar.component';
-import { ContentComponent } from './Components/content/content.component';
 import { DepositsComponent } from './Components/deposits/deposits.component';
 import { PriceChartComponent } from './Components/price-chart/price-chart.component';
 import { TradesComponent } from './Components/trades/trades.component';
@@ -19,18 +18,24 @@ import { OrderBookComponent } from './Components/order-book/order-book.component
 import { TransactionsComponent } from './Components/transactions/transactions.component';
 import { NewOrderComponent } from './Components/new-order/new-order.component';
 
+import { NumericDirective } from './Directives/numeric.directive';
+import { TradingComponent } from './Pages/trading/trading.component';
+import { WalletComponent } from './Pages/wallet/wallet.component';
+
+export const metaReducers: MetaReducer<IWeb3>[] = !environment.production ? [storeFreeze] : [];
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
-    ContentComponent,
     DepositsComponent,
     PriceChartComponent,
     TradesComponent,
     OrderBookComponent,
     TransactionsComponent,
     NewOrderComponent,
-
+    NumericDirective,
+    TradingComponent,
+    WalletComponent
   ],
   imports: [
     BrowserModule,

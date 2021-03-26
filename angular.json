@@ -30,7 +30,6 @@
             "styles": [
               "src/styles.scss",
               "./node_modules/bootstrap/dist/css/bootstrap.min.css"
-
             ],
             "scripts": []
           },
@@ -125,6 +124,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "dex"
+    }
+  },
+  "defaultProject": "dex",
+  "cli": {
+    "analytics": false
+  }
 }

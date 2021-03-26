@@ -18645,12 +18645,21 @@
         }
       },
       "links": {},
+<<<<<<< HEAD
       "address": "0x45181d2867449cb84bC748610122DaCa904B8B98",
       "transactionHash": "0x7e5c11156e65fd3738fa3cf5bd791469319b39112b47a45abb7b3f3a2be8cd5b"
     }
   },
   "schemaVersion": "3.3.3",
   "updatedAt": "2021-03-09T22:02:00.741Z",
+=======
+      "address": "0x928b842a794E0083469390eCEFd43128D6ED99A7",
+      "transactionHash": "0xafc07d41f0ebb1e9be3916a973a1f02dba525409af79912568c221c105b93bde"
+    }
+  },
+  "schemaVersion": "3.3.3",
+  "updatedAt": "2021-03-18T19:20:26.136Z",
+>>>>>>> Wallet
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

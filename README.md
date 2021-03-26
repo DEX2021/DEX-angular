@@ -9,3 +9,11 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 # Required System Wide Dependencies  
 - Truffle: `npm i -g truffle`
+
+
+# Launching the Project
+Steps:
+1. `truffle deploy`
+2. `truffle exec Scripts/seed-exchange.js`
+3. `ng serve`
+4. 💰 Profit

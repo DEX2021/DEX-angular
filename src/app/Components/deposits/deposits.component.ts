@@ -22,7 +22,12 @@ export class DepositsComponent implements OnInit {
   $exchangeTokenBalance: Observable<AppState>
   $balancesLoading: Observable<Boolean>
 
-  constructor(private store: Store<AppState>) {
+  withdrawAmount: number = 0;
+  etherAmount: number;
+
+
+
+  constructor(private web3: Web3, private store: Store<AppState>) {
     this.$exchange = this.store.pipe(select(exchangeSelector))
     this.$token = this.store.pipe(select(tokenSelector))
     this.$account = this.store.pipe(select(accountSelector))
@@ -35,9 +40,40 @@ export class DepositsComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.$web3 = await loadWeb3(this.store);
+    await this.loadBlockchainData();
+  }
+  depositInput(tokenValue) {
+    (<HTMLInputElement>document.getElementById("into")).disabled = true
 
-    this.loadBlockchainData();
+
+
+  }
+
+  deposit(tokenValue, etherValue) {
+    console.log("tokenValue", tokenValue)
+    console.log("etherValue", etherValue)
+    if (tokenValue) {
+      console.log("token has value");
+      this.TokenDepositAmountChanged(tokenValue)
+    }
+    else {
+      console.log("ether has value");
+      this.etherDepositAmountChanged(etherValue)
+    }
+  }
+
+  withdraw(tokenValue, etherValue) {
+
+    console.log("tokenValue", tokenValue)
+    console.log("etherValue", etherValue)
+    if (tokenValue) {
+      console.log("token has value");
+      this.TokenWithdrawAmountChanged(tokenValue)
+    }
+    else {
+      console.log("ether has value");
+      this.etherWithdrawAmountChanged(etherValue)
+    }
   }
 
   async loadBlockchainData() {
@@ -45,7 +81,11 @@ export class DepositsComponent implements OnInit {
     var token = fetchReduxData(this.store, tokenSelector)
     var account = fetchReduxData(this.store, accountSelector)
 
-    await loadBalances(this.$web3, exchange, token, account, this.store)
+    console.log("Xchange", exchange)
+    console.log("Account", account)
+    console.log("Token", token)
+
+    await loadBalances(this.web3, exchange, token, account, this.store)
   }
 
   async etherDepositAmountChanged(etherAmount) {
