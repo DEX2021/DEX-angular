@@ -1,18 +1,14 @@
 export const chartOptions = {
   chart: {
     type: "candlestick",
-    animations: { enabled: false },
-    toolbar: { show: false },
+    animations: { enabled: true },
+    toolbar: { show: true },
     width: "100%",
     height: "80%",
   },
-  fill: {
-    colors: ["yellow"],
-  },
-
   tooltip: {
     enabled: true,
-    theme: false,
+    theme: "dark",
     style: {
       fontSize: "12px",
       fontFamily: undefined,
@@ -56,8 +52,8 @@ export const chartOptions = {
       minWidth: 0,
       maxWidth: 160,
       style: {
-        color: "#fff",
-        fontSize: "8px",
+        colors: "#fff",
+        fontSize: "12px",
         cssClass: "apexcharts-yaxis-label",
       },
       offsetX: 0,

@@ -13,7 +13,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let order of ($myFilledOrders | async).data; let i = index">
-                        <td class="text-muted">{{ order.formattedTimestamp }}</td>
+                        <td>{{ order.formattedTimestamp }}</td>
                         <td class="text-{{order.orderTypeClass}}">
                             {{ order.orderSign }}{{ order.tokenAmount }}
                         </td>

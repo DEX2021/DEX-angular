@@ -36,19 +36,19 @@ a {
 
 .card-body {
     background-color: #303030 ;
-    color: white;
+    color: whitesmoke;
 }
 
 input[type="text"], input:active, input:hover, input:focus {
     background-color: #303030;
-    color: white;
+    color: whitesmoke;
 }
 
 .dInput {
     border-radius: 40px;
     background-color: transparent;
 
-    border: 1px solid white;
+    border: 1px solid whitesmoke;
     font-size: 12px;
 
 
@@ -56,8 +56,10 @@ input[type="text"], input:active, input:hover, input:focus {
 
 .btnBuy {
     background-color: #e67e00;
+    color: whitesmoke;
 }
 
 .btnSell {
     background-color: #e67e00;
+    color: whitesmoke;
 }

@@ -20,7 +20,7 @@
                             placeholder="Buy Price" required />
                     </div>
                 </div>
-                <button type="submit" class="btnBuy btn btn-primary btn-sm btn-block">Buy Order</button>
+                <button type="submit" class="btnBuy btn btn-sm btn-block">Buy Order</button>
                 <small *ngIf="($buyOrder | async).amount > 0 && ($buyOrder | async).price > 0">Total:
                     {{ ($buyOrder | async).amount * ($buyOrder | async).price }} DEX</small>
             </form>
@@ -46,7 +46,7 @@
                             placeholder="Sell Price" required />
                     </div>
                 </div>
-                <button type="submit" class="btnSell btn btn-primary btn-sm btn-block">Sell Order</button>
+                <button type="submit" class="btnSell btn  btn-sm btn-block">Sell Order</button>
                 <small *ngIf="($sellOrder | async).amount > 0 && ($sellOrder | async).price > 0">Total:
                     {{ ($sellOrder | async).amount * ($sellOrder | async).price }} ETH</small>
             </form>
