@@ -4,6 +4,7 @@ import { AppState, IWeb3 } from '../models/models'
 import { ether, ETHER_ADDRESS, formatBalance, formatBalanceToEther, GREEN, RED, tokens2 } from './helpers'
 import * as moment from 'moment';
 import lodash from 'lodash';
+import { UTCTimestamp } from 'lightweight-charts'
 
 
 
@@ -84,7 +85,7 @@ export const orderBookSelector = createSelector(
         const sellOrders = get(orders.data, 'sell', [])
         orders.data = {
             ...orders.data,
-            sellOrders: sellOrders.sort((a,b) => b.tokenPrice - a.tokenPrice),
+            sellOrders: sellOrders.sort((a,b) => a.tokenPrice - b.tokenPrice),
         }
 
         return orders;
@@ -227,9 +228,10 @@ export const priceChartSelector = createSelector(
         return({
             lastPrice,
             lastPriceChange: (lastPrice >= secondLastPrice ? '+' : '-'),
-            series: [{
-                data: buildGraphData(orders)
-            }]
+            series: [...buildGraphData(orders)]
+            // series: [{
+            //     data: buildGraphData(orders)
+            // }]
         })
     }
 )
@@ -249,9 +251,25 @@ const buildGraphData = (orders) => {
         const low = minBy(group, 'tokenPrice') // Low Price
         const close = group[group.length - 1] // Last order
 
+        // return {
+        //     x: new Date(hour),
+        //     y: [open.tokenPrice, high.tokenPrice, low.tokenPrice, close.tokenPrice]
+        // }
+        const ltime = moment.unix(open.timestamp).toObject()
+
         return {
-            x: new Date(hour),
-            y: [open.tokenPrice, high.tokenPrice, low.tokenPrice, close.tokenPrice]
+            time: {
+                year: ltime.years,
+                month: ltime.months,
+                day: ltime.date,
+                hour: ltime.hours,
+                minute: ltime.minutes,
+                second: ltime.seconds
+            },
+            open: open.tokenPrice,
+            high: high.tokenPrice,
+            low: low.tokenPrice,
+            close: close.tokenPrice
         }
     })
 
