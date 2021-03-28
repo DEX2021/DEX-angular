@@ -228,10 +228,9 @@ export const priceChartSelector = createSelector(
         return({
             lastPrice,
             lastPriceChange: (lastPrice >= secondLastPrice ? '+' : '-'),
-            series: [...buildGraphData(orders)]
-            // series: [{
-            //     data: buildGraphData(orders)
-            // }]
+            series: [{
+                data: buildGraphData(orders)
+            }]
         })
     }
 )
@@ -251,25 +250,9 @@ const buildGraphData = (orders) => {
         const low = minBy(group, 'tokenPrice') // Low Price
         const close = group[group.length - 1] // Last order
 
-        // return {
-        //     x: new Date(hour),
-        //     y: [open.tokenPrice, high.tokenPrice, low.tokenPrice, close.tokenPrice]
-        // }
-        const ltime = moment.unix(open.timestamp).toObject()
-
         return {
-            time: {
-                year: ltime.years,
-                month: ltime.months,
-                day: ltime.date,
-                hour: ltime.hours,
-                minute: ltime.minutes,
-                second: ltime.seconds
-            },
-            open: open.tokenPrice,
-            high: high.tokenPrice,
-            low: low.tokenPrice,
-            close: close.tokenPrice
+            x: new Date(hour),
+            y: [open.tokenPrice, high.tokenPrice, low.tokenPrice, close.tokenPrice]
         }
     })
 

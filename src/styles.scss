@@ -116,3 +116,17 @@
 .nav-tabs .nav-item:last-child {
   border-right: none !important;
 }
+
+// Scrollbar
+
+::-webkit-scrollbar {
+  width: 2px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: white;
+}

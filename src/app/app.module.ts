@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from "@angular/forms"
 import { AppRoutingModule } from './app-routing.module';
@@ -46,6 +47,7 @@ export const metaReducers: MetaReducer<IWeb3>[] = !environment.production ? [sto
     NgbModule,
     AppRoutingModule,
     FormsModule,
+    HttpClientModule,
     StoreModule.forRoot({ root: rootReducer }, {
       runtimeChecks: {
         strictStateImmutability: false,
