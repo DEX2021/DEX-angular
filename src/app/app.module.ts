@@ -25,6 +25,7 @@ import { NewOrderComponent } from './Components/new-order/new-order.component';
 import { NumericDirective } from './Directives/numeric.directive';
 import { TradingComponent } from './Pages/trading/trading.component';
 import { WalletComponent } from './Pages/wallet/wallet.component';
+import { AccountBalancesComponent } from './Components/account-balances/account-balances.component';
 
 export const metaReducers: MetaReducer<IWeb3>[] = !environment.production ? [storeFreeze] : [];
 @NgModule({
@@ -39,7 +40,8 @@ export const metaReducers: MetaReducer<IWeb3>[] = !environment.production ? [sto
     NewOrderComponent,
     NumericDirective,
     TradingComponent,
-    WalletComponent
+    WalletComponent,
+    AccountBalancesComponent
   ],
   imports: [
     BrowserModule,
