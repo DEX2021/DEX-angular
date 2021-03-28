@@ -79,7 +79,9 @@ export class PriceChartComponent implements OnInit {
 
   constructor(private store: Store<AppState>) {
     this.$priceChartData = store.pipe(select(priceChartSelector))
+  }
 
+  ngOnInit(): void {
     this.$priceChartData.subscribe(data => {
       this.lastPrice = data.lastPrice
       this.lastPriceChange = data.lastPriceChange
@@ -91,10 +93,6 @@ export class PriceChartComponent implements OnInit {
       var chart = new ApexCharts(document.querySelector("#chart"), this.options);
       chart.render()
     })
-  }
-
-  ngOnInit(): void {
-    
   }
 
 
