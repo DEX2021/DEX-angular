@@ -4,7 +4,7 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AppState } from 'src/models/models';
 import { loadBalances, depositEther, withdrawEther, depositToken, withdrawToken } from 'src/Store/interactions';
-import { accountSelector, balancesLoadingSelector, etherBalanceSelector, exchangeEtherBalanceSelector, exchangeSelector, exchangeTokenBalanceSelector, tokenBalanceSelector, tokenSelector } from 'src/Store/selectors';
+import { accountSelector, balancesLoadingSelector, etherBalanceSelector, exchangeEtherBalanceSelector, exchangeSelector, exchangeTokenBalanceSelector, tokenBalanceSelector, tokenSelector, lastPriceSelector } from 'src/Store/selectors';
 import Web3 from 'web3'
 
 @Component({
@@ -25,6 +25,7 @@ export class DepositsComponent implements OnInit {
   withdrawAmount: number = 0;
   etherAmount: number;
 
+  $lastPrice: Observable<number>
   ethereumPrice: number = 0;
 
 
@@ -39,14 +40,15 @@ export class DepositsComponent implements OnInit {
     this.$exchangeEtherBalance = this.store.pipe(select(exchangeEtherBalanceSelector))
     this.$exchangeTokenBalance = this.store.pipe(select(exchangeTokenBalanceSelector))
     this.$balancesLoading = this.store.pipe(select(balancesLoadingSelector))
+    this.$lastPrice = this.store.pipe(select(lastPriceSelector));
 
   }
 
-  async getEtheriumPrice() {
+  getEtheriumPrice() {
     var req = this.http.get("http://dex.berntsen.solutions/");
 
     req.subscribe(res => {
-      var data = res.data;
+      var data = res['data'];
 
       var ethereum = data.filter(o => o.symbol == "ETH")[0];
       var quote = ethereum.quote["USD"];
@@ -62,8 +64,10 @@ export class DepositsComponent implements OnInit {
   }
 
   async ngOnInit() {
-    await this.getEtheriumPrice();
+    this.getEtheriumPrice();
     await this.loadBlockchainData();
+
+    console.log("ETHEADASD", this.ethereumPrice)
   }
   depositInput(tokenValue) {
     (<HTMLInputElement>document.getElementById("into")).disabled = true

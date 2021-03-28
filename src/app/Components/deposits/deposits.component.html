@@ -15,7 +15,7 @@
                     <div style="margin-top: 20px">
                         Token: {{$tokenBalance |async}} <b>DEX</b>
                     </div>
-                    <div>${{ formatCurrency(($tokenBalance | async) * ethereumPrice) }}</div>
+                    <div>${{ formatCurrency(($tokenBalance | async) * ($lastPrice | async)) }}</div>
 
                 </div>
             </div>
@@ -51,7 +51,7 @@
                     <div style="margin-top: 20px">
                         Token: {{$exchangeTokenBalance |async}} <b>DEX</b>
                     </div>
-                    <div>${{ formatCurrency(($exchangeTokenBalance | async) * ethereumPrice) }}</div>
+                    <div>${{ formatCurrency(($exchangeTokenBalance | async) * ($lastPrice | async)) }}</div>
                 </div>
             </div>
 

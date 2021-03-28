@@ -10,11 +10,11 @@ import { accountSelector, exchangeEtherBalanceSelector, exchangeSelector, exchan
 import Web3 from 'web3';
 
 @Component({
-  selector: '[app-account-balances]',
-  templateUrl: './account-balances.component.html',
-  styleUrls: ['./account-balances.component.scss']
+  selector: '[app-exchange-wallet]',
+  templateUrl: './exchange-wallet.component.html',
+  styleUrls: ['./exchange-wallet.component.scss']
 })
-export class AccountBalancesComponent implements OnInit {
+export class ExchangeWalletComponent implements OnInit {
   $exchange: Observable<AppState>
   $token: Observable<AppState>
   $account: Observable<AppState>
@@ -36,7 +36,7 @@ export class AccountBalancesComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
 
-    let chart_dom = document.getElementById("chart")
+    let chart_dom = document.getElementById("chart2")
     await this.loadBlockchainData()
     await this.getEtheriumPrice()
 
@@ -86,6 +86,7 @@ export class AccountBalancesComponent implements OnInit {
         theme: "dark",
       },
       legend: {
+        position: 'left',
         labels: {
           colors: 'white'
         }
