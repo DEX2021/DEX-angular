@@ -25,7 +25,7 @@ export class DepositsComponent implements OnInit {
   withdrawAmount: number = 0;
   etherAmount: number;
 
-  ethereumPrice: number;
+  ethereumPrice: number = 0;
 
 
 
@@ -48,10 +48,17 @@ export class DepositsComponent implements OnInit {
     req.subscribe(res => {
       var data = res.data;
 
-      var as = data.filter(o => o.symbol == "ETH")[0]
-      console.log("Ethereum", as)
-      console.log("Ethereum Price", as.quote["USD"].price)
+      var ethereum = data.filter(o => o.symbol == "ETH")[0];
+      var quote = ethereum.quote["USD"];
+
+      this.ethereumPrice = quote.price;
     })
+  }
+
+  formatCurrency(x)
+  {
+    x = Math.round(x * 100) / 100
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
   }
 
   async ngOnInit() {

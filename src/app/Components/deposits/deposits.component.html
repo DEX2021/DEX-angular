@@ -10,12 +10,12 @@
                     <div>
                         Ether: {{$etherBalance | async}} <b>ETH</b>
                     </div>
-                    <div>some $ </div>
+                    <div>${{ formatCurrency(($etherBalance | async) * ethereumPrice) }}</div>
 
                     <div style="margin-top: 20px">
                         Token: {{$tokenBalance |async}} <b>DEX</b>
                     </div>
-                    <div>some $</div>
+                    <div>${{ formatCurrency(($tokenBalance | async) * ethereumPrice) }}</div>
 
                 </div>
             </div>
@@ -46,12 +46,12 @@
                     <div>
                         Ether: {{$exchangeEtherBalance | async}} <b>ETH</b>
                     </div>
-                    <div>some $ </div>
+                    <div>${{ formatCurrency(($exchangeEtherBalance | async) * ethereumPrice) }}</div>
 
                     <div style="margin-top: 20px">
                         Token: {{$exchangeTokenBalance |async}} <b>DEX</b>
                     </div>
-                    <div>some $</div>
+                    <div>${{ formatCurrency(($exchangeTokenBalance | async) * ethereumPrice) }}</div>
                 </div>
             </div>
 
