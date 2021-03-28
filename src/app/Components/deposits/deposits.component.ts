@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterContentInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AppState } from 'src/models/models';
@@ -24,9 +25,11 @@ export class DepositsComponent implements OnInit {
   withdrawAmount: number = 0;
   etherAmount: number;
 
+  ethereumPrice: number;
 
 
-  constructor(private web3: Web3, private store: Store<AppState>) {
+
+  constructor(private web3: Web3, private store: Store<AppState>, private http: HttpClient) {
     this.$exchange = this.store.pipe(select(exchangeSelector))
     this.$token = this.store.pipe(select(tokenSelector))
     this.$account = this.store.pipe(select(accountSelector))
@@ -39,7 +42,20 @@ export class DepositsComponent implements OnInit {
 
   }
 
+  async getEtheriumPrice() {
+    var req = this.http.get("http://dex.berntsen.solutions/");
+
+    req.subscribe(res => {
+      var data = res.data;
+
+      var as = data.filter(o => o.symbol == "ETH")[0]
+      console.log("Ethereum", as)
+      console.log("Ethereum Price", as.quote["USD"].price)
+    })
+  }
+
   async ngOnInit() {
+    await this.getEtheriumPrice();
     await this.loadBlockchainData();
   }
   depositInput(tokenValue) {
