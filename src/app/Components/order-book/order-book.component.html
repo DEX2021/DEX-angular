@@ -39,7 +39,7 @@
     <table *ngIf="($orders | async).loaded === true" class="table table-sm small" class="table table-sm">
         <tbody>
             <tr>
-                <th scope="col">{{ lastPrice }} <span
+                <th scope="col">{{ $lastPrice | async }} <span
                         [ngClass]="{'book_arrow_up': priceSymbol(lastPriceChange) === 'north_east', 'book_arrow_down': priceSymbol(lastPriceChange) === 'south_west'}"
                         class="material-icons">{{ priceSymbol(lastPriceChange) }}</span></th>
             </tr>

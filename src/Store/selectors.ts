@@ -209,6 +209,24 @@ export const myOpenOrderSelector = createSelector(
     }
 )
 
+export const lastPriceSelector = createSelector(
+    filledOrdersSelector,
+    (filledOrders) => {
+        let orders = filledOrders.data;
+        // Sort orders by date ascending to compare history
+        orders = orders.sort((a,b) => a.timestamp - b.timestamp)
+        // Decorate orders - add display attributes
+        orders = orders.map((o) => decorateOrder(o))
+        // Get last 2 order for final price & price change
+        let secondLastOrder, lastOrder
+        [secondLastOrder, lastOrder] = orders.slice(orders.length - 2, orders.length)
+        // Get last order price
+        const lastPrice = get(lastOrder, 'tokenPrice', 0)
+
+        return lastPrice
+    }
+)
+
 export const priceChartSelector = createSelector(
     filledOrdersSelector,
     (filledOrders) => {

@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { fillOrder } from 'src/Store/interactions';
 import { AppState, IOrder } from '../../../models/models';
-import { accountSelector, exchangeSelector, orderBookSelector, priceChartSelector } from '../../../Store/selectors';
+import { accountSelector, exchangeSelector, orderBookSelector, priceChartSelector, lastPriceSelector } from '../../../Store/selectors';
 
 enum OrderBookSorting {
   All,
@@ -21,7 +21,7 @@ export class OrderBookComponent implements OnInit {
   $orders: Observable<IOrder>
   $exchange: Observable<AppState>
   $account: Observable<AppState>
-  lastPrice: number = 0.00000
+  $lastPrice: Observable<number>
   lastPriceChange: string = '+'
   $priceChartData: Observable<any>
   sortType: OrderBookSorting = OrderBookSorting.All
@@ -35,9 +35,9 @@ export class OrderBookComponent implements OnInit {
     this.$exchange = this.store.pipe(select(exchangeSelector));
     this.$account = this.store.pipe(select(accountSelector));
     this.$priceChartData = this.store.pipe(select(priceChartSelector));
+    this.$lastPrice = this.store.pipe(select(lastPriceSelector));
 
     this.$priceChartData.subscribe(data => {
-      this.lastPrice = data.lastPrice;
       this.lastPriceChange = data.lastPriceChange;
     })
 
