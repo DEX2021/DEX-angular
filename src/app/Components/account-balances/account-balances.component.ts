@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { fetchReduxData } from 'src/helpers/redux.helper';
 import { AppState } from 'src/models/models';
 import { loadBalances } from 'src/Store/interactions';
-import { accountSelector, exchangeEtherBalanceSelector, exchangeSelector, exchangeTokenBalanceSelector, tokenSelector, lastPriceSelector } from 'src/Store/selectors';
+import { accountSelector, exchangeEtherBalanceSelector, exchangeSelector, exchangeTokenBalanceSelector, tokenSelector, lastPriceSelector, etherBalanceSelector, tokenBalanceSelector } from 'src/Store/selectors';
 import Web3 from 'web3';
 
 @Component({
@@ -49,7 +49,8 @@ export class AccountBalancesComponent implements OnInit {
 
   async getEtheriumPrice() {
     var req = this.http.get("http://dex.berntsen.solutions/").toPromise();
-    var { data } = await req;
+    var { data }: any = await req;
+
 
     var ethereum = data.filter(o => o.symbol == "ETH")[0];
     var quote = ethereum.quote["USD"];
@@ -66,16 +67,15 @@ export class AccountBalancesComponent implements OnInit {
     await loadBalances(this.web3, exchange, token, account, this.store)
   }
 
-  formatCurrency(x)
-  {
+  formatCurrency(x) {
     return Math.round(x * 100) / 100
     // return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
   }
 
   async setOptions() {
     var lastPrice = fetchReduxData(this.store, lastPriceSelector)
-    var ether = fetchReduxData(this.store, exchangeEtherBalanceSelector) * this.ethereumPrice
-    var token = fetchReduxData(this.store, exchangeTokenBalanceSelector) * lastPrice
+    var ether = fetchReduxData(this.store, etherBalanceSelector) * this.ethereumPrice
+    var token = fetchReduxData(this.store, tokenBalanceSelector) * lastPrice
 
     var options = {
       chart: {
@@ -86,6 +86,8 @@ export class AccountBalancesComponent implements OnInit {
         theme: "dark",
       },
       legend: {
+        fontSize: "24px",
+        position: "left",
         labels: {
           colors: 'white'
         }
@@ -93,10 +95,10 @@ export class AccountBalancesComponent implements OnInit {
 
       series: [this.formatCurrency(ether), this.formatCurrency(token)],
       labels: ['Ether', 'Token'],
-      
+
       chartOptions: {
         dataLabels: {
-          formatter: function(val) {
+          formatter: function (val) {
             return `\$${val}`
           },
           style: {

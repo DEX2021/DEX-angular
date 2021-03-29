@@ -49,7 +49,7 @@ export class ExchangeWalletComponent implements OnInit {
 
   async getEtheriumPrice() {
     var req = this.http.get("http://dex.berntsen.solutions/").toPromise();
-    var { data } = await req;
+    var { data }: any = await req;
 
     var ethereum = data.filter(o => o.symbol == "ETH")[0];
     var quote = ethereum.quote["USD"];
@@ -66,8 +66,7 @@ export class ExchangeWalletComponent implements OnInit {
     await loadBalances(this.web3, exchange, token, account, this.store)
   }
 
-  formatCurrency(x)
-  {
+  formatCurrency(x) {
     return Math.round(x * 100) / 100
     // return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
   }
@@ -86,6 +85,7 @@ export class ExchangeWalletComponent implements OnInit {
         theme: "dark",
       },
       legend: {
+        fontSize: "24px",
         position: 'left',
         labels: {
           colors: 'white'
@@ -94,10 +94,10 @@ export class ExchangeWalletComponent implements OnInit {
 
       series: [this.formatCurrency(ether), this.formatCurrency(token)],
       labels: ['Ether', 'Token'],
-      
+
       chartOptions: {
         dataLabels: {
-          formatter: function(val) {
+          formatter: function (val) {
             return `\$${val}`
           },
           style: {
