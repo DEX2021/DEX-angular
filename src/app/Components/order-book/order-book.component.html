@@ -16,46 +16,48 @@
             <span id='book_up' class="material-icons">trending_up</span>
         </button>
     </div>
-    <table *ngIf="($orders | async).loaded === true" class="table table-sm small">
-        <tbody>
-            <tr>
-                <th scope="col">Amount(DEX)</th>
-                <th scope="col">Price(DEX/ETH)</th>
-                <th scope="col">Total(ETH)</th>
-            </tr>
-        </tbody>
-    </table>
-    <table *ngIf="($orders | async).loaded === true && sortType === sortTypes.Sold || sortType === sortTypes.All"
-        class="table table-sm small">
-        <tbody>
-            <tr id='order' *ngFor="let order of ($orders | async).data.sell; let i = index"
-                (click)="fillingOrder(order)" ngbTooltip="Click the order to sell">
-                <td>{{ order.tokenAmount }}</td>
-                <td class="text-{{order.orderTypeClass}}">{{ order.tokenPrice }}</td>
-                <td>{{ order.etherAmount }}</td>
-            </tr>
-        </tbody>
-    </table>
-    <table *ngIf="($orders | async).loaded === true" class="table table-sm small" class="table table-sm">
-        <tbody>
-            <tr>
-                <th scope="col">{{ $lastPrice | async }} <span
-                        [ngClass]="{'book_arrow_up': priceSymbol(lastPriceChange) === 'north_east', 'book_arrow_down': priceSymbol(lastPriceChange) === 'south_west'}"
-                        class="material-icons">{{ priceSymbol(lastPriceChange) }}</span></th>
-            </tr>
-        </tbody>
-    </table>
-    <table *ngIf="($orders | async).loaded === true && sortType === sortTypes.Bought || sortType === sortTypes.All"
-        class="table table-sm small" class="table table-sm small">
-        <tbody>
-            <tr *ngFor="let order of ($orders | async).data.buy; let i = index" (click)="fillingOrder(order)"
-                ngbTooltip="Click the order to buy">
-                <td>{{ order.tokenAmount }}</td>
-                <td class="text-{{order.orderTypeClass}}">{{ order.tokenPrice }}</td>
-                <td>{{ order.etherAmount }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="order_data">
+        <table *ngIf="($orders | async).loaded === true" class="table table-sm small">
+            <tbody>
+                <tr>
+                    <th scope="col">Amount(DEX)</th>
+                    <th scope="col">Price(DEX/ETH)</th>
+                    <th scope="col">Total(ETH)</th>
+                </tr>
+            </tbody>
+        </table>
+        <table *ngIf="($orders | async).loaded === true && sortType === sortTypes.Sold || sortType === sortTypes.All"
+            class="table table-sm small">
+            <tbody>
+                <tr id='order' *ngFor="let order of ($orders | async).data.sell; let i = index"
+                    (click)="fillingOrder(order)" ngbTooltip="Click the order to sell">
+                    <td>{{ order.tokenAmount }}</td>
+                    <td class="text-{{order.orderTypeClass}}">{{ order.tokenPrice }}</td>
+                    <td>{{ order.etherAmount }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <table *ngIf="($orders | async).loaded === true" class="table table-sm small" class="table table-sm">
+            <tbody>
+                <tr>
+                    <th scope="col">{{ $lastPrice | async }} <span
+                            [ngClass]="{'book_arrow_up': priceSymbol(lastPriceChange) === 'north_east', 'book_arrow_down': priceSymbol(lastPriceChange) === 'south_west'}"
+                            class="material-icons">{{ priceSymbol(lastPriceChange) }}</span></th>
+                </tr>
+            </tbody>
+        </table>
+        <table *ngIf="($orders | async).loaded === true && sortType === sortTypes.Bought || sortType === sortTypes.All"
+            class="table table-sm small" class="table table-sm small">
+            <tbody>
+                <tr *ngFor="let order of ($orders | async).data.buy; let i = index" (click)="fillingOrder(order)"
+                    ngbTooltip="Click the order to buy">
+                    <td>{{ order.tokenAmount }}</td>
+                    <td class="text-{{order.orderTypeClass}}">{{ order.tokenPrice }}</td>
+                    <td>{{ order.etherAmount }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
     <!-- <table *ngIf="($orders | async).loaded === true" class="table table-sm small">
         <tbody>
             <tr>

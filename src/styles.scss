@@ -13,6 +13,10 @@
   height: 100vh;
 }
 
+body {
+  background-color: #303030 !important;
+}
+
 .container {
   position: absolute;
   left: 76px;
@@ -129,4 +133,8 @@
 
 ::-webkit-scrollbar-thumb {
   background: white;
+}
+
+.card {
+  border: 1px solid #cc7000;
 }
