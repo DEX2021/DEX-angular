@@ -3,6 +3,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AppState } from 'src/models/models';
 import { accountSelector } from 'src/Store/selectors';
+import { loadAccount } from '../../../Store/interactions'
 import { fetchReduxData } from 'src/helpers/redux.helper';
 import Web3 from 'web3';
 
@@ -17,7 +18,9 @@ export class AccountsComponent implements OnInit {
   constructor(private web3: Web3, private store: Store<AppState>) {
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    await loadAccount(this.web3, this.store);
+    
     this.currentAccount = fetchReduxData(this.store, accountSelector)
   }
 

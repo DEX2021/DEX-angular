@@ -6,12 +6,16 @@ import {
   tokenSelector,
   accountSelector,
   buyOrderSelector,
-  sellOrderSelector
+  sellOrderSelector,
+  etherBalanceSelector,
+  tokenBalanceSelector,
+  balancesLoadingSelector
 } from '../../../Store/selectors'
 import * as Postactions from '../../../Store/action'
-import { makeBuyOrder, makeSellOrder } from '../../../Store/interactions'
+import { makeBuyOrder, makeSellOrder, loadBalances, loadAccount } from '../../../Store/interactions'
 import { Observable } from 'rxjs';
 import Web3 from 'web3';
+import { fetchReduxData } from 'src/helpers/redux.helper';
 
 @Component({
   selector: '[app-new-order]',
@@ -30,12 +34,37 @@ export class NewOrderComponent implements OnInit {
   $buyOrder: Observable<any>;
   $sellOrder: Observable<any>;
 
+  $etherBalance: Observable<AppState>;
+  $tokenBalance: Observable<AppState>;
+  $balancesLoading: Observable<Boolean>;
+
   constructor(private Web3: Web3, private store: Store<AppState>) {
     this.$exchange = store.pipe(select(exchangeSelector));
     this.$token = store.pipe(select(tokenSelector));
     this.$account = store.pipe(select(accountSelector));
     this.$buyOrder = store.pipe(select(buyOrderSelector));
     this.$sellOrder = store.pipe(select(sellOrderSelector));
+
+    this.$exchange.subscribe(e => {
+      if (e !== "nothing") {
+        this.loadBlockchainData();
+
+        this.$etherBalance = this.store.pipe(select(etherBalanceSelector));
+        this.$tokenBalance = this.store.pipe(select(tokenBalanceSelector));
+        this.$balancesLoading = this.store.pipe(select(balancesLoadingSelector));
+      }
+    })
+  }
+
+  async loadBlockchainData() {
+    await loadAccount(this.Web3, this.store);
+    
+    var exchange, token, account, etherBalance;
+    this.$exchange.subscribe(result => exchange = result)
+    this.$token.subscribe(result => token = result)
+    this.$account.subscribe(result => account = result)
+
+    await loadBalances(this.Web3, exchange, token, account, this.store)
   }
 
   ngOnInit(): void {

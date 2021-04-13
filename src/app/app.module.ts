@@ -62,7 +62,7 @@ export const metaReducers: MetaReducer<IWeb3>[] = !environment.production ? [sto
     }),
     // StoreModule.forFeature('counter', counterReducer), // TODO: Remove the test selector
     StoreDevtoolsModule.instrument({
-      maxAge: 100, // Retains the last states (25 in this case for example)
+      maxAge: 10, // Retains the last states (25 in this case for example)
     })
   ],
   providers: [

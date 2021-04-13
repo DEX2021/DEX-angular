@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AppState } from 'src/models/models';
-import { loadBalances, depositEther, withdrawEther, depositToken, withdrawToken } from 'src/Store/interactions';
+import { loadBalances, loadAccount, depositEther, withdrawEther, depositToken, withdrawToken } from 'src/Store/interactions';
 import { accountSelector, balancesLoadingSelector, etherBalanceSelector, exchangeEtherBalanceSelector, exchangeSelector, exchangeTokenBalanceSelector, tokenBalanceSelector, tokenSelector, lastPriceSelector } from 'src/Store/selectors';
 import Web3 from 'web3'
 
@@ -36,6 +36,12 @@ export class DepositsComponent implements OnInit {
     this.$account = this.store.pipe(select(accountSelector))
     this.$etherBalance = this.store.pipe(select(etherBalanceSelector))
 
+    this.$exchange.subscribe(e => {
+      if (e !== "nothing") {
+        this.loadBlockchainData();
+      }
+    })
+
     this.$tokenBalance = this.store.pipe(select(tokenBalanceSelector))
     this.$exchangeEtherBalance = this.store.pipe(select(exchangeEtherBalanceSelector))
     this.$exchangeTokenBalance = this.store.pipe(select(exchangeTokenBalanceSelector))
@@ -65,7 +71,6 @@ export class DepositsComponent implements OnInit {
 
   async ngOnInit() {
     this.getEtheriumPrice();
-    await this.loadBlockchainData();
 
     console.log("ETHEADASD", this.ethereumPrice)
   }
@@ -104,6 +109,8 @@ export class DepositsComponent implements OnInit {
   }
 
   async loadBlockchainData() {
+    await loadAccount(this.web3, this.store);
+
     var exchange, token, account, etherBalance;
     await this.$exchange.subscribe(result => exchange = result)
     await this.$token.subscribe(result => token = result)
