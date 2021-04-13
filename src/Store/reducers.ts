@@ -67,8 +67,8 @@ const newState = (state, newData) => {
 export function web3Reducer(state: IWeb3 = defaultWeb3State, action: Action) {
   switch (action.type) {
     case PostActions.WEB3_LOADED:
-      //return { ...state, web3: action.payload }
-      return newState(state, { web3: action.payload })
+      return { ...state, web3: action.payload }
+      // return newState(state, { web3: action.payload })
 
     case PostActions.ACCOUNT_LOADED:
       return { ...state, account: action.payload }
@@ -96,7 +96,7 @@ export function tokenReducer(state: IToken = defaultTokenState, action: Action) 
 export function exchangeReducer(state: IExchange = defaultExchangeState, action: Action) {
   let index, data
   switch (action.type) {
-    case PostActions.EXCHANGE_LAODED:
+    case PostActions.EXCHANGE_LOADED:
       return { ...state, loaded: true, exchange: action.payload }
 
     case PostActions.EXCHANGE_ETHER_BALANCE_LOADED:

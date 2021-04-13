@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { loadAccount, loadToken, loadExchange, loadAllOrders } from 'src/Store/interactions';
+import { loadAccount, loadToken, loadExchange, loadAllOrders, subscribeToEvents } from 'src/Store/interactions';
 import { Observable } from 'rxjs'
 import { IToken, IWeb3, IExchange, AppState } from '../models/models'
 import { accountSelector, exchangeSelector } from '../Store/selectors'
@@ -18,14 +18,17 @@ export class AppComponent implements OnInit {
   $exchange: Observable<AppState>
   appLoaded: Boolean = false;
 
-  async ngOnInit() {
-
-    await this.loadBlockchainData();
-  }
-
   constructor(private web3: Web3, private store: Store<AppState>) {
     this.$selector = this.store.pipe(select(accountSelector))
     this.$exchange = this.store.pipe(select(exchangeSelector))
+  }
+
+  async ngOnInit() {
+
+    await this.loadBlockchainData();
+    await this.$exchange.subscribe(async exchange => {
+      await subscribeToEvents(this.store, exchange);
+    })
   }
 
   async loadBlockchainData() {

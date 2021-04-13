@@ -138,3 +138,15 @@ body {
 .card {
   border: 1px solid #cc7000;
 }
+
+
+// Nav tabs
+
+.nav-link {
+  color: black;
+}
+
+.nav-link.active {
+  background-color: #e67e00 !important;
+  color: white !important;
+}

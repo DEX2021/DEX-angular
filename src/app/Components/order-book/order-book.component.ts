@@ -30,8 +30,8 @@ export class OrderBookComponent implements OnInit {
   }
 
   constructor(private store: Store<AppState>) {
-    this.$orders = this.store.pipe(select(orderBookSelector));
     this.$exchange = this.store.pipe(select(exchangeSelector));
+    this.$orders = this.store.pipe(select(orderBookSelector));
     this.$account = this.store.pipe(select(accountSelector));
     this.$priceChartData = this.store.pipe(select(priceChartSelector));
     this.$lastPrice = this.store.pipe(select(lastPriceSelector));
@@ -39,6 +39,9 @@ export class OrderBookComponent implements OnInit {
     this.$priceChartData.subscribe(data => {
       this.lastPriceChange = data.lastPriceChange;
     })
+
+    this.$exchange.subscribe();
+    this.$orders.subscribe();
   }
 
   ngOnInit(): void {

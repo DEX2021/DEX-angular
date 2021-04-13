@@ -206,4 +206,12 @@ export const subscribeToEvents = async (store, exchange) => {
     exchange.events.Order({}, (error, event) => {
         store.dispatch(new Postactions.orderMade(event.returnValues))
     })
+
+    exchange.events.Deposit({}, (error, event) => {
+        store.dispatch(new Postactions.balancesLoaded())
+    })
+
+    exchange.events.Withdraw({}, (error, event) => {
+        store.dispatch(new Postactions.balancesLoaded())
+    })
 }

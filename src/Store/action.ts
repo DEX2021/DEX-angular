@@ -4,7 +4,7 @@ import { createAction, props, Action } from '@ngrx/store';
 export const WEB3_LOADED = '[Post] web3'
 export const ACCOUNT_LOADED = '[Post] accountloaded'
 export const TOKEN_LOADED = '[Post] tokenloaded'
-export const EXCHANGE_LAODED = '[Post] exchangeloaded'
+export const EXCHANGE_LOADED = '[Post] exchangeloaded'
 export const ETHER_BALANCE_LOADED = '[Post] etherebalanceloaded'
 export const TOKEN_BALANCE_LOADED = '[Post] tokenbalanceloaded'
 export const EXCHANGE_ETHER_BALANCE_LOADED = '[Post] exchangeetherbalanceloaded'
@@ -56,7 +56,7 @@ export class web3TokenLoaded implements Action {
 }
 
 export class exchangeLoaded implements Action {
-    readonly type = EXCHANGE_LAODED
+    readonly type = EXCHANGE_LOADED
 
     constructor(public payload: any) { }
 }
