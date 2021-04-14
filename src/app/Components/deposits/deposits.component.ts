@@ -3,9 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AppState } from 'src/models/models';
-import { loadBalances, loadAccount, depositEther, withdrawEther, depositToken, withdrawToken } from 'src/Store/interactions';
-import { accountSelector, balancesLoadingSelector, etherBalanceSelector, exchangeEtherBalanceSelector, exchangeSelector, exchangeTokenBalanceSelector, tokenBalanceSelector, tokenSelector, lastPriceSelector } from 'src/Store/selectors';
+import { depositEther, withdrawEther, depositToken, withdrawToken } from 'src/Store/interactions';
+import { balancesLoadingSelector, etherBalanceSelector, exchangeEtherBalanceSelector, exchangeTokenBalanceSelector, tokenBalanceSelector, lastPriceSelector, appInitSelector } from 'src/Store/selectors';
 import Web3 from 'web3'
+import { DexService } from 'src/app/Services/DexService.service';
 
 @Component({
   selector: '[app-deposits]',
@@ -13,9 +14,6 @@ import Web3 from 'web3'
   styleUrls: ['./deposits.component.scss']
 })
 export class DepositsComponent implements OnInit {
-  $exchange: Observable<AppState>
-  $token: Observable<AppState>
-  $account: Observable<AppState>
   $etherBalance: Observable<AppState>
   $tokenBalance: Observable<AppState>
   $exchangeEtherBalance: Observable<AppState>
@@ -28,17 +26,17 @@ export class DepositsComponent implements OnInit {
   $lastPrice: Observable<number>
   ethereumPrice: number = 0;
 
+  $appInit: Observable<Boolean>;
 
 
-  constructor(private web3: Web3, private store: Store<AppState>, private http: HttpClient) {
-    this.$exchange = this.store.pipe(select(exchangeSelector))
-    this.$token = this.store.pipe(select(tokenSelector))
-    this.$account = this.store.pipe(select(accountSelector))
+
+  constructor(private web3: Web3, private store: Store<AppState>, private dex: DexService) {
     this.$etherBalance = this.store.pipe(select(etherBalanceSelector))
+    this.$appInit = this.store.pipe(select(appInitSelector));
 
-    this.$exchange.subscribe(e => {
-      if (e !== "nothing") {
-        this.loadBlockchainData();
+    this.$appInit.subscribe(loaded => {
+      if (loaded) {
+        // this.loadBlockchainData();
       }
     })
 
@@ -50,19 +48,6 @@ export class DepositsComponent implements OnInit {
 
   }
 
-  getEtheriumPrice() {
-    var req = this.http.get("http://dex.berntsen.solutions/");
-
-    req.subscribe(res => {
-      var data = res['data'];
-
-      var ethereum = data.filter(o => o.symbol == "ETH")[0];
-      var quote = ethereum.quote["USD"];
-
-      this.ethereumPrice = quote.price;
-    })
-  }
-
   formatCurrency(x)
   {
     x = Math.round(x * 100) / 100
@@ -70,15 +55,11 @@ export class DepositsComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.getEtheriumPrice();
-
-    console.log("ETHEADASD", this.ethereumPrice)
+    this.ethereumPrice = await this.dex.EthereumPrice();
   }
+
   depositInput(tokenValue) {
     (<HTMLInputElement>document.getElementById("into")).disabled = true
-
-
-
   }
 
   deposit(tokenValue, etherValue) {
@@ -108,57 +89,20 @@ export class DepositsComponent implements OnInit {
     }
   }
 
-  async loadBlockchainData() {
-    await loadAccount(this.web3, this.store);
-
-    var exchange, token, account, etherBalance;
-    await this.$exchange.subscribe(result => exchange = result)
-    await this.$token.subscribe(result => token = result)
-    await this.$account.subscribe(result => account = result)
-
-    console.log("Xchange", exchange)
-    console.log("Account", account)
-    console.log("Token", token)
-
-    await loadBalances(this.web3, exchange, token, account, this.store)
-  }
-
   async etherDepositAmountChanged(etherAmount) {
-    var exchange, account
-    this.$exchange.subscribe(result => exchange = result)
-    this.$account.subscribe(result => account = result)
-
-    await depositEther(this.store, exchange, this.web3, etherAmount, account)
+    await depositEther(this.store, this.dex.Exchange, this.web3, etherAmount, this.dex.Account)
   }
 
   async etherWithdrawAmountChanged(etherAmount) {
-    var exchange, account
-    this.$exchange.subscribe(result => exchange = result)
-    this.$account.subscribe(result => account = result)
-
-
-    await withdrawEther(this.store, exchange, this.web3, etherAmount, account)
-
+    await withdrawEther(this.store, this.dex.Exchange, this.web3, etherAmount, this.dex.Account)
   }
 
   async TokenDepositAmountChanged(tokenAmount) {
-    var exchange, account, token
-    this.$exchange.subscribe(result => exchange = result)
-    this.$account.subscribe(result => account = result)
-    this.$token.subscribe(result => token = result)
-
-
-    await depositToken(this.store, exchange, this.web3, token, tokenAmount, account)
+    await depositToken(this.store, this.dex.Exchange, this.web3, this.dex.Token, tokenAmount, this.dex.Account)
   }
 
   async TokenWithdrawAmountChanged(tokenAmount) {
-    var exchange, account, token
-    this.$exchange.subscribe(result => exchange = result)
-    this.$account.subscribe(result => account = result)
-    this.$token.subscribe(result => token = result)
-
-
-    await withdrawToken(this.store, exchange, this.web3, token, tokenAmount, account)
+    await withdrawToken(this.store, this.dex.Exchange, this.web3, this.dex.Token, tokenAmount, this.dex.Account)
   }
 
 

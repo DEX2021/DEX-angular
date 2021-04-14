@@ -22,3 +22,7 @@ export const ether = (wei) => {
 }
 
 export const tokens = ether;
+
+export const formatCurrency = (x) => {
+    return Math.round(x * 100) / 100
+}

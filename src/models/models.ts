@@ -10,6 +10,7 @@ export interface IWeb3 {
     web3Reducer: any
     account: any
     balance: any
+    initialized: boolean
 }
 export interface IToken {
     token: any

@@ -6,8 +6,10 @@ import { Observable } from 'rxjs';
 import { fetchReduxData } from 'src/helpers/redux.helper';
 import { AppState } from 'src/models/models';
 import { loadBalances } from 'src/Store/interactions';
-import { accountSelector, exchangeEtherBalanceSelector, exchangeSelector, exchangeTokenBalanceSelector, tokenSelector, lastPriceSelector } from 'src/Store/selectors';
+import { appInitSelector, accountSelector, exchangeEtherBalanceSelector, exchangeSelector, exchangeTokenBalanceSelector, tokenSelector, lastPriceSelector } from 'src/Store/selectors';
 import Web3 from 'web3';
+import { DexService } from 'src/app/Services/DexService.service';
+import { formatCurrency } from 'src/app/utils/helpers';
 
 @Component({
   selector: '[app-exchange-wallet]',
@@ -23,38 +25,35 @@ export class ExchangeWalletComponent implements OnInit {
   $lastPrice: Observable<number>
   ethereumPrice: number = 0;
 
+  $appInit: Observable<Boolean>;
 
-  constructor(private web3: Web3, private store: Store<AppState>, private http: HttpClient) {
+
+  constructor(private web3: Web3, private store: Store<AppState>, private dex: DexService, private http: HttpClient) {
     this.$exchangeEtherBalance = this.store.pipe(select(exchangeEtherBalanceSelector))
     this.$exchangeTokenBalance = this.store.pipe(select(exchangeTokenBalanceSelector))
     this.$exchange = this.store.pipe(select(exchangeSelector))
     this.$token = this.store.pipe(select(tokenSelector))
     this.$account = this.store.pipe(select(accountSelector))
     this.$lastPrice = this.store.pipe(select(lastPriceSelector))
+
+    this.$appInit = this.store.pipe(select(appInitSelector))
   }
 
 
   async ngOnInit(): Promise<void> {
 
     let chart_dom = document.getElementById("chart2")
-    await this.loadBlockchainData()
-    await this.getEtheriumPrice()
 
-    const options = await this.setOptions()
+    this.$appInit.subscribe(async loaded => {
+      if (loaded) {
+        this.ethereumPrice = await this.dex.EthereumPrice();
 
-    var chart = new ApexCharts(chart_dom, options)
-    chart.render();
+        const options = await this.setOptions()
 
-  }
-
-  async getEtheriumPrice() {
-    var req = this.http.get("http://dex.berntsen.solutions/").toPromise();
-    var { data }: any = await req;
-
-    var ethereum = data.filter(o => o.symbol == "ETH")[0];
-    var quote = ethereum.quote["USD"];
-
-    this.ethereumPrice = quote.price;
+        var chart = new ApexCharts(chart_dom, options)
+        chart.render();
+      }
+    })
   }
 
   async loadBlockchainData() {
@@ -63,12 +62,7 @@ export class ExchangeWalletComponent implements OnInit {
     await this.$token.subscribe(result => token = result)
     await this.$account.subscribe(result => account = result)
 
-    await loadBalances(this.web3, exchange, token, account, this.store)
-  }
-
-  formatCurrency(x) {
-    return Math.round(x * 100) / 100
-    // return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    // await loadBalances(this.web3, exchange, token, account, this.store)
   }
 
   async setOptions() {
@@ -92,7 +86,7 @@ export class ExchangeWalletComponent implements OnInit {
         }
       },
 
-      series: [this.formatCurrency(ether), this.formatCurrency(token)],
+      series: [formatCurrency(ether), formatCurrency(token)],
       labels: ['Ether', 'Token'],
 
       chartOptions: {

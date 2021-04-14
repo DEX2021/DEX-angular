@@ -13,7 +13,8 @@ export type Action = PostActions.All
 const defaultWeb3State: IWeb3 = {
   web3Reducer: 'hello',
   account: "null",
-  balance: 0
+  balance: 0,
+  initialized: false
 }
 
 const defaultTokenState: IToken = {
@@ -23,7 +24,7 @@ const defaultTokenState: IToken = {
 }
 
 const defaultExchangeState: IExchange = {
-  exchange: "nothing",
+  exchange: null,
   etherBalance: 0,
   tokenBalance: 0,
   loaded: false,
@@ -75,6 +76,9 @@ export function web3Reducer(state: IWeb3 = defaultWeb3State, action: Action) {
 
     case PostActions.ETHER_BALANCE_LOADED:
       return { ...state, balance: action.payload }
+
+    case PostActions.APP_INITIALIZED:
+      return { ...state, initialized: action.payload }
 
     default:
       return state;

@@ -1,6 +1,6 @@
 import { createAction, props, Action } from '@ngrx/store';
 
-
+export const APP_INITIALIZED = 'App initialized'
 export const WEB3_LOADED = '[Post] web3'
 export const ACCOUNT_LOADED = '[Post] accountloaded'
 export const TOKEN_LOADED = '[Post] tokenloaded'
@@ -200,6 +200,12 @@ export class orderFilled implements Action {
     constructor(public payload: any) { }
 }
 
+export class appInitialized implements Action {
+    readonly type = APP_INITIALIZED
+
+    constructor(public payload: boolean) { }
+}
+
 
 
 // export const web3Loaded = createAction(
@@ -208,9 +214,11 @@ export class orderFilled implements Action {
 // );
 
 //export const web3Loaded2 = createAction('[web3] web3');
-export type All = web3Loaded | web3AccountLoaded |
-    web3TokenLoaded | exchangeLoaded | etherBalanceLoaded | tokenBalanceLoaded | exchangeEtherBalanceLoaded |
-    exchangeTokenBalanceLoaded | balancesLoaded | balancesLoading | etherDepositAmountChanged |
-    etherWithdrawAmountChanged | tokenDepositAmountChanged | tokenWithdrawAmountChanged | cancelledOrdersLoaded | filledOrdersLoaded | ordersLoaded |
-    orderCancelling | orderCancelled | orderFilling | orderFilled | buyOrderAmountChanged | buyOrderPriceChanged | buyOrderMaking | orderMade |
-    sellOrderAmountChanged | sellOrderPriceChanged | sellOrderMaking
+export type All = web3Loaded | web3AccountLoaded | web3TokenLoaded |
+    exchangeLoaded | ordersLoaded | etherBalanceLoaded | filledOrdersLoaded |
+    cancelledOrdersLoaded | tokenBalanceLoaded | exchangeEtherBalanceLoaded |
+    exchangeTokenBalanceLoaded | balancesLoaded | etherDepositAmountChanged |
+    etherWithdrawAmountChanged | tokenDepositAmountChanged | tokenWithdrawAmountChanged |
+    buyOrderPriceChanged | buyOrderAmountChanged | buyOrderMaking | sellOrderPriceChanged |
+    sellOrderAmountChanged | sellOrderMaking | orderMade | orderCancelling | orderCancelled |
+    orderFilling | orderFilled | balancesLoading | appInitialized

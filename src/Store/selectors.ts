@@ -15,6 +15,11 @@ export const root = createFeatureSelector<AppState>('root')
 //     (state: AppState) => state.web3Reducer.account
 // );
 
+export const appInitSelector = createSelector(
+    root,
+    (state: AppState) => state.web3Reducer.initialized
+);
+
 const rootReducer = state => get(state, 'root')
 export const accountSelector = createSelector(
     root,

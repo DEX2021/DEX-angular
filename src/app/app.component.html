@@ -1,13 +1,2 @@
-<div>
-    <app-navbar></app-navbar>
-
-    <div *ngIf="($selector | async) && appLoaded; else elseBlock">
-        <app-content></app-content>
-    </div>
-    <ng-template #elseBlock>
-        <div class="content"></div>
-    </ng-template>
-
-</div>
-
+<app-navbar></app-navbar>
 <router-outlet></router-outlet>

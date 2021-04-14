@@ -7,8 +7,8 @@ import {
   accountSelector,
   buyOrderSelector,
   sellOrderSelector,
-  etherBalanceSelector,
-  tokenBalanceSelector,
+  exchangeEtherBalanceSelector,
+  exchangeTokenBalanceSelector,
   balancesLoadingSelector
 } from '../../../Store/selectors'
 import * as Postactions from '../../../Store/action'
@@ -46,11 +46,11 @@ export class NewOrderComponent implements OnInit {
     this.$sellOrder = store.pipe(select(sellOrderSelector));
 
     this.$exchange.subscribe(e => {
-      if (e !== "nothing") {
+      if (e !== null) {
         this.loadBlockchainData();
 
-        this.$etherBalance = this.store.pipe(select(etherBalanceSelector));
-        this.$tokenBalance = this.store.pipe(select(tokenBalanceSelector));
+        this.$etherBalance = this.store.pipe(select(exchangeEtherBalanceSelector));
+        this.$tokenBalance = this.store.pipe(select(exchangeTokenBalanceSelector));
         this.$balancesLoading = this.store.pipe(select(balancesLoadingSelector));
       }
     })
@@ -64,7 +64,7 @@ export class NewOrderComponent implements OnInit {
     this.$token.subscribe(result => token = result)
     this.$account.subscribe(result => account = result)
 
-    await loadBalances(this.Web3, exchange, token, account, this.store)
+    // await loadBalances(this.Web3, exchange, token, account, this.store)
   }
 
   ngOnInit(): void {

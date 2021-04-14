@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { select, Store } from '@ngrx/store';
-import { loadAccount, loadToken, loadExchange, loadAllOrders, subscribeToEvents } from 'src/Store/interactions';
-import { Observable } from 'rxjs'
-import { IToken, IWeb3, IExchange, AppState } from '../models/models'
-import { accountSelector, exchangeSelector } from '../Store/selectors'
+import { Store } from '@ngrx/store';
+import { AppState } from '../models/models'
 import Web3 from 'web3';
+import { DexService } from './Services/DexService.service';
 
 @Component({
   selector: 'app-root',
@@ -13,41 +11,10 @@ import Web3 from 'web3';
 })
 
 export class AppComponent implements OnInit {
-  post: Observable<IWeb3>
-  $selector: Observable<AppState>
-  $exchange: Observable<AppState>
-  appLoaded: Boolean = false;
-
-  constructor(private web3: Web3, private store: Store<AppState>) {
-    this.$selector = this.store.pipe(select(accountSelector))
-    this.$exchange = this.store.pipe(select(exchangeSelector))
+  constructor(private web3: Web3, private store: Store<AppState>, private dex: DexService) {
   }
 
   async ngOnInit() {
-
-    await this.loadBlockchainData();
-    await this.$exchange.subscribe(async exchange => {
-      await subscribeToEvents(this.store, exchange);
-    })
+    this.dex.initialize();
   }
-
-  async loadBlockchainData() {
-    const network = await this.web3.eth.net.getNetworkType()
-    const networkId = await this.web3.eth.net.getId();
-
-    const token = await loadToken(this.web3, networkId, this.store)
-    if (!token) {
-      window.alert("Token smart contract not detected on current network. Please select another netowrk with metamask")
-    }
-
-    const exchange = await loadExchange(this.web3, networkId, this.store)
-    if (!exchange) {
-      window.alert("Exchange smart contract not detected on current network. Please select another netowrk with metamask")
-    }
-
-    await loadAccount(this.web3, this.store)
-    await loadAllOrders(this.store, exchange);
-    this.appLoaded = true;
-  }
-
 }
