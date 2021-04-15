@@ -17,11 +17,11 @@ enum OrderBookSorting {
   styleUrls: ['./order-book.component.scss']
 })
 export class OrderBookComponent implements OnInit {
-  $orders: Observable<IOrder>
+  $orders: Observable<any>
   $exchange: Observable<AppState>
   $account: Observable<AppState>
   $lastPrice: Observable<number>
-  lastPriceChange: string = '+'
+  lastPriceChange: string = '-'
   $priceChartData: Observable<any>
   sortType: OrderBookSorting = OrderBookSorting.All
 

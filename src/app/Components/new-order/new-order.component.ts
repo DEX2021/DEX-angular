@@ -9,13 +9,15 @@ import {
   sellOrderSelector,
   exchangeEtherBalanceSelector,
   exchangeTokenBalanceSelector,
-  balancesLoadingSelector
+  balancesLoadingSelector,
+  appInitSelector
 } from '../../../Store/selectors'
 import * as Postactions from '../../../Store/action'
 import { makeBuyOrder, makeSellOrder, loadBalances, loadAccount } from '../../../Store/interactions'
 import { Observable } from 'rxjs';
 import Web3 from 'web3';
 import { fetchReduxData } from 'src/helpers/redux.helper';
+import { DexService } from 'src/app/Services/DexService.service';
 
 @Component({
   selector: '[app-new-order]',
@@ -28,9 +30,6 @@ export class NewOrderComponent implements OnInit {
   sellAmount: number = 0
   sellPrice: number = 0
 
-  $exchange: Observable<IExchange>;
-  $token: Observable<IToken>;
-  $account: Observable<any>;
   $buyOrder: Observable<any>;
   $sellOrder: Observable<any>;
 
@@ -38,16 +37,20 @@ export class NewOrderComponent implements OnInit {
   $tokenBalance: Observable<AppState>;
   $balancesLoading: Observable<Boolean>;
 
-  constructor(private Web3: Web3, private store: Store<AppState>) {
-    this.$exchange = store.pipe(select(exchangeSelector));
-    this.$token = store.pipe(select(tokenSelector));
-    this.$account = store.pipe(select(accountSelector));
+  $appInit: Observable<Boolean>;
+
+  constructor(private store: Store<AppState>, private dex: DexService) {
+    this.$appInit = store.pipe(select(appInitSelector));
+    // this.$exchange = store.pipe(select(exchangeSelector));
+    // this.$token = store.pipe(select(tokenSelector));
+    // this.$account = store.pipe(select(accountSelector));
     this.$buyOrder = store.pipe(select(buyOrderSelector));
     this.$sellOrder = store.pipe(select(sellOrderSelector));
 
-    this.$exchange.subscribe(e => {
-      if (e !== null) {
-        this.loadBlockchainData();
+    this.$appInit.subscribe(loaded => {
+      if (loaded) {
+        console.log("Loaded")
+        // this.loadBlockchainData();
 
         this.$etherBalance = this.store.pipe(select(exchangeEtherBalanceSelector));
         this.$tokenBalance = this.store.pipe(select(exchangeTokenBalanceSelector));
@@ -57,12 +60,12 @@ export class NewOrderComponent implements OnInit {
   }
 
   async loadBlockchainData() {
-    await loadAccount(this.Web3, this.store);
+    // await loadAccount(this.Web3, this.store);
     
-    var exchange, token, account, etherBalance;
-    this.$exchange.subscribe(result => exchange = result)
-    this.$token.subscribe(result => token = result)
-    this.$account.subscribe(result => account = result)
+    // var exchange, token, account, etherBalance;
+    // this.$exchange.subscribe(result => exchange = result)
+    // this.$token.subscribe(result => token = result)
+    // this.$account.subscribe(result => account = result)
 
     // await loadBalances(this.Web3, exchange, token, account, this.store)
   }
@@ -87,11 +90,7 @@ export class NewOrderComponent implements OnInit {
   }
 
   createOrder(type: string) {
-    let exchange, token, account, order;
-
-    this.$exchange.subscribe(e => exchange = e);
-    this.$token.subscribe(e => token = e);
-    this.$account.subscribe(e => account = e);
+    let order;
 
     if (type === "buy") {
       this.$buyOrder.subscribe(e => order = e);
@@ -101,13 +100,13 @@ export class NewOrderComponent implements OnInit {
         return
       }
 
-      makeBuyOrder(this.store, exchange, this.Web3, token, order, account);
+      makeBuyOrder(this.store, this.dex.Exchange, this.dex.Web3, this.dex.Token, order, this.dex.Account);
 
       this.buyAmount = 0
       this.buyPrice = 0
     } else {
       this.$sellOrder.subscribe(e => order = e);
-      makeSellOrder(this.store, exchange, this.Web3, token, order, account);
+      makeSellOrder(this.store, this.dex.Exchange, this.dex.Web3, this.dex.Token, order, this.dex.Account);
 
       if (order.amount === 0 || order.price === 0) {
         alert("Please enter a value greater than zero.")

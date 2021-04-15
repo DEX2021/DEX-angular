@@ -9,3 +9,28 @@
 a {
     color: white;
 }
+
+.nav-link {
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+
+    transition: 0.5s;
+}
+
+.nav-link > span {
+    width: 100%;
+    text-align: center;
+}
+
+.nav-link:first-child {
+    margin-top: 10px;
+}
+
+.nav-link:not(:last-child) {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.nav-link:hover:not(.active) {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+}

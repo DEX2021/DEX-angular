@@ -73,6 +73,12 @@ export class DexService {
         this.$account = this.store.pipe(select(accountSelector));
     }
 
+    public get Web3(): Web3 {
+        let web3: Web3;
+
+        return this.web3;
+    }
+
     public get Exchange(): AppState {
         let exchange: AppState;
         this.$exchange.subscribe(result => exchange = result);
