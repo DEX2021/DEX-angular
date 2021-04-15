@@ -41,33 +41,16 @@ export class NewOrderComponent implements OnInit {
 
   constructor(private store: Store<AppState>, private dex: DexService) {
     this.$appInit = store.pipe(select(appInitSelector));
-    // this.$exchange = store.pipe(select(exchangeSelector));
-    // this.$token = store.pipe(select(tokenSelector));
-    // this.$account = store.pipe(select(accountSelector));
     this.$buyOrder = store.pipe(select(buyOrderSelector));
     this.$sellOrder = store.pipe(select(sellOrderSelector));
 
     this.$appInit.subscribe(loaded => {
       if (loaded) {
-        console.log("Loaded")
-        // this.loadBlockchainData();
-
         this.$etherBalance = this.store.pipe(select(exchangeEtherBalanceSelector));
         this.$tokenBalance = this.store.pipe(select(exchangeTokenBalanceSelector));
         this.$balancesLoading = this.store.pipe(select(balancesLoadingSelector));
       }
     })
-  }
-
-  async loadBlockchainData() {
-    // await loadAccount(this.Web3, this.store);
-    
-    // var exchange, token, account, etherBalance;
-    // this.$exchange.subscribe(result => exchange = result)
-    // this.$token.subscribe(result => token = result)
-    // this.$account.subscribe(result => account = result)
-
-    // await loadBalances(this.Web3, exchange, token, account, this.store)
   }
 
   ngOnInit(): void {
