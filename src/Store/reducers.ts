@@ -1,6 +1,6 @@
 import { createReducer, on, combineReducers } from "@ngrx/store";
 import * as PostActions from './action'
-import { IWeb3, IToken, IExchange, IOrder, IOrders } from '../models/models'
+import { IAppState, IWeb3, IToken, IExchange, IOrder, IOrders } from '../models/models'
 import { filledOrdersSelector } from "./selectors";
 import { stat } from "fs";
 //import { Action } from '@ngrx/store'
@@ -10,11 +10,14 @@ const initial = { connection: "hello" };
 
 export type Action = PostActions.All
 
+const defaultAppState: IAppState = {
+  initialized: false
+}
+
 const defaultWeb3State: IWeb3 = {
   web3Reducer: 'hello',
   account: "null",
   balance: 0,
-  initialized: false
 }
 
 const defaultTokenState: IToken = {
@@ -61,8 +64,13 @@ const defaultExchangeState: IExchange = {
   }
 }
 
-const newState = (state, newData) => {
-  return Object.assign({}, state, newData)
+export function appReducer(state: IAppState = defaultAppState, action: Action) {
+  switch (action.type) {
+    case PostActions.APP_INITIALIZED:
+      return { ...state, initialized: action.payload }
+    default:
+      return state;
+  }
 }
 
 export function web3Reducer(state: IWeb3 = defaultWeb3State, action: Action) {
@@ -76,9 +84,6 @@ export function web3Reducer(state: IWeb3 = defaultWeb3State, action: Action) {
 
     case PostActions.ETHER_BALANCE_LOADED:
       return { ...state, balance: action.payload }
-
-    case PostActions.APP_INITIALIZED:
-      return { ...state, initialized: action.payload }
 
     default:
       return state;
@@ -200,9 +205,13 @@ export function exchangeReducer(state: IExchange = defaultExchangeState, action:
       }
 
       return {
-        ...state, orderFilling: false, orders: {
-          ...state.orders, filled: {
-            ...state.orders.filled, data
+        ...state,
+        orderFilling: false,
+        orders: {
+          ...state.orders,
+          filled: {
+            ...state.orders.filled,
+            data
           }
         }
       }
@@ -252,7 +261,10 @@ export function exchangeReducer(state: IExchange = defaultExchangeState, action:
         ...state,
         orders: {
           ...state.orders,
-          data
+          orders: {
+            ...state.orders.orders,
+            data
+          }
         },
         buyOrder: {
           ...state.buyOrder,
@@ -299,6 +311,7 @@ export function exchangeReducer(state: IExchange = defaultExchangeState, action:
 }
 
 const rootReducer = combineReducers({
+  appReducer,
   web3Reducer,
   tokenReducer,
   exchangeReducer

@@ -20,7 +20,7 @@ export class DexService {
     private $account: Observable<AppState>;
 
     constructor(private web3: Web3, private store: Store<AppState>, private http: HttpClient) {
-        // this.initialize();
+        
     }
 
     public get AppLoaded() {

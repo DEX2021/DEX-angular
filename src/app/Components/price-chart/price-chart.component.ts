@@ -3,7 +3,7 @@ import ApexCharts from 'apexcharts/dist/apexcharts.common.js'
 import { chartOptions, dummyData } from './PriceChart.config'
 import { Store, select } from '@ngrx/store'
 import { AppState, IOrder } from '../../../models/models'
-import { priceChartSelector, lastPriceSelector } from '../../../Store/selectors'
+import { appInitSelector, priceChartSelector, lastPriceSelector } from '../../../Store/selectors'
 import { Observable } from 'rxjs';
 import { createChart, IChartApi, isBusinessDay, ISeriesApi, TickMarkType } from 'lightweight-charts';
 
@@ -17,6 +17,7 @@ export class PriceChartComponent implements OnInit {
   // lastPrice: number = 0.00000
   $priceChartData: Observable<any>
   $lastPrice: Observable<number>
+  $appInit: Observable<boolean>
 
   options = {
     chart: {
@@ -81,6 +82,7 @@ export class PriceChartComponent implements OnInit {
   constructor(private store: Store<AppState>) {
     this.$priceChartData = store.pipe(select(priceChartSelector))
     this.$lastPrice = store.pipe(select(lastPriceSelector))
+    this.$appInit = store.pipe(select(appInitSelector))
   }
 
   ngOnInit(): void {

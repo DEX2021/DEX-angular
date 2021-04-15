@@ -19,6 +19,7 @@ import { WalletComponent } from '../Pages/wallet/wallet.component';
 import { AccountBalancesComponent } from '../Components/account-balances/account-balances.component';
 import { ExchangeWalletComponent } from '../Components/exchange-wallet/exchange-wallet.component';
 import { AccountsComponent } from '../Components/accounts/accounts.component';
+import { SpinnerComponent } from '../Components/spinner/spinner.component';
 
 @NgModule({
     declarations: [
@@ -33,6 +34,7 @@ import { AccountsComponent } from '../Components/accounts/accounts.component';
         AccountBalancesComponent,
         ExchangeWalletComponent,
         AccountsComponent,
+        SpinnerComponent
     ],
     imports: [
         CommonModule,

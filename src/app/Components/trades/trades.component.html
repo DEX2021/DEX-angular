@@ -1,3 +1,4 @@
+<app-spinner *ngIf="!($appInit | async)"></app-spinner>
 <div class="card-header">Trades</div>
 <div class="card-body">
   <table *ngIf="($filledOrders | async).loaded === true" class="table table-sm small">

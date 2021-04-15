@@ -1,16 +1,20 @@
 
 
 export interface AppState {
+    appReducer: IAppState
     web3Reducer: IWeb3
-    tokenReducer: IToken,
+    tokenReducer: IToken
     exchangeReducer: IExchange
+}
+
+export interface IAppState {
+    initialized: boolean
 }
 
 export interface IWeb3 {
     web3Reducer: any
     account: any
     balance: any
-    initialized: boolean
 }
 export interface IToken {
     token: any

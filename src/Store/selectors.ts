@@ -17,7 +17,7 @@ export const root = createFeatureSelector<AppState>('root')
 
 export const appInitSelector = createSelector(
     root,
-    (state: AppState) => state.web3Reducer.initialized
+    (state: AppState) => state.appReducer.initialized
 );
 
 const rootReducer = state => get(state, 'root')
@@ -260,7 +260,7 @@ export const priceChartSelector = createSelector(
 
 const buildGraphData = (orders) => {
     // Group orders by hour (for the graph)
-    orders = groupBy(orders, (o) => moment.unix(o.timestamp).startOf('hour').format())
+    orders = groupBy(orders, (o) => moment.unix(o.timestamp).startOf('day').format())
     // Get each data where data exists
     const hours = Object.keys(orders)
     // Build the graph series

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { DexService } from 'src/app/Services/DexService.service';
 import { fillOrder } from 'src/Store/interactions';
 import { AppState, IOrder } from '../../../models/models';
-import { accountSelector, exchangeSelector, orderBookSelector, priceChartSelector, lastPriceSelector } from '../../../Store/selectors';
+import { appInitSelector, orderBookSelector, priceChartSelector, lastPriceSelector } from '../../../Store/selectors';
 
 enum OrderBookSorting {
   All,
@@ -18,29 +19,26 @@ enum OrderBookSorting {
 })
 export class OrderBookComponent implements OnInit {
   $orders: Observable<any>
-  $exchange: Observable<AppState>
-  $account: Observable<AppState>
   $lastPrice: Observable<number>
   lastPriceChange: string = '-'
   $priceChartData: Observable<any>
   sortType: OrderBookSorting = OrderBookSorting.All
+  $appInit: Observable<boolean>
 
   public get sortTypes(): typeof OrderBookSorting {
     return OrderBookSorting;
   }
 
-  constructor(private store: Store<AppState>) {
-    this.$exchange = this.store.pipe(select(exchangeSelector));
+  constructor(private store: Store<AppState>, private dex: DexService) {
     this.$orders = this.store.pipe(select(orderBookSelector));
-    this.$account = this.store.pipe(select(accountSelector));
     this.$priceChartData = this.store.pipe(select(priceChartSelector));
     this.$lastPrice = this.store.pipe(select(lastPriceSelector));
+    this.$appInit = this.store.pipe(select(appInitSelector));
 
     this.$priceChartData.subscribe(data => {
       this.lastPriceChange = data.lastPriceChange;
     })
 
-    this.$exchange.subscribe();
     this.$orders.subscribe();
   }
 
@@ -48,13 +46,8 @@ export class OrderBookComponent implements OnInit {
   }
 
   fillingOrder(order) {
-    var account, exchange
-
-    this.$exchange.subscribe(result => exchange = result)
-    this.$account.subscribe(result => account = result)
-
     console.log('filling order', order)
-    fillOrder(this.store, exchange, order, account)
+    fillOrder(this.store, this.dex.Exchange, order, this.dex.Account)
   }
 
   priceSymbol(priceChange) {
@@ -85,7 +78,5 @@ export class OrderBookComponent implements OnInit {
         this.sortType = OrderBookSorting.All;
         break;
     }
-
-    console.log("Sort type: ", this.sortType)
   }
 }

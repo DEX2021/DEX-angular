@@ -140,7 +140,7 @@ export const withdrawToken = (store, exchange, web3, token, amount, account) => 
 export const cancelOrder = (store, exchange, order, account) => {
     exchange.methods.cancelOrder(order.id).send({ from: account })
         .on('transactionHash', (hash) => {
-            store.dispatch(new Postactions.orderCancelling)
+            store.dispatch(new Postactions.orderCancelling())
         })
         .on('error', (error) => {
             console.log(error)
@@ -151,7 +151,7 @@ export const cancelOrder = (store, exchange, order, account) => {
 export const fillOrder = (store, exchange, order, account) => {
     exchange.methods.fillOrder(order.id).send({ from: account })
         .on('transactionHash', (hash) => {
-            store.dispatch(new Postactions.orderFilling)
+            store.dispatch(new Postactions.orderFilling())
         })
         .on('error', (error) => {
             console.log(error)

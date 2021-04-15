@@ -46,6 +46,10 @@ export class DepositsComponent implements OnInit {
     this.$balancesLoading = this.store.pipe(select(balancesLoadingSelector))
     this.$lastPrice = this.store.pipe(select(lastPriceSelector));
 
+    this.$tokenBalance.subscribe()
+    this.$exchangeEtherBalance.subscribe()
+    this.$exchangeTokenBalance.subscribe()
+
   }
 
   formatCurrency(x)

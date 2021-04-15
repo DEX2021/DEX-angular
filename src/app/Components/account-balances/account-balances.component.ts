@@ -5,7 +5,7 @@ import ApexCharts from 'apexcharts/dist/apexcharts.common.js'
 import { Observable } from 'rxjs';
 import { fetchReduxData } from 'src/helpers/redux.helper';
 import { AppState } from 'src/models/models';
-import { appInitSelector, accountSelector, exchangeEtherBalanceSelector, exchangeSelector, exchangeTokenBalanceSelector, tokenSelector, lastPriceSelector, etherBalanceSelector, tokenBalanceSelector } from 'src/Store/selectors';
+import { appInitSelector, exchangeEtherBalanceSelector, exchangeTokenBalanceSelector, lastPriceSelector, etherBalanceSelector, tokenBalanceSelector } from 'src/Store/selectors';
 import Web3 from 'web3';
 import { DexService } from 'src/app/Services/DexService.service';
 import { formatCurrency } from 'src/app/utils/helpers';
@@ -16,9 +16,6 @@ import { formatCurrency } from 'src/app/utils/helpers';
   styleUrls: ['./account-balances.component.scss']
 })
 export class AccountBalancesComponent implements OnInit {
-  $exchange: Observable<AppState>
-  $token: Observable<AppState>
-  $account: Observable<AppState>
   $exchangeEtherBalance: Observable<AppState>
   $exchangeTokenBalance: Observable<AppState>
   $lastPrice: Observable<number>
@@ -30,9 +27,6 @@ export class AccountBalancesComponent implements OnInit {
   constructor(private web3: Web3, private store: Store<AppState>, private dex: DexService, private http: HttpClient) {
     this.$exchangeEtherBalance = this.store.pipe(select(exchangeEtherBalanceSelector))
     this.$exchangeTokenBalance = this.store.pipe(select(exchangeTokenBalanceSelector))
-    this.$exchange = this.store.pipe(select(exchangeSelector))
-    this.$token = this.store.pipe(select(tokenSelector))
-    this.$account = this.store.pipe(select(accountSelector))
     this.$lastPrice = this.store.pipe(select(lastPriceSelector))
 
     this.$appInit = this.store.pipe(select(appInitSelector))
