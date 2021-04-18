@@ -56,7 +56,7 @@
         <table *ngIf="($orders | async).loaded === true && sortType === sortTypes.Bought || sortType === sortTypes.All"
             class="table table-sm small" class="table table-sm small">
             <tbody>
-                <tr *ngFor="let order of ($orders | async).data.buy; let i = index" (click)="fillingOrder(order)"
+                <tr id='order' *ngFor="let order of ($orders | async).data.buy; let i = index" (click)="fillingOrder(order)"
                     ngbTooltip="Click the order to sell">
                     <td>{{ order.tokenAmount }}</td>
                     <td class="text-{{order.orderTypeClass}}">{{ order.tokenPrice }}</td>

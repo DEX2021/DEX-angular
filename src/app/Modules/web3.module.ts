@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import Web3 from 'web3';
 
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from "@angular/forms"
+import { FormsModule, ReactiveFormsModule } from "@angular/forms"
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { DepositsComponent } from '../Components/deposits/deposits.component';
@@ -40,6 +40,7 @@ import { SpinnerComponent } from '../Components/spinner/spinner.component';
         CommonModule,
         HttpClientModule,
         FormsModule,
+        ReactiveFormsModule,
         NgbModule
     ],
     providers: [

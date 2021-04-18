@@ -239,8 +239,8 @@ export function exchangeReducer(state: IExchange = defaultExchangeState, action:
         ...state,
         buyOrder: {
           ...state.buyOrder,
-          amount: null,
-          price: null,
+          amount: 0,
+          price: 0,
           making: true
         }
       }
@@ -299,8 +299,8 @@ export function exchangeReducer(state: IExchange = defaultExchangeState, action:
           ...state,
           sellOrder: {
             ...state.sellOrder,
-            amount: null,
-            price: null,
+            amount: 0,
+            price: 0,
             making: true
           }
         }
