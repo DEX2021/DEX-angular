@@ -21,9 +21,6 @@ export class TransactionsComponent implements OnInit {
     this.$myFilledOrders = store.pipe(select(myFilledOrderSelector));
     this.$myOpenOrders = store.pipe(select(myOpenOrderSelector));
     this.$appInit = this.store.pipe(select(appInitSelector))
-
-    this.$myFilledOrders.subscribe(d => console.log("My Filled Orders", d))
-    this.$myOpenOrders.subscribe(d => console.log("My Open Orders", d))
   }
 
   ngOnInit(): void {

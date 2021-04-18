@@ -115,10 +115,10 @@ export function exchangeReducer(state: IExchange = defaultExchangeState, action:
       return { ...state, tokenBalance: action.payload }
 
     case PostActions.BALANCES_LOADING:
-      return { ...state, balancesloading: true }
+      return { ...state, balancesLoading: false }
 
     case PostActions.BALANCES_LOADED:
-      return { ...state, balancesloading: false }
+      return { ...state, balancesLoading: true }
 
     case PostActions.ETHER_DEPOSIT_AMOUNT_CHANGED:
       return { ...state, etherDepositAmountChanged: action.payload }

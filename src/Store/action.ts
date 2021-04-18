@@ -105,8 +105,6 @@ export class exchangeTokenBalanceLoaded implements Action {
 
 export class balancesLoaded implements Action {
     readonly type = BALANCES_LOADED
-
-    //constructor(public payload: any) { }
 }
 
 export class balancesLoading implements Action {

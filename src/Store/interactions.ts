@@ -156,6 +156,7 @@ export const fillOrder = (store, exchange, order, account) => {
     exchange.methods.fillOrder(order.id).send({ from: account })
         .on('transactionHash', (hash) => {
             store.dispatch(new Postactions.orderFilling())
+            store.dispatch(new Postactions.balancesLoading())
         })
         .on('error', (error) => {
             console.log(error)
@@ -173,6 +174,7 @@ export const makeBuyOrder = (store, exchange, web3, token, order, account) => {
         .send({ from: account })
         .on('transactionHash', (hash) => {
             store.dispatch(new Postactions.buyOrderMaking())
+            store.dispatch(new Postactions.balancesLoading())
         })
         .on('error', (error) => {
             console.log(error)
@@ -190,6 +192,7 @@ export const makeSellOrder = (store, exchange, web3, token, order, account) => {
         .send({ from: account })
         .on('transactionHash', (hash) => {
             store.dispatch(new Postactions.sellOrderMaking())
+            store.dispatch(new Postactions.balancesLoading())
         })
         .on('error', (error) => {
             console.log(error)
@@ -205,10 +208,12 @@ export const subscribeToEvents = async (store, exchange) => {
 
     exchange.events.Trade({}, (error, event) => {
         store.dispatch(new Postactions.orderFilled(event.returnValues))
+        store.dispatch(new Postactions.balancesLoaded())
     })
 
     exchange.events.Order({}, (error, event) => {
         store.dispatch(new Postactions.orderMade(event.returnValues))
+        store.dispatch(new Postactions.balancesLoaded())
     })
 
     exchange.events.Deposit({}, (error, event) => {

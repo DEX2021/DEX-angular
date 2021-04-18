@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import Web3 from 'web3';
 
 import { loadToken, loadExchange, loadAccount, loadAllOrders, subscribeToEvents, loadBalances } from 'src/Store/interactions';
-import { accountSelector, exchangeSelector, tokenSelector } from 'src/Store/selectors';
+import { accountSelector, balancesLoadingSelector, exchangeSelector, tokenSelector } from 'src/Store/selectors';
 import { select, Store } from '@ngrx/store';
 import { AppState } from 'src/models/models';
 import * as Actions from 'src/Store/action'
@@ -18,6 +18,7 @@ export class DexService {
     private $exchange: Observable<AppState>;
     private $token: Observable<AppState>;
     private $account: Observable<AppState>;
+    private $balancesLoading: Observable<boolean>;
 
     constructor(private web3: Web3, private store: Store<AppState>, private http: HttpClient) {
         
@@ -65,6 +66,15 @@ export class DexService {
 
         this.loaded = true;
         await this.store.dispatch(new Actions.appInitialized(true));
+
+        this.$balancesLoading = this.store.pipe(select(balancesLoadingSelector));
+        this.$balancesLoading.subscribe(loaded => {
+            console.log("Balances loaded", loaded)
+            if (loaded) {
+                console.log("Loading balances")
+                this.LoadBalances();
+            }
+        })
     }
 
     private async pipeStore() {
