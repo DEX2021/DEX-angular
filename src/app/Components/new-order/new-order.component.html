@@ -4,7 +4,7 @@
     <li ngbNavItem>
         <a id="buyTab" ngbNavLink>Buy</a>
         <ng-template ngbNavContent>
-            <form name="buyOrder" (submit)="createOrder('sell')">
+            <form [formGroup]="sellForm" name="buyOrder" (submit)="createOrder('sell')">
                 <small>Available ETH: {{ ($etherBalance | async) }} ETH</small>
                 <br/>
                 <small>Available DEX: {{ ($tokenBalance | async) }} DEX</small>
@@ -13,7 +13,7 @@
                 <div class="form-group small">
                     <label>Buy Amount (DEX)</label>
                     <div class="input-group">
-                        <input name="buyAmount" [(ngModel)]="buyAmount" (input)="sellAmountChanged(buyAmount)"
+                        <input formControlName="amount" name="buyAmount" (input)="sellAmountChanged()"
                             type="number" class="input is-rounded dInput form-control form-control-sm text-white"
                             placeholder="Buy Amount" required />
                     </div>
@@ -21,8 +21,8 @@
                 <div class="form-group small">
                     <label>Buy Price</label>
                     <div class="input-group">
-                        <input name="buyPrice" [(ngModel)]="buyPrice" (input)="sellPriceChanged(buyPrice)" type="number"
-                            class="input is-rounded dInput form-control form-control-sm text-white"
+                        <input formControlName="price" name="buyPrice" (input)="sellPriceChanged()"
+                            type="number" class="input is-rounded dInput form-control form-control-sm text-white"
                             placeholder="Buy Price" required />
                     </div>
                 </div>
@@ -35,7 +35,7 @@
     <li ngbNavItem>
         <a ngbNavLink>Sell</a>
         <ng-template ngbNavContent>
-            <form name="sellOrder" (submit)="createOrder('buy')">
+            <form [formGroup]="buyForm" name="sellOrder" (submit)="createOrder('buy')">
                 <small>Available ETH: {{ ($etherBalance | async) }} ETH</small>
                 <br/>
                 <small>Available DEX: {{ ($tokenBalance | async) }} DEX</small>
@@ -44,7 +44,7 @@
                 <div class="form-group small">
                     <label>Buy Sell (DEX)</label>
                     <div class="input-group">
-                        <input name="sellAmount" [(ngModel)]="sellAmount" (input)="buyAmountChanged(sellAmount)"
+                        <input formControlName="amount" name="sellAmount" (input)="buyAmountChanged()"
                             type="number" class="input is-rounded dInput form-control form-control-sm text-white"
                             placeholder="Sell Amount" required />
                     </div>
@@ -52,7 +52,7 @@
                 <div class="form-group small">
                     <label>Sell Price</label>
                     <div class="input-group">
-                        <input name="sellPrice" [(ngModel)]="sellPrice" (input)="buyPriceChanged(sellPrice)"
+                        <input formControlName="price" name="sellPrice" (input)="buyPriceChanged()"
                             type="number" class="input is-rounded dInput form-control form-control-sm text-white"
                             placeholder="Sell Price" required />
                     </div>

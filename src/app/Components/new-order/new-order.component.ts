@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { Store, select } from '@ngrx/store'
 import { AppState, IOrder, IExchange, IToken } from '../../../models/models'
 import { 
@@ -25,10 +26,15 @@ import { DexService } from 'src/app/Services/DexService.service';
   styleUrls: ['./new-order.component.scss']
 })
 export class NewOrderComponent implements OnInit {
-  buyAmount: number = 0
-  buyPrice: number = 0
-  sellAmount: number = 0
-  sellPrice: number = 0
+  buyForm = new FormGroup({
+    amount: new FormControl(0),
+    price: new FormControl(0)
+  })
+
+  sellForm = new FormGroup({
+    amount: new FormControl(0),
+    price: new FormControl(0)
+  })
 
   $buyOrder: Observable<any>;
   $sellOrder: Observable<any>;
@@ -56,19 +62,35 @@ export class NewOrderComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  buyAmountChanged(amount: number) {
+  buyAmountChanged() {
+    let amount = this.buyForm.get('amount').value
+    // amount = parseInt(amount.toString())
+
+    this.buyForm.get('amount').setValue(amount)
     this.store.dispatch(new Postactions.buyOrderAmountChanged(amount))
   }
 
-  buyPriceChanged(price: number) {
+  buyPriceChanged() {
+    let price = this.buyForm.get('price').value
+    // price = parseInt(price.toString())
+
+    this.buyForm.get('price').setValue(price)
     this.store.dispatch(new Postactions.buyOrderPriceChanged(price))
   }
 
-  sellAmountChanged(amount: number) {
+  sellAmountChanged() {
+    let amount = this.sellForm.get('amount').value
+    // amount = parseInt(amount.toString())
+
+    this.sellForm.get('amount').setValue(amount)
     this.store.dispatch(new Postactions.sellOrderAmountChanged(amount))
   }
 
-  sellPriceChanged(price: number) {
+  sellPriceChanged() {
+    let price = this.sellForm.get('price').value
+    // price = parseInt(price.toString())
+
+    this.sellForm.get('price').setValue(price)
     this.store.dispatch(new Postactions.sellOrderPriceChanged(price))
   }
 
@@ -85,19 +107,20 @@ export class NewOrderComponent implements OnInit {
 
       makeBuyOrder(this.store, this.dex.Exchange, this.dex.Web3, this.dex.Token, order, this.dex.Account);
 
-      this.buyAmount = 0
-      this.buyPrice = 0
+      this.buyForm.get('amount').setValue(0)
+      this.buyForm.get('price').setValue(0)
     } else {
       this.$sellOrder.subscribe(e => order = e);
-      makeSellOrder(this.store, this.dex.Exchange, this.dex.Web3, this.dex.Token, order, this.dex.Account);
 
       if (order.amount === 0 || order.price === 0) {
         alert("Please enter a value greater than zero.")
         return
       }
+      
+      makeSellOrder(this.store, this.dex.Exchange, this.dex.Web3, this.dex.Token, order, this.dex.Account);
 
-      this.sellAmount = 0
-      this.sellPrice = 0
+      this.sellForm.get('amount').setValue(0)
+      this.sellForm.get('price').setValue(0)
     }
   }
 }
