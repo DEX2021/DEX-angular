@@ -34,16 +34,10 @@ export class DepositsComponent implements OnInit {
     this.$etherBalance = this.store.pipe(select(etherBalanceSelector))
     this.$appInit = this.store.pipe(select(appInitSelector));
 
-    this.$appInit.subscribe(loaded => {
-      if (loaded) {
-        // this.loadBlockchainData();
-      }
-    })
-
+    this.$balancesLoading = this.store.pipe(select(balancesLoadingSelector))
     this.$tokenBalance = this.store.pipe(select(tokenBalanceSelector))
     this.$exchangeEtherBalance = this.store.pipe(select(exchangeEtherBalanceSelector))
     this.$exchangeTokenBalance = this.store.pipe(select(exchangeTokenBalanceSelector))
-    this.$balancesLoading = this.store.pipe(select(balancesLoadingSelector))
     this.$lastPrice = this.store.pipe(select(lastPriceSelector));
 
     this.$tokenBalance.subscribe()
@@ -67,46 +61,46 @@ export class DepositsComponent implements OnInit {
   }
 
   deposit(tokenValue, etherValue) {
-    console.log("tokenValue", tokenValue)
-    console.log("etherValue", etherValue)
     if (tokenValue) {
-      console.log("token has value");
       this.TokenDepositAmountChanged(tokenValue)
     }
-    else {
-      console.log("ether has value");
+    else if (etherValue) {
       this.etherDepositAmountChanged(etherValue)
     }
   }
 
   withdraw(tokenValue, etherValue) {
-
-    console.log("tokenValue", tokenValue)
-    console.log("etherValue", etherValue)
     if (tokenValue) {
-      console.log("token has value");
       this.TokenWithdrawAmountChanged(tokenValue)
-    }
-    else {
-      console.log("ether has value");
+    } 
+    else if (etherValue) {
       this.etherWithdrawAmountChanged(etherValue)
     }
   }
 
+  async reloadBalance() {
+    console.log("RELOAD CLICK")
+    await this.dex.LoadBalances();
+  }
+
   async etherDepositAmountChanged(etherAmount) {
     await depositEther(this.store, this.dex.Exchange, this.web3, etherAmount, this.dex.Account)
+    await this.reloadBalance()
   }
 
   async etherWithdrawAmountChanged(etherAmount) {
     await withdrawEther(this.store, this.dex.Exchange, this.web3, etherAmount, this.dex.Account)
+    await this.reloadBalance()
   }
 
   async TokenDepositAmountChanged(tokenAmount) {
     await depositToken(this.store, this.dex.Exchange, this.web3, this.dex.Token, tokenAmount, this.dex.Account)
+    await this.reloadBalance()
   }
 
   async TokenWithdrawAmountChanged(tokenAmount) {
     await withdrawToken(this.store, this.dex.Exchange, this.web3, this.dex.Token, tokenAmount, this.dex.Account)
+    await this.reloadBalance()
   }
 
 

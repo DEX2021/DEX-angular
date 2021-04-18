@@ -64,6 +64,10 @@ export const loadAllOrders = async (store: Store, exchange) => {
 }
 
 export const loadBalances = async (web3, exchange, token, account, store) => {
+    console.log("LB Exchange", exchange)
+    console.log("LB token", token)
+    console.log("LB acc", account)
+    console.log("LB Store", store)
     if (typeof account !== 'undefined') {
         // Ether balance in wallet
         const etherBalance = await web3.eth.getBalance(account)

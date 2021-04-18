@@ -101,6 +101,7 @@ export class DexService {
     }
 
     public async LoadBalances() {
+        console.log("LOAD BAlANCES CALLED")
         await loadBalances(this.web3, this.Exchange, this.Token, this.Account, this.store);
     }
 

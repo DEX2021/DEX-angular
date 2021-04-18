@@ -28,7 +28,7 @@
                 </div>
                 <button type="submit" class="btnBuy btn btn-sm btn-block">Buy Order</button>
                 <small *ngIf="($buyOrder | async).amount > 0 && ($buyOrder | async).price > 0">Total:
-                    {{ ($buyOrder | async).amount * ($buyOrder | async).price }} DEX</small>
+                    {{ ($buyOrder | async).amount * ($buyOrder | async).price }} ETH</small>
             </form>
         </ng-template>
     </li>
