@@ -60,48 +60,58 @@ body {
 
 #price_chart_info {
   height: 5%;
+  max-height: 5%;
 }
 
 #price_chart {
   height: 60%;
+  max-height: 60%;
 }
 
 #orders {
   height: calc(35% - 40px);
+  max-height: calc(35% - 40px);
 }
 
 // Column B
 
 #order_book {
   height: calc(100% - 20px);
+  max-height: calc(100% - 20px);
 }
 
 // Column C
 
 #buy_sell {
   height: calc(30% - 20px);
+  max-height: calc(30% - 20px);
 }
 
 #all_trades {
   height: calc(70% - 10px);
+  max-height: calc(70% - 10px);
 }
 
 // Wallet Stuff
 
 #accounts {
   height: 40%;
+  max-height: 40%;
 }
 
 #deposit_withdraw {
   height: calc(60% - 30px);
+  max-height: calc(60% - 30px);
 }
 
 #account_balances_chart {
   height: 50%;
+  max-height: 50%;
 }
 
 #exchange_wallet_chart {
   height: calc(50% - 30px);
+  max-height: calc(50% - 30px);
 }
 
 // Tabs design

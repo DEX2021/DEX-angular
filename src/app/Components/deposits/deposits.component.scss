@@ -85,9 +85,13 @@
 }
 
 input[type="text"], input:active, input:hover, input:focus {
-    background-color: whitesmoke;
+    background-color: transparent;
     color: white;
     text-align: center; 
+}
+
+.input {
+    color: white;
 }
 
 .amount_button {

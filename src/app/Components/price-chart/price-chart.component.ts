@@ -19,6 +19,8 @@ export class PriceChartComponent implements OnInit {
   $lastPrice: Observable<number>
   $appInit: Observable<boolean>
 
+  private chart: any = null;
+
   options = {
     chart: {
       height: 450,
@@ -87,14 +89,30 @@ export class PriceChartComponent implements OnInit {
 
   ngOnInit(): void {
     this.$priceChartData.subscribe(data => {
+      
+      // Combine dummy data and new series
+      var series = this.options.series[0].data
+
+      data.series.forEach(item => {
+        item.data.forEach(serie => {
+          series.push(serie)
+        })
+      })
+
+
       this.lastPriceChange = data.lastPriceChange
       this.options = {
         ...this.options,
-        ...data
+        // ...data
       }
 
-      var chart = new ApexCharts(document.querySelector("#chart"), this.options);
-      chart.render()
+      let chartDiv = document.querySelector("#chart")
+      if (this.chart === null) {
+        this.chart = new ApexCharts(chartDiv, this.options);
+        this.chart.render()
+      } else {
+        this.chart.updateOptions(this.options)
+      }
     })
   }
 

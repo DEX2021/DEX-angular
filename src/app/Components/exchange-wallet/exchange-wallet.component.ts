@@ -56,7 +56,7 @@ export class ExchangeWalletComponent implements OnInit {
 
     var options = {
       chart: {
-        height: 450,
+        height: 400,
         type: 'pie'
       },
       tooltip: {
