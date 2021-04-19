@@ -27,8 +27,8 @@
                     </div>
                 </div>
                 <button type="submit" class="btnBuy btn btn-sm btn-block">Buy Order</button>
-                <small *ngIf="($sellOrder | async).amount > 0 && ($sellOrder | async).price > 0">Total:
-                    {{ ($sellOrder | async).amount * ($sellOrder | async).price }} ETH</small>
+                <small *ngIf="sellForm.get('amount').value > 0 && sellForm.get('price').value > 0">Total:
+                    {{ sellForm.get('amount').value * sellForm.get('price').value }} ETH</small>
             </form>
         </ng-template>
     </li>
@@ -58,8 +58,8 @@
                     </div>
                 </div>
                 <button type="submit" class="btnSell btn  btn-sm btn-block">Sell Order</button>
-                <small *ngIf="($buyOrder | async).amount > 0 && ($buyOrder | async).price > 0">Total:
-                    {{ ($buyOrder | async).amount * ($buyOrder | async).price }} ETH</small>
+                <small *ngIf="buyForm.get('amount').value > 0 && buyForm.get('price').value > 0">Total:
+                    {{ buyForm.get('amount').value * buyForm.get('price').value }} ETH</small>
             </form>
         </ng-template>
     </li>
