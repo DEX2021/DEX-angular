@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { TradingComponent } from 'src/app/Pages/trading/trading.component';
 import { WalletComponent } from 'src/app/Pages/wallet/wallet.component';
+import { XrpHomeComponent } from './Pages/xrp-home/xrp-home.component';
 
 const routes: Routes = [
   {
@@ -11,6 +12,10 @@ const routes: Routes = [
   {
     path: 'wallet',
     component: WalletComponent
+  },
+  {
+    path: 'xrp',
+    component: XrpHomeComponent
   },
   {
     path: '',

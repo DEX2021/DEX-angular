@@ -15,6 +15,7 @@ import { IWeb3 } from 'src/models/models';
 import { NavbarComponent } from './Components/navbar/navbar.component';
 import { NumericDirective } from './Directives/numeric.directive';
 import { Web3Module } from './Modules/web3.module';
+import { XrpHomeComponent } from './Pages/xrp-home/xrp-home.component';
 
 export const metaReducers: MetaReducer<IWeb3>[] = !environment.production ? [storeFreeze] : [];
 @NgModule({
@@ -23,6 +24,7 @@ export const metaReducers: MetaReducer<IWeb3>[] = !environment.production ? [sto
     NavbarComponent,
     // Directives
     NumericDirective,
+    XrpHomeComponent,
   ],
   imports: [
     BrowserModule,
