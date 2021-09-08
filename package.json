@@ -46,6 +46,7 @@
     "ngrx-store-freeze": "^0.2.4",
     "openzeppelin-solidity": "^3.4.0",
     "reselect": "^4.0.0",
+    "ripple-lib": "^1.9.4",
     "rxjs": "~6.6.0",
     "solc": "^0.8.1",
     "solidity-coverage": "^0.7.14",
