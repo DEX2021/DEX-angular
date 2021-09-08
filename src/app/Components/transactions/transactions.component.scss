@@ -1,4 +1,24 @@
 .card-body {
     padding: 0px;
     overflow-y: scroll;
+    background-color: #303030;
+
+}
+
+.card-header {
+    background-color: #303030;
+    color: white;
+    text-align: center;
+}
+
+th {
+    color: white;
+}
+
+tr {
+    color: white
+}
+
+.cancel-order {
+    cursor: pointer;
 }

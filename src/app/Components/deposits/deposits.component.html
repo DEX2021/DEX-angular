@@ -1,97 +1,71 @@
-<div class="card-header">
-    Card Title
-</div>
-<div class="card-body">
-    <div *ngIf="$balancesLoading; else elseBlock">
-        <ul ngbNav #nav="ngbNav" class="nav-tabs">
-            <li ngbNavItem>
-                <a ngbNavLink>Deposit</a>
-                <ng-template ngbNavContent>
-                    <table class="table table-dark table-sm small">
-                        <thead>
-                            <tr>
-                                <th>Token</th>
-                                <th>Wallet</th>
-                                <th>Exchange</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>ETH</td>
-                                <td>{{$etherBalance | async}}</td>
-                                <td>{{$exchangeEtherBalance | async}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <form>
-                        <input #depositEther type="text" placeholder="Enter ETH Deposit" />
-                        <button style="" class="button btnStyle is-rounded"
-                            (click)="etherDepositAmountChanged(depositEther.value)"><strong>Deposit</strong></button>
-                    </form>
-                    <table class="table table-dark table-sm small">
-                        <tbody>
-                            <tr>
-                                <td>DEX</td>
-                                <td>{{$tokenBalance | async}}</td>
-                                <td>{{$exchangeTokenBalance | async}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <form>
-                        <input #depositToken type="text" placeholder="Enter Token Deposit" />
-                        <button style="" class="button btnStyle is-rounded"
-                            (click)="TokenDepositAmountChanged(depositToken.value)"><strong>Deposit</strong></button>
-                    </form>
+<app-spinner *ngIf="!($appInit | async)"></app-spinner>
+<div class="content">
+    <div class="row">
+        <h1 class="card_title">Deposit/Withdraw</h1>
+        <div class="col-md-6">
+            <div class="walletBox">
+                <div style="margin-bottom: 20px">
+                    <b>Wallet</b>
+                </div>
+                <div>
+                    <div>
+                        Ether: {{$etherBalance | async}} <b>ETH</b>
+                    </div>
+                    <div>${{ formatCurrency(($etherBalance | async) * ethereumPrice) }}</div>
 
-                </ng-template>
-            </li>
-            <li ngbNavItem>
-                <a ngbNavLink>Withdraw</a>
-                <ng-template ngbNavContent>
-                    <table class="table table-dark table-sm small">
-                        <thead>
-                            <tr>
-                                <th>Token</th>
-                                <th>Wallet</th>
-                                <th>Exchange</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>ETH</td>
-                                <td>{{$etherBalance | async}}</td>
-                                <td>{{$exchangeEtherBalance | async}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <form>
-                        <input #withdraw type="text" placeholder="Enter Withdraw Amount" />
-                        <button style="" class="button btnStyle is-rounded"
-                            (click)="etherWithdrawAmountChanged(withdraw.value)"><strong>Withdraw</strong></button>
-                    </form>
-                    <table class="table table-dark table-sm small">
-                        <tbody>
-                            <tr>
-                                <td>DEX</td>
-                                <td>{{$tokenBalance | async}}</td>
-                                <td>{{$exchangeTokenBalance | async}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <form>
-                        <input #withdrawToken type="text" placeholder="Enter Token Withdraw" />
-                        <button style="" class="button btnStyle is-rounded"
-                            (click)="TokenWithdrawAmountChanged(withdrawToken.value)"><strong>Withdraw</strong></button>
-                    </form>
-                </ng-template>
-            </li>
-        </ul>
-        <div [ngbNavOutlet]="nav"></div>
-    </div>
-    <ng-template #elseBlock>
-        <div class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
+                    <div style="margin-top: 20px">
+                        Token: {{$tokenBalance |async}} <b>DEX</b>
+                    </div>
+                    <div>${{ formatCurrency(($tokenBalance | async) * ($lastPrice | async)) }}</div>
+
+                </div>
+            </div>
+
+            <div class="amount_button">
+                <input #etherInput (focus)="tokenInput.value = null " class="input is-rounded dInput"
+                    placeholder="Enter Ethereum Amount">
+            </div>
+
+            <div class="depositBox">
+
+                <button type="button" (click)="deposit(tokenInput.value, etherInput.value)" class="btn depositbtn"><span
+                        id="deposit" class="material-icons dIcon">
+                        get_app
+                    </span>
+                    Deposit</button>
+
+            </div>
+
         </div>
-    </ng-template>
-    <button (click)="loadotherData()">second</button>
+        <div class="col-md-6">
+            <div class="walletBox align_r">
+                <div style="margin-bottom: 20px">
+                    <b>Exchange</b>
+                </div>
+
+                <div>
+                    <div>
+                        Ether: {{$exchangeEtherBalance | async}} <b>ETH</b>
+                    </div>
+                    <div>${{ formatCurrency(($exchangeEtherBalance | async) * ethereumPrice) }}</div>
+
+                    <div style="margin-top: 20px">
+                        Token: {{$exchangeTokenBalance |async}} <b>DEX</b>
+                    </div>
+                    <div>${{ formatCurrency(($exchangeTokenBalance | async) * ($lastPrice | async)) }}</div>
+                </div>
+            </div>
+
+            <div class="amount_button">
+                <input #tokenInput (focus)="etherInput.value = null " class="input is-rounded dInput"
+                    placeholder="Enter Token Amount">
+            </div>
+            <div class="depositBox opposite">
+                <button #withdrawBtn type="button" (click)="withdraw(tokenInput.value, etherInput.value)"
+                    class="btn depositbtn"><span id="withdraw" class="material-icons dIcon">
+                        publish
+                    </span>Withdraw</button>
+            </div>
+        </div>
+    </div>
 </div>

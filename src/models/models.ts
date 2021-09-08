@@ -1,10 +1,14 @@
 
 
 export interface AppState {
+    appReducer: IAppState
     web3Reducer: IWeb3
-    tokenReducer: IToken,
-    exchangeReducer: IExchange,
-    ordersReducer: IOrders,
+    tokenReducer: IToken
+    exchangeReducer: IExchange
+}
+
+export interface IAppState {
+    initialized: boolean
 }
 
 export interface IWeb3 {
@@ -18,6 +22,12 @@ export interface IToken {
     loaded: boolean
 }
 
+export interface ExchangeOrder {
+    amount: number
+    price: number
+    making: boolean
+}
+
 export interface IExchange {
     exchange: any
     etherBalance: any
@@ -27,7 +37,12 @@ export interface IExchange {
     etherDepositAmountChanged: number,
     etherWithdrawAmountChanged: number,
     tokenDepositAmount: number,
-    tokenWithdrawAmount: number
+    tokenWithdrawAmount: number,
+    orderCancelling: boolean,
+    orderFilling: boolean,
+    orders: IOrders,
+    buyOrder: ExchangeOrder,
+    sellOrder: ExchangeOrder
 }
 
 export interface IOrder {

@@ -1,4 +1,19 @@
 .card-body {
+    background-color: #303030 ;
     overflow-y: scroll;
     padding: 0px;
+}
+
+.card-header {
+    background-color: #303030;
+    color:white;
+    text-align: center;
+}
+
+th {
+    color: whitesmoke;
+}
+
+td {
+    color: whitesmoke;
 }

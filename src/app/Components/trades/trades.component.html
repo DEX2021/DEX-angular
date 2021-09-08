@@ -1,19 +1,20 @@
+<app-spinner *ngIf="!($appInit | async)"></app-spinner>
 <div class="card-header">Trades</div>
 <div class="card-body">
-  <table *ngIf="($filledOrders | async).loaded === true" class="table table-dark table-sm small">
-      <thead>
-        <tr>
-          <th scope="col">Time</th>
-          <th scope="col">DEX</th>
-          <th scope="col">DEX/ETH</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="order of ($filledOrders | async).data; let i = index">
-          <td class="text-muted">{{ ($filledOrders | async).data[i].formattedTimestamp }}</td>
-          <td>{{ ($filledOrders | async).data[i].tokenAmount }}</td>
-          <td class="text-{{($filledOrders | async).data[i].tokenPriceClass}}">{{ ($filledOrders | async).data[i].tokenPrice }}</td>
-        </tr>
-      </tbody>
+  <table *ngIf="($filledOrders | async).loaded === true" class="table table-sm small">
+    <thead>
+      <tr>
+        <th scope="col">Time</th>
+        <th scope="col">DEX</th>
+        <th scope="col">DEX/ETH</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of ($filledOrders | async).data">
+        <td>{{ order.formattedTimestamp }}</td>
+        <td>{{ order.tokenAmount }}</td>
+        <td class="text-{{order.tokenPriceClass}}">{{ order.tokenPrice }}</td>
+      </tr>
+    </tbody>
   </table>
 </div>

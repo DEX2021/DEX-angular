@@ -1,159 +1,127 @@
-:host {
-    display: block;
-    min-height: 50vh;
+.content {
+    height: 100%;
+    width: 100%;
 }
-.content  {
-    background-color: #1d1d1d;
+
+:host#deposit_withdraw {
+    background-color: #303030 !important;
+}
+
+.row {
+  height: 100%;
+  width: 100%;
+  margin: 0px;
+}
+
+.col-md-6 {
+  padding: 0px;
+  min-height: 100% !important;
+  max-height: 100% !important;
+}
+
+
+.depositBox {
     position: absolute;
-    top: 56px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-items: stretch;
-    justify-content: space-evenly;
-    padding: 8px;
-    z-index: 1
-  }
-  
-  .content > div {
-    width: 20%;
-    padding-right: 8px
-  }
-  
-  .content > div:first-child {
-    min-width: 220px
-  }
-  
-  .content > div:nth-child(2) {
-    min-width: 200px
-  }
-  
-  .content  div:nth-child(3) {
-    width: 40%
-  }
-  
-  .content > div:last-child {
-    padding-right: 0;
-    min-width: 240px
-  }
-  
-  @media (max-width:992px) {
-    .content {
-      display: block;
-      overflow-y: auto
-    }
-  
-    .content > div {
-      width: 100%!important;
-      padding-right: 0;
-      padding-bottom: 8px
-    }
-  }
-  
-  .vertical > div {
-    height: 100%
-  }
-  
-  .vertical-split {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: space-evenly;
-    flex-wrap: nowrap
-  }
-  
-  .vertical-split > div {
-    height: 50%
-  }
-  
-  .vertical-split > div:first-child {
-    margin-bottom: 8px
-  }
-  
-  .vertical-split:last-child > div:first-child {
-    height: 60%
-  }
-  
-  .vertical-split:last-child > div:last-child {
-    height: 40%
-  }
-  
-  @media (max-width:992px) {
-    .vertical-split {
-      display: block
-    }
-    .vertical-split > div,
-    .vertical-split > div:first-child {
-      height: auto
-    }
-  }
-  
-  .card {
-    border-radius: 0px;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: space-evenly;
-    flex-wrap: nowrap;
-  }
-  
-  .card-header {
-    padding: 8px 4px;
-  }
-  
-  .card-body{
-    flex: auto;
-    overflow-y: auto;
-    overflow-x: hidden;
-    position: relative;
-    padding: 2px;
-  }
-  
-  .card-body th {
-    border-top: 0;
-  }
-  
-  .card-body .nav-tabs {
-    border-color: #95999c;
-  }
-  
-  .card-body .nav-item.nav-link {
-    font-size: 80%;
-    font-weight: bold;
-    background-color: inherit;
-    color: inherit;
-    padding: 4px 8px;
-    border-top: 0px;
-    border-right: 0px;
-    border-left: 0px;
-    border-color: #95999c;
-    border-radius: 0px;
-  }
-  
-  .card-body .nav-item.nav-link.active {
-    border-top: 0px;
-    border-right: 0px;
-    border-left: 0px;
-    border-bottom: 1px solid #007bff;
-  }
-  
-  .card-body .price-chart {
-    height:100%;
-    padding-bottom: 60px;
-  }
-  
-  .card-body .price-chart .price {
-    padding-left: 20px;
-  }
-  
-  td.cancel-order {
-    cursor: pointer;
-  }
-  
-  tr.order-book-order {
-    cursor: pointer;
-  }
-  
+    bottom: 5%;
+    right: 0%;
+}
+
+.depositBox.opposite {
+    left: 0 !important;
+    right: 50%;
+    transform: translateX(10px);
+}
+
+.withdrawBox {
+    margin: 32em 4em 1em 4em
+}
+
+.card_title {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    text-align: center;
+    color: white;
+    padding: 30px;
+}
+
+.depositbtn {
+  border-color: #e67e00;
+  font-size: 26px;
+  color: white;
+  border-radius: 10px;
+}
+
+.dIcon {
+    padding: 0% 30% 0% 30%;
+    font-size: 36px;
+}
+
+.walletBox {
+    width: 100%;
+    // border: 2px solid #39527d;
+    padding: 20px;
+    color: white;
+    background-color: #e67e00;
+    font-size: 26px;
+    // border-radius: 20px;
+
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.walletBox.align_r > * {
+    text-align: right;
+}
+
+#deposit.material-icons {
+    color: #e67e00
+}
+
+#withdraw.material-icons {
+    color: #e67e00
+}
+
+input[type="text"], input:active, input:hover, input:focus {
+    background-color: transparent;
+    color: white;
+    text-align: center; 
+}
+
+.input {
+    color: white;
+}
+
+.amount_button {
+    position: absolute;
+    bottom: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
+.dInput {
+    border-radius: 40px;
+    background-color: transparent;
+
+    border: 2px solid #e67e00;
+    font-size: 22px;
+    height: 20%;
+    padding: 10px;
+    margin-bottom: 20px;
+    text-align: center; 
+
+}
+
+::placeholder {
+    color: white
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}

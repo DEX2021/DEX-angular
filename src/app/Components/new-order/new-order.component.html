@@ -1,0 +1,69 @@
+<app-spinner *ngIf="!($appInit | async)"></app-spinner>
+<div class="card-header">Create New Order</div>
+<ul ngbNav #nav="ngbNav" class="nav-tabs nav-fill">
+    <li ngbNavItem>
+        <a id="buyTab" ngbNavLink>Buy</a>
+        <ng-template ngbNavContent>
+            <form [formGroup]="sellForm" name="buyOrder" (submit)="createOrder('sell')">
+                <small>Available ETH: {{ ($etherBalance | async) }} ETH</small>
+                <br/>
+                <small>Available DEX: {{ ($tokenBalance | async) }} DEX</small>
+                <div class="border-top my-2"></div>
+
+                <div class="form-group small">
+                    <label>Buy Amount (DEX)</label>
+                    <div class="input-group">
+                        <input formControlName="amount" name="buyAmount" (input)="sellAmountChanged()"
+                            type="number" class="input is-rounded dInput form-control form-control-sm text-white"
+                            placeholder="Buy Amount" required />
+                    </div>
+                </div>
+                <div class="form-group small">
+                    <label>Buy Price</label>
+                    <div class="input-group">
+                        <input formControlName="price" name="buyPrice" (input)="sellPriceChanged()"
+                            type="number" class="input is-rounded dInput form-control form-control-sm text-white"
+                            placeholder="Buy Price" required />
+                    </div>
+                </div>
+                <button type="submit" class="btnBuy btn btn-sm btn-block">Buy Order</button>
+                <small *ngIf="sellForm.get('amount').value > 0 && sellForm.get('price').value > 0">Total:
+                    {{ sellForm.get('amount').value * sellForm.get('price').value }} ETH</small>
+            </form>
+        </ng-template>
+    </li>
+    <li ngbNavItem>
+        <a ngbNavLink>Sell</a>
+        <ng-template ngbNavContent>
+            <form [formGroup]="buyForm" name="sellOrder" (submit)="createOrder('buy')">
+                <small>Available ETH: {{ ($etherBalance | async) }} ETH</small>
+                <br/>
+                <small>Available DEX: {{ ($tokenBalance | async) }} DEX</small>
+                <div class="border-top my-2"></div>
+
+                <div class="form-group small">
+                    <label>Buy Sell (DEX)</label>
+                    <div class="input-group">
+                        <input formControlName="amount" name="sellAmount" (input)="buyAmountChanged()"
+                            type="number" class="input is-rounded dInput form-control form-control-sm text-white"
+                            placeholder="Sell Amount" required />
+                    </div>
+                </div>
+                <div class="form-group small">
+                    <label>Sell Price</label>
+                    <div class="input-group">
+                        <input formControlName="price" name="sellPrice" (input)="buyPriceChanged()"
+                            type="number" class="input is-rounded dInput form-control form-control-sm text-white"
+                            placeholder="Sell Price" required />
+                    </div>
+                </div>
+                <button type="submit" class="btnSell btn  btn-sm btn-block">Sell Order</button>
+                <small *ngIf="buyForm.get('amount').value > 0 && buyForm.get('price').value > 0">Total:
+                    {{ buyForm.get('amount').value * buyForm.get('price').value }} ETH</small>
+            </form>
+        </ng-template>
+    </li>
+</ul>
+<div class="card-body">
+    <div class="neworder" [ngbNavOutlet]="nav"></div>
+</div>

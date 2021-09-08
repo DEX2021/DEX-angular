@@ -1,0 +1,48 @@
+.card-header {
+    background-color: #303030;
+    color:white;
+    text-align: center;
+}
+
+// #ngb-nav-2 {
+//     background-color: green;
+//     color: white;
+//     border: none;
+// }
+
+// #ngb-nav-3 {
+//     background-color: red;
+//     color: white;
+//     border: none;
+
+// }
+
+.card-body {
+    background-color: #303030 ;
+    color: whitesmoke;
+}
+
+input[type="text"], input:active, input:hover, input:focus {
+    background-color: #303030;
+    color: whitesmoke;
+}
+
+.dInput {
+    border-radius: 40px;
+    background-color: transparent;
+
+    border: 1px solid whitesmoke;
+    font-size: 12px;
+
+
+}
+
+.btnBuy {
+    background-color: #e67e00;
+    color: whitesmoke;
+}
+
+.btnSell {
+    background-color: #e67e00;
+    color: whitesmoke;
+}

@@ -1,0 +1,23 @@
+:host {
+    background-color: #303030;
+    color: white;
+}
+
+.currentAccount {
+    font-size: 20px;
+    padding-top: 5%;
+    text-align: center;
+}
+
+h1 {
+    text-align: center;
+    padding-top: 5%;
+}
+
+a, a:active, a:focus {
+    outline: 0;
+    color: white;
+    border: none;
+    -moz-outline-style: none;
+    text-decoration: none;
+  }

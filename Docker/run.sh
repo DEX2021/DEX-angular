@@ -1,0 +1,1 @@
+docker run -d --name=dex_api -p 2021:3000 dex_api

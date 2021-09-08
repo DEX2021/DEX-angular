@@ -1,8 +1,9 @@
-<div class="card-header">
-    Card Title nr 2
-</div>
+<app-spinner *ngIf="!($appInit | async)"></app-spinner>
+<div class="card-header">Price Chart</div>
 <div class="card-body">
-    <div id="chart">
-
+    <div class="price">
+        <h4>DEX/ETH &nbsp;<span [innerHTML]="priceSymbol(lastPriceChange)"></span> {{ $lastPrice | async }}</h4>
     </div>
+
+    <div id="chart"></div>
 </div>
